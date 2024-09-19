@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param } from '@nestjs/common';
 import { IssuesService } from './issues.service';
 
 @Controller('issues')
@@ -19,18 +19,18 @@ export class IssuesController {
     return this.issueService.createIssue();
   }
 
-  @Get()
-  getIssue() {
-    return this.issueService.getIssue();
+  @Get(':id')
+  getIssue(@Param('id') id: string) {
+    return this.issueService.getIssue(parseInt(id));
   }
 
-  @Put()
-  updateIssue() {
-    return this.issueService.updateIssue();
+  @Put(':id')
+  updateIssue(@Param('id') id: string) {
+    return this.issueService.updateIssue(parseInt(id));
   }
 
-  @Delete()
-  deleteIssue() {
-    return this.issueService.deleteIssue();
+  @Delete(':id')
+  deleteIssue(@Param('id') id: string) {
+    return this.issueService.deleteIssue(parseInt(id));
   }
 }
