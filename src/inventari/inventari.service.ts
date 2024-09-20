@@ -11,12 +11,12 @@ export class InventariService {
         return(`objeto con id ${this.id} creado`);
     }
     getInventari(id:number){
-        return(`objeto con id ${this.id} recuperado`);
+        return(`objeto con id ${id} recuperado`);
     }
     updateInventari(taskUpdated){
         return(`objeto con id ${this.id} recuperado`);
     }
-    deleteInventari(taskUpdated){
-        return(`objeto con id ${this.id} borrado`);
+    deleteInventari(id:number){
+        return(`objeto con id ${id} borrado`);
     }
 }
