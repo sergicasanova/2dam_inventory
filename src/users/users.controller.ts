@@ -1,10 +1,10 @@
 import { Body, Controller , Delete, Get , Param, Post, Put, Query } from '@nestjs/common';
-import { UserService } from './users.service';
+import { UsersService } from './users.service';
 import { query } from 'express';
-@Controller('tasks')
-export class usersController {
-    private  UsersService: UserService;
-    constructor(UsersService:UserService){
+@Controller('users')
+export class UsersController {
+    private  UsersService: UsersService;
+    constructor(UsersService:UsersService){
         this.UsersService = UsersService;
     };
     @Get()

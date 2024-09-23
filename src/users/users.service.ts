@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
-export class UserService {
+export class UsersService {
     getAllUser() {
         return { message: 'Todos los usuarios han sido recuperados satisfactoriamente' };
     }

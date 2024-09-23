@@ -5,18 +5,18 @@ export class InventariService {
     private invet=[];
     public id=0;
     getAllInventaris(){
-        return(`todos los objetos objeto`);
+        return(`getAllInventaris`);
     }
     createInventari(task:any){
         return(`objeto con id ${this.id} creado`);
     }
     getInventari(id:number){
-        return(`objeto con id ${this.id} recuperado`);
+        return(`createInventari con id ${id}`);
     }
     updateInventari(taskUpdated){
-        return(`objeto con id ${this.id} recuperado`);
+        return(`updateInventari con id ${this.id} `);
     }
     deleteInventari(taskUpdated){
-        return(`objeto con id ${this.id} borrado`);
+        return(`deleteInventari con id ${this.id} borrado`);
     }
 }
