@@ -1,0 +1,24 @@
+{
+"status" : [
+        {
+            "id_satus": 1,   
+            "description": "Creada"
+        },
+
+        {
+            "id_satus": 2,   
+            "description": "En revision"
+        },
+
+        {
+            "id_satus": 3,   
+            "description": "Rechazada"
+        },
+
+        {
+            "id_satus": 3,   
+            "description": "Completada"
+        }
+    ]
+
+}
