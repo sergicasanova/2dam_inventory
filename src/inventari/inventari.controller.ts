@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, Put, Query, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { InventariService } from './inventari.service';
 
 @Controller('inventari')
@@ -9,8 +9,16 @@ export class InventariController {
     }
     @Get()
     getAllInventaris(@Query() query){
-        //console.log(`query: ${query}`)
-        return this.inventariService.getAllInventaris();
+        try {
+            return this.inventariService.getAllInventaris();
+        } catch (err) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: err,
+            }, HttpStatus.INTERNAL_SERVER_ERROR, {
+                cause: err
+            });
+        }
     }
     @Get(':id')
     getInventari(@Param('id') id:string){
