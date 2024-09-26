@@ -1,17 +1,13 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { query } from 'express';
-import { error } from 'console';
-@Controller('Status')
+@Controller('Users')
 export class UsersController {
-    private UsersService: UsersService;
-    constructor(UsersService: UsersService) {
-        this.UsersService = UsersService;
-    };
+    constructor(private readonly usersService: UsersService) {}
+
     @Get()
     getAllUser(@Query() query) {
         try {
-            return this.UsersService.getAllUser();
+            return this.usersService.getAllUser();
         } catch (err) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -23,21 +19,37 @@ export class UsersController {
     }
     @Get(':id')
     getUser(@Param('id') id: string) {
-        return this.UsersService.getUser(parseInt(id));
+        const userId = parseInt(id);
+        if (isNaN(userId)) {
+            throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);  
+        }
+        return this.usersService.getUser(userId);
     }
+
     @Post()
-    createUser(@Body() Status) {
-        return this.UsersService.createUser(Status);
+    createUser(@Body() Users: any) {  
+        return this.usersService.createUser(Users);
     }
+
     @Put(':id')
-    UpdateUser(@Param('id') id: string, @Body() Status) {
-        return this.UsersService.updateUser({
-            ...Status,
-            id_status: parseInt(id)
+    updateUser(@Param('id') id: string, @Body() Users: any) {  
+        const userId = parseInt(id);
+        if (isNaN(userId)) {
+            throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);  
+        }
+        return this.usersService.updateUser({
+            ...Users,
+            id_user: userId  
         });
     }
+
     @Delete(':id')
     deleteUser(@Param('id') id: string) {
-        return this.UsersService.deleteUser(parseInt(id));
+        const userId = parseInt(id);
+        if (isNaN(userId)) {
+            throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);  
+        }
+        return this.usersService.deleteUser(userId);
     }
 }
+
