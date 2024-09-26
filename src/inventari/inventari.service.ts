@@ -55,6 +55,7 @@ export class InventariService {
         while (i < inventariData.length && inventariData[i].id_inventory != id) {
             i++;
         }
+        
         if (inventariData[i]) {
             saveData();
             return inventariData.splice(i, 1);
