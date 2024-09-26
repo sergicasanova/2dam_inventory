@@ -29,6 +29,7 @@ export class InventariService {
             i++;
         }
         if (inventariData[i]) {
+            saveData();
             return inventariData[i];
         } else {
             throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -41,6 +42,7 @@ export class InventariService {
             i++;
         }
         if (inventariData[i]) {
+            saveData();
             inventariData[i] = taskUpdated;
             return inventariData[i];
         } else {
@@ -54,6 +56,7 @@ export class InventariService {
             i++;
         }
         if (inventariData[i]) {
+            saveData();
             return inventariData.splice(i, 1);
         } else {
             throw new HttpException('Not found', HttpStatus.NOT_FOUND);
