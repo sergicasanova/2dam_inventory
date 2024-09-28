@@ -16,7 +16,7 @@ export class InventariTypeService {
   createInventariType(inventari_type: any) {
     inventoryTypeData.push(
           {
-              id_inventari_type: inventoryTypeData[inventoryTypeData.length - 1].id_inventari_type + 1,
+            id_type: inventoryTypeData[inventoryTypeData.length - 1].id_type + 1,
               ...inventari_type
           });
       saveData();
@@ -25,7 +25,7 @@ export class InventariTypeService {
 
   getInventariType(id: number) {
       var i = 0;
-      while (i < inventoryTypeData.length && inventoryTypeData[i].id_inventari_type != id ) {
+      while (i < inventoryTypeData.length && inventoryTypeData[i].id_type != id ) {
           i++;
       }
       if (inventoryTypeData[i])
@@ -36,22 +36,24 @@ export class InventariTypeService {
 
   updateInventariType(inventariTypeUpdated) {
       var i = 0;
-      while (i < inventoryTypeData.length && inventoryTypeData[i].id_inventari_type != inventariTypeUpdated.id_inventari_type ) {
+      while (i < inventoryTypeData.length && inventoryTypeData[i].id_type != inventariTypeUpdated.id_type ) {
           i++;
       }
       if (inventoryTypeData[i]){
         inventoryTypeData[i]=inventariTypeUpdated;
-          return inventoryTypeData[i];
+            saveData();
+            return inventoryTypeData[i];
       }else
           throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
   deleteInventariType(id: number) {
       var i = 0;
-      while (i < inventoryTypeData.length && inventoryTypeData[i].id_inventari_type != id ) {
+      while (i < inventoryTypeData.length && inventoryTypeData[i].id_type != id ) {
           i++;
       }
       if (inventoryTypeData[i]){
+        saveData();
           return inventoryTypeData.splice(i,1);
       }else
           throw new HttpException('Not found', HttpStatus.NOT_FOUND);

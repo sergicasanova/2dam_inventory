@@ -34,7 +34,7 @@ export class InventariTypeController {
     updateInventariType(@Param('id') id: string, @Body() inventari_type) {
       return this.inventariTypeService.updateInventariType({
         ...inventari_type,
-        id_inventari_type: parseInt(id)
+        id_type: parseInt(id)
     });
     }
     @Delete(':id')
