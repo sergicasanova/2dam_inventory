@@ -8,11 +8,9 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { StatusService } from './status.service';
-import { query } from 'express';
-import { error } from 'console';
+
 @Controller('Status')
 export class StatusController {
   private StatusService: StatusService;
@@ -20,7 +18,7 @@ export class StatusController {
     this.StatusService = StatusService;
   }
   @Get()
-  getAllStatus(@Query() query) {
+  getAllStatus() {
     try {
       return this.StatusService.getAllStatus();
     } catch (err) {

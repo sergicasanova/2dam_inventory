@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-const fs = require('node:fs');
-const path = require('path');
+import * as fs from 'node:fs';
+import * as path from 'path';
+
 const filePath = path.join(
   path.resolve(__dirname, '..'),
   'data/inventory_type.json',

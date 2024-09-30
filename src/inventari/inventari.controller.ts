@@ -8,7 +8,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { InventariService } from './inventari.service';
 
@@ -19,7 +18,7 @@ export class InventariController {
     this.inventariService = inventariService;
   }
   @Get()
-  getAllInventaris(@Query() query) {
+  getAllInventaris() {
     try {
       return this.inventariService.getAllInventaris();
     } catch (err) {

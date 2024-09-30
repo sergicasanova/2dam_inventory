@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { query } from 'express';
+
 @Controller('users')
 export class UsersController {
   private UsersService: UsersService;

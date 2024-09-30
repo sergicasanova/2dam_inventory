@@ -8,11 +8,8 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { InventariTypeService } from './inventari_type.service';
-import { query } from 'express';
-import { error } from 'console';
 
 @Controller('inventari_type')
 export class InventariTypeController {
@@ -21,7 +18,7 @@ export class InventariTypeController {
     this.inventariTypeService = inventariTypeService;
   }
   @Get()
-  getAllInventariType(@Query() query) {
+  getAllInventariType() {
     try {
       return this.inventariTypeService.getAllInventariType();
     } catch (err) {

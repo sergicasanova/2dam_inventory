@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
@@ -9,7 +9,7 @@ export class UsersService {
   }
 
   createUser(user: any) {
-    return { message: 'Usuario creado satisfactoriamente' };
+    return { message: `Usuario creado satisfactoriamente ${user}` };
   }
 
   getUser(id: number) {
