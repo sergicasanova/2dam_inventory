@@ -1,35 +1,55 @@
-import { Body, Controller , Delete, Get , Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { query } from 'express';
-@Controller('users')
+@Controller('Users')
 export class UsersController {
-    private  UsersService: UsersService;
-    constructor(UsersService:UsersService){
-        this.UsersService = UsersService;
-    };
+    constructor(private readonly usersService: UsersService) {}
+
     @Get()
-    getAllUser(@Query() query){
-        console.log(query)
-        return this.UsersService.getAllUser();
+    getAllUser(@Query() query) {
+        try {
+            return this.usersService.getAllUser();
+        } catch (err) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: err,
+            }, HttpStatus.INTERNAL_SERVER_ERROR, {
+                cause: err
+            });
+        }
     }
     @Get(':id')
     getUser(@Param('id') id: string) {
-        return this.UsersService.getUser(parseInt(id));
+        const userId = parseInt(id);
+        if (isNaN(userId)) {
+            throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);  
+        }
+        return this.usersService.getUser(userId);
     }
+
     @Post()
-    createUser(@Body()User){
-        return this.UsersService.createUser(User);
-    }   
+    createUser(@Body() Users: any) {  
+        return this.usersService.createUser(Users);
+    }
+
     @Put(':id')
-    UpdateUser(@Param('id') id:string, @Body()User){
-        return this.UsersService.updateUser({
-        ...User,
-        id: parseInt(id)
+    updateUser(@Param('id') id: string, @Body() Users: any) {  
+        const userId = parseInt(id);
+        if (isNaN(userId)) {
+            throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);  
+        }
+        return this.usersService.updateUser({
+            ...Users,
+            id_user: userId  
         });
     }
+
     @Delete(':id')
-    deleteTask (@Param('id') id:string){
-        return this.UsersService.deleteUser(parseInt(id));
+    deleteUser(@Param('id') id: string) {
+        const userId = parseInt(id);
+        if (isNaN(userId)) {
+            throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);  
+        }
+        return this.usersService.deleteUser(userId);
     }
 }
 
