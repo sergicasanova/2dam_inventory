@@ -1,5 +1,4 @@
-{
-"users": [
+ [
         {
             "id_user": 1,   
             "name":  "Federico",
@@ -24,4 +23,3 @@
             "role": 1
         }
 ]
-}
