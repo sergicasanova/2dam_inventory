@@ -1,39 +1,56 @@
-//rutas/acciones HTTP
-//Este archivo define las rutas HTTP que usarás para crear, editar, eliminar o listar.
-//Su única responsabilidad es gestionar las solicitudes HTTP y delegar el trabajo al servicio. 
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { InventariTypeService } from './inventari_type.service';
 
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { InventariTypeService } from './inventari_type.service';//inyectar y utilizar el servicio InventariTypeService dentro del controlador.
-
-
-@Controller('inventari-type')
+@Controller('inventari_type')
 export class InventariTypeController {
-
-    constructor(private readonly inventariTypeService: InventariTypeService) {}
-
-    @Get()
-    findAll() {
-      return this.inventariTypeService.findAll();
+  private inventariTypeService: InventariTypeService;
+  constructor(inventariTypeService: InventariTypeService) {
+    this.inventariTypeService = inventariTypeService;
+  }
+  @Get()
+  getAllInventariType() {
+    try {
+      return this.inventariTypeService.getAllInventariType();
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: err,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        {
+          cause: err,
+        },
+      );
     }
-  
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-      return this.inventariTypeService.findOne(id);
-    }
-  
-    @Post()
-    create(@Body() createInventariTypeDto: any) {
-      return this.inventariTypeService.create(createInventariTypeDto);
-    }
-  
-    @Put(':id')
-    update(@Param('id') id: string, @Body() updateInventariTypeDto: any) {
-      return this.inventariTypeService.update(id, updateInventariTypeDto);
-    }
-  
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-      return this.inventariTypeService.remove(id);
-    }
-
+  }
+  @Get(':id')
+  getInventariType(@Param('id') id: string) {
+    return this.inventariTypeService.getInventariType(parseInt(id));
+  }
+  @Post()
+  createInventariType(@Body() inventari_type) {
+    return this.inventariTypeService.createInventariType(inventari_type);
+  }
+  @Put(':id')
+  updateInventariType(@Param('id') id: string, @Body() inventari_type) {
+    return this.inventariTypeService.updateInventariType({
+      ...inventari_type,
+      id_type: parseInt(id),
+    });
+  }
+  @Delete(':id')
+  deleteInventariType(@Param('id') id: string) {
+    return this.inventariTypeService.deleteInventariType(parseInt(id));
+  }
 }
