@@ -4,6 +4,6 @@ import { InventariTypeService } from './inventari_type.service';
 
 @Module({
   controllers: [InventariTypeController],
-  providers: [InventariTypeService]
+  providers: [InventariTypeService],
 })
 export class InventariTypeModule {}

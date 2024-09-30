@@ -57,4 +57,3 @@ export class IssuesController {
     return this.IssuesService.deleteIssue(parseInt(id));
   }
 }
-
