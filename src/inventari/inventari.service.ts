@@ -1,22 +1,65 @@
-import { Injectable, NotFoundException  } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+const fs = require('node:fs');
+var path = require('path');
+const filePath = path.join(path.resolve(__dirname, '..'), 'data/inventory.json');
+const inventariData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+function saveData() {
+    fs.writeFileSync(filePath, JSON.stringify(inventariData));
+}
 
 @Injectable()
 export class InventariService {
-    private invet=[];
-    public id=0;
-    getAllInventaris(){
-        return(`getAllInventaris`);
+    getAllInventaris() {
+        return inventariData;
     }
-    createInventari(task:any){
-        return(`objeto con id ${this.id} creado`);
+
+    createInventari(task: any) {
+        inventariData.push({
+            id_inventory: inventariData[inventariData.length - 1].id_inventory + 1,
+            ...task
+        });
+        saveData();
+        return { message: 'Inventario creado satisfactoriamente' };
     }
-    getInventari(id:number){
-        return(`createInventari con id ${id}`);
+
+    getInventari(id: number) {
+        var i = 0;
+        while (i < inventariData.length && inventariData[i].id_inventory != id) {
+            i++;
+        }
+        if (inventariData[i]) {
+            saveData();
+            return inventariData[i];
+        } else {
+            throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+        }
     }
-    updateInventari(taskUpdated){
-        return(`updateInventari con id ${this.id} `);
+
+    updateInventari(taskUpdated: any) {
+        var i = 0;
+        while (i < inventariData.length && inventariData[i].id_inventory != taskUpdated.id_inventory) {
+            i++;
+        }
+        if (inventariData[i]) {
+            saveData();
+            inventariData[i] = taskUpdated;
+            return inventariData[i];
+        } else {
+            throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+        }
     }
-    deleteInventari(taskUpdated){
-        return(`deleteInventari con id ${this.id} borrado`);
+
+    deleteInventari(id: number) {
+        var i = 0;
+        while (i < inventariData.length && inventariData[i].id_inventory != id) {
+            i++;
+        }
+        if (inventariData[i]) {
+            saveData();
+            return inventariData.splice(i, 1);
+        } else {
+            throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+        }
     }
 }
