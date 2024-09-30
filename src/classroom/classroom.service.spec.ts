@@ -1,5 +1,3 @@
-//25/09/24 -> es manté igual
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClassroomService } from './classroom.service';
 
