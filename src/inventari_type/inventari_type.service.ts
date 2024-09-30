@@ -1,36 +1,63 @@
-//lógica de negocio
-//Este archivo se encarga de implementar la lógica real de los métodos que definimos en el controlador. 
-//Aquí se haría la interacción con la base de datos
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import * as fs from 'node:fs';
+import * as path from 'path';
 
-import { Injectable } from '@nestjs/common';
+const filePath = path.join(
+  path.resolve(__dirname, '..'),
+  'data/inventory_type.json',
+);
+const inventoryTypeData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
+function saveData() {
+  fs.writeFileSync(filePath, JSON.stringify(inventoryTypeData));
+}
 @Injectable()
 export class InventariTypeService {
-  private inventariTypes = [];
-
-  findAll() {
-    return this.inventariTypes;
+  getAllInventariType() {
+    return inventoryTypeData;
   }
 
-  findOne(id: string) {
-    return this.inventariTypes.find((item) => item.id === id);
+  createInventariType(inventari_type: any) {
+    inventoryTypeData.push({
+      id_type: inventoryTypeData[inventoryTypeData.length - 1].id_type + 1,
+      ...inventari_type,
+    });
+    saveData();
+    return { message: 'Estado creado satisfactoriamente' };
   }
 
-  create(createInventariTypeDto: any) {
-    this.inventariTypes.push(createInventariTypeDto);
-    return createInventariTypeDto;
-  }
-
-  update(id: string, updateInventariTypeDto: any) {
-    const index = this.inventariTypes.findIndex((item) => item.id === id);
-    if (index >= 0) {
-      this.inventariTypes[index] = updateInventariTypeDto;
+  getInventariType(id: number) {
+    let i = 0;
+    while (i < inventoryTypeData.length && inventoryTypeData[i].id_type != id) {
+      i++;
     }
-    return updateInventariTypeDto;
+    if (inventoryTypeData[i]) return inventoryTypeData[i];
+    else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
-  remove(id: string) {
-    this.inventariTypes = this.inventariTypes.filter((item) => item.id !== id);
+  updateInventariType(inventariTypeUpdated) {
+    let i = 0;
+    while (
+      i < inventoryTypeData.length &&
+      inventoryTypeData[i].id_type != inventariTypeUpdated.id_type
+    ) {
+      i++;
+    }
+    if (inventoryTypeData[i]) {
+      inventoryTypeData[i] = inventariTypeUpdated;
+      saveData();
+      return inventoryTypeData[i];
+    } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+  }
+
+  deleteInventariType(id: number) {
+    let i = 0;
+    while (i < inventoryTypeData.length && inventoryTypeData[i].id_type != id) {
+      i++;
+    }
+    if (inventoryTypeData[i]) {
+      saveData();
+      return inventoryTypeData.splice(i, 1);
+    } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }
-

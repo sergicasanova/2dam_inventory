@@ -1,23 +1,69 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import * as fs from 'node:fs';
+import * as path from 'path';
 
+const filePath = path.join(
+  path.resolve(__dirname, '..'),
+  'data/inventory_issues.json',
+);
+const issuesData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+function saveData() {
+  fs.writeFileSync(filePath, JSON.stringify(issuesData));
+}
 @Injectable()
 export class IssuesService {
   getAllIssues() {
-    return 'getAllIssues todo los Issues Funciona';
-  }
-  createIssue() {
-    return 'Create los Issues Funciona';
+    return issuesData;
   }
 
-  getIssue(id: number) {
-    return `Get con id ${id} los Issues Funciona`;
+  createIssue(Issue: any) {
+    issuesData.push({
+      id_issue: issuesData[issuesData.length - 1].id_issue + 1,
+      ...Issue,
+    });
+    saveData();
+    return { message: 'Estado creado satisfactoriamente' };
   }
 
-  updateIssue(id: number) {
-    return `Update con id ${id} los Issues Funciona`;
+  getIssue(idIssue: number) {
+    let contadorIssues = 0;
+    while (
+      contadorIssues < issuesData.length &&
+      issuesData[contadorIssues].id_issue != idIssue
+    ) {
+      contadorIssues++;
+    }
+    if (issuesData[contadorIssues]) return issuesData[contadorIssues];
+    else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
+  updateIssue(IssueUpdated) {
+    let contadorIssues = 0;
+    while (
+      contadorIssues < issuesData.length &&
+      issuesData[contadorIssues].id_issue != IssueUpdated.id_issue
+    ) {
+      contadorIssues++;
+    }
+    if (issuesData[contadorIssues]) {
+      issuesData[contadorIssues] = IssueUpdated;
+      saveData();
+      return issuesData[contadorIssues];
+    } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+  }
   deleteIssue(id: number) {
-    return `Delete con id ${id} los Issues Funciona`;
+    let contadorIssues = 0;
+    while (
+      contadorIssues < issuesData.length &&
+      issuesData[contadorIssues].id_issue != id
+    ) {
+      contadorIssues++;
+    }
+    if (issuesData[contadorIssues]) {
+      issuesData.splice(contadorIssues, 1);
+      saveData();
+      return issuesData[contadorIssues];
+    } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }
