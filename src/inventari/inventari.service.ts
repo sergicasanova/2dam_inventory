@@ -2,26 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as fs from 'node:fs';
 import * as path from 'path';
 
-const filePath = path.join(path.resolve(__dirname, '..'), 'data/inventory.json');
-let inventariData: any;
-
-try {
-  const fileContent = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-  // Asegúrate de que `fileContent` tenga la propiedad `inventory`
-  inventariData = fileContent.inventory || [];
-} catch (error) {
-  console.error('Error leyendo o parseando el archivo JSON:', error);
-  inventariData = [];
-}
-
-// Si inventariData no es un array, inicializarlo como un array vacío
-if (!Array.isArray(inventariData)) {
-  inventariData = [];
-}
+const filePath = path.join(
+  path.resolve(__dirname, '..'),
+  'data/inventory.json',
+);
+const inventariData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
 function saveData() {
-  fs.writeFileSync(filePath, JSON.stringify({ inventory: inventariData }, null, 2)); 
+  fs.writeFileSync(filePath, JSON.stringify(inventariData));
 }
 
 @Injectable()
@@ -31,11 +19,8 @@ export class InventariService {
   }
 
   createInventari(task: any) {
-    // Genera un nuevo id basado en el último id o empieza en 1 si está vacío
-    const newId = inventariData.length > 0 ? inventariData[inventariData.length - 1].id_inventory + 1 : 1;
-
     inventariData.push({
-      id_inventory: newId,
+      id_inventory: inventariData[inventariData.length - 1].id_inventory + 1,
       ...task,
     });
     saveData();
@@ -43,33 +28,46 @@ export class InventariService {
   }
 
   getInventari(id: number) {
-    const inventari = inventariData.find((item) => item.id_inventory === id);
-    if (inventari) {
-      return inventari;
+    let i = 0;
+    while (i < inventariData.length && inventariData[i].id_inventory != id) {
+      i++;
+    }
+    if (inventariData[i]) {
+      saveData();
+      return inventariData[i];
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
   updateInventari(taskUpdated: any) {
-    const index = inventariData.findIndex((item) => item.id_inventory === taskUpdated.id_inventory);
-    if (index !== -1) {
-      inventariData[index] = taskUpdated;
+    let i = 0;
+    while (
+      i < inventariData.length &&
+      inventariData[i].id_inventory != taskUpdated.id_inventory
+    ) {
+      i++;
+    }
+    if (inventariData[i]) {
       saveData();
-      return inventariData[index];
+      inventariData[i] = taskUpdated;
+      return inventariData[i];
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
   deleteInventari(id: number) {
-    const index = inventariData.findIndex((item) => item.id_inventory === id);
-    if (index !== -1) {
-      const deleted = inventariData.splice(index, 1);
+    let i = 0;
+    while (i < inventariData.length && inventariData[i].id_inventory != id) {
+      i++;
+    }
+    if (inventariData[i]) {
       saveData();
-      return deleted;
+      return inventariData.splice(i, 1);
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 }
+
