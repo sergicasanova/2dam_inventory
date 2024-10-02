@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { StatusService } from './status.service';
 
@@ -17,10 +18,10 @@ export class StatusController {
   constructor(StatusService: StatusService) {
     this.StatusService = StatusService;
   }
-  @Get(':format?')
-  getAllStatus(@Param('format') format: string) {
+  @Get()
+  getAllStatus(@Query('xml') xml?: string) {
     try {
-      return this.StatusService.getAllStatus(format);
+      return this.StatusService.getAllStatus(xml);
     } catch (err) {
       throw new HttpException(
         {

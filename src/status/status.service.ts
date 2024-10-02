@@ -13,16 +13,9 @@ function saveData() {
 }
 @Injectable()
 export class StatusService {
-  getAllStatus(format: string) {
-    if (format === 'xml') {
-      const jsonForXml = {
-        statusList: {
-          status: statusData.map((item) => ({
-            id_status: item.id_status,
-            description: item.description,
-          })),
-        },
-      };
+  getAllStatus(xml: string) {
+    if (xml === 'true') {
+      const jsonForXml = {Status: statusData};
       const jsonString = JSON.stringify(jsonForXml);
       const options = { compact: true, ignoreComment: true, spaces: 4 };
       const result = xmljs.json2xml(jsonString, options);
