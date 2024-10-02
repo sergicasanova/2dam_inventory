@@ -1,17 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'node:fs';
-import * as path from 'path';
 import * as convert from 'xml-js';
 
-const filepath = path.join(
-  path.resolve(__dirname, '..'),
-  '/data/inventory_users.json',
-);
-const UsersData = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-
-function SaveData() {
-  fs.writeFileSync(filepath, JSON.stringify(UsersData));
-}
+const UsersData = [];
 
 @Injectable()
 export class UsersService {
@@ -36,7 +26,6 @@ export class UsersService {
       id_user: lastId + 1,
       ...Users,
     });
-    SaveData();
     return { message: 'Usuario creado satisfactoriamente' };
   }
 
@@ -62,7 +51,7 @@ export class UsersService {
     }
     if (i < UsersData.length) {
       UsersData[i] = UsersUpdated;
-      SaveData();
+
       return { message: `Usuario actualizado satisfactoriamente` };
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -75,7 +64,7 @@ export class UsersService {
     }
     if (i < UsersData.length) {
       const deletedUser = UsersData.splice(i, 1);
-      SaveData();
+
       return deletedUser;
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
