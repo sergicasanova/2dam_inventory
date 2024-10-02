@@ -1,6 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import * as fs from 'node:fs';
 import * as path from 'path';
+import * as convert from 'xml-js';
+
+function convertJsonToXml(json) {
+  const options = { compact: true, ignoreComment: true, spaces: 4 };
+  return convert.json2xml(json, options);
+}
 
 const filePath = path.join(
   path.resolve(__dirname, '..'),
@@ -13,8 +19,12 @@ function saveData() {
 }
 @Injectable()
 export class IssuesService {
-  getAllIssues() {
-    return issuesData;
+  getAllIssues(xml?: string) {
+    if (xml === 'true') {
+      return convertJsonToXml(issuesData);
+    } else {
+      return issuesData;
+    }
   }
 
   createIssue(Issue: any) {
@@ -26,7 +36,7 @@ export class IssuesService {
     return { message: 'Estado creado satisfactoriamente' };
   }
 
-  getIssue(idIssue: number) {
+  getIssue(idIssue: number, xml: string) {
     let contadorIssues = 0;
     while (
       contadorIssues < issuesData.length &&
@@ -34,8 +44,15 @@ export class IssuesService {
     ) {
       contadorIssues++;
     }
-    if (issuesData[contadorIssues]) return issuesData[contadorIssues];
-    else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    if (issuesData[contadorIssues]) {
+      if (xml === 'true') {
+        return convertJsonToXml(issuesData[contadorIssues]);
+      } else {
+        return issuesData[contadorIssues];
+      }
+    } else {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   updateIssue(IssueUpdated) {
