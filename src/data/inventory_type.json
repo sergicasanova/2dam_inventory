@@ -1,5 +1,4 @@
-{
-    "inventory_type": [
+[
         {
             "id_type": 1,
             "description": "PC" 
@@ -28,5 +27,4 @@
             "id_type": 7,
             "description": "perifericos" 
         }
-    ]
-}
+]

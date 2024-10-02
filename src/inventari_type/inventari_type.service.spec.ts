@@ -16,3 +16,32 @@ describe('InventariTypeService', () => {
     expect(service).toBeDefined();
   });
 });
+
+interface InventariType {
+  id_type: number;
+  description: string;
+}
+
+async function fetchInventariTypes(): Promise<void> {
+  const headersList: HeadersInit = {
+    "Accept": "*/*",
+    "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+  };
+
+  try {
+    const response: Response = await fetch("http://localhost:3000/inventari_type/", {
+      method: "GET",
+      headers: headersList
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data: InventariType[] = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error("Error fetching inventari types:", error);
+  }
+}
+fetchInventariTypes();
