@@ -17,10 +17,10 @@ export class StatusController {
   constructor(StatusService: StatusService) {
     this.StatusService = StatusService;
   }
-  @Get()
-  getAllStatus() {
+  @Get(':format?')
+  getAllStatus(@Param('format') format: string) {
     try {
-      return this.StatusService.getAllStatus();
+      return this.StatusService.getAllStatus(format);
     } catch (err) {
       throw new HttpException(
         {

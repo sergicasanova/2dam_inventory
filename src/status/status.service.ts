@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as fs from 'node:fs';
 import * as path from 'path';
-
+import * as xmljs from 'xml-js';
 const filePath = path.join(
   path.resolve(__dirname, '..'),
   'data/inventory_status.json',
@@ -13,7 +13,22 @@ function saveData() {
 }
 @Injectable()
 export class StatusService {
-  getAllStatus() {
+  getAllStatus(format: string) {
+    if (format === 'xml') {
+      const jsonForXml = {
+        statusList: {
+          status: statusData.map((item) => ({
+            id_status: item.id_status,
+            description: item.description,
+          })),
+        },
+      };
+      const jsonString = JSON.stringify(jsonForXml);
+      const options = { compact: true, ignoreComment: true, spaces: 4 };
+      const result = xmljs.json2xml(jsonString, options);
+      console.log(result);
+      return result;
+    }
     return statusData;
   }
 
