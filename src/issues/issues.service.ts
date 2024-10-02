@@ -67,4 +67,3 @@ export class IssuesService {
     } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }
-

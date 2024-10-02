@@ -19,14 +19,14 @@ describe('IssuesService', () => {
 
 async function fetchIssues() {
   const headersList: { [key: string]: string } = {
-    "Accept": "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+    Accept: '*/*',
+    'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
   };
 
   try {
-    const response = await fetch("http://localhost:3000/issues/", {
-      method: "GET",
-      headers: headersList
+    const response = await fetch('http://localhost:3000/issues/', {
+      method: 'GET',
+      headers: headersList,
     });
 
     if (!response.ok) {
