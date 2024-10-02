@@ -34,9 +34,9 @@ export class InventariController {
       );
     }
   }
-  @Get(':id')
-  getInventari(@Param('id') id: string) {
-    return this.inventariService.getInventari(parseInt(id));
+  @Get(':id/:format?')
+  getInventari(@Param('id') id: string, @Param('format') format: string) {
+    return this.inventariService.getInventari(parseInt(id), format);
   }
   @Post()
   createInventari(@Body() Inventari) {

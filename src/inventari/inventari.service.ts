@@ -15,18 +15,6 @@ function saveData() {
 @Injectable()
 export class InventariService {
   getAllInventaris(format:string) {
-    /*getAllInventariType(type: string) {
-    if (type === "xml") {
-      const convert = require('xml-js');
-      const jsonFormatted = {inventory_type: inventoryTypeData};
-      const json = JSON.stringify(jsonFormatted);
-      const options = { compact: true, ignoreComment: true, spaces: 4 };
-      const result = convert.json2xml(json, options);
-      return result;
-    } else if (type === "json") {
-      return inventoryTypeData;
-    }
-  }*/
     if (format==='xml') {
       const convert = require('xml-js');
       const jsonFormatted = {inventory_type: inventariData};
@@ -51,17 +39,23 @@ export class InventariService {
     return { message: 'Inventario creado satisfactoriamente' };
   }
 
-  getInventari(id: number) {
+  getInventari(id: number, format:string) {
     let i = 0;
     while (i < inventariData.length && inventariData[i].id_inventory != id) {
       i++;
     }
     if (inventariData[i]) {
-      var convert = require('xml-js');
-      var json = inventariData[i];
-      var options = {compact: true, ignoreComment: true, spaces: 4};
-      var result = convert.js2xml(json, options);
-      return result;
+      if (format==='xml') {
+        const convert = require('xml-js');
+        const jsonFormatted = {inventory_type: inventariData[i]};
+        const json = JSON.stringify(jsonFormatted);
+        const options = { compact: true, ignoreComment: true, spaces: 4 };
+        const result = convert.json2xml(json, options);
+        return result;
+      }
+      else {
+        return inventariData;
+      }
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
