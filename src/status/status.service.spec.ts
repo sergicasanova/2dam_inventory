@@ -16,3 +16,24 @@ describe('StatusService', () => {
     expect(service).toBeDefined();
   });
 });
+
+const headersList: HeadersInit = {
+  "Accept": "*/*",
+  "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+};
+
+const fetchStatus = async (): Promise<void> => {
+  try {
+    const response: Response = await fetch("http://localhost:3000/status/", {
+      method: "GET",
+      headers: headersList
+    });
+
+    const data: string = await response.text();
+    console.log(data);
+  } catch (error) {
+    console.error("Error al hacer la solicitud:", error);
+  }
+};
+
+fetchStatus();
