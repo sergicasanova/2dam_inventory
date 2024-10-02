@@ -36,8 +36,8 @@ export class StatusController {
     }
   }
   @Get(':id')
-  getStatus(@Param('id') id: string) {
-    return this.StatusService.getStatus(parseInt(id));
+  getStatus(@Param('id') id: string, @Query('xml') xml?: string) {
+    return this.StatusService.getStatus(parseInt(id), xml);
   }
   @Post()
   createStatus(@Body() Status) {
