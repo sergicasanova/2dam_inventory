@@ -16,9 +16,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-    getAllUser(@Query('xml') xml?: string) {
+  getAllUser(@Query('xml') xml?: string) {
     try {
-            return this.usersService.getAllUser(xml); 
+      return this.usersService.getAllUser(xml);
     } catch (err) {
       throw new HttpException(
         {

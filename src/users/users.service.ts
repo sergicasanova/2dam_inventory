@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'node:fs';  
-import * as path from 'path';  
+import * as fs from 'node:fs';
+import * as path from 'path';
 import * as convert from 'xml-js';
 
 const filepath = path.join(
   path.resolve(__dirname, '..'),
   '/data/inventory_users.json',
 );
-const UsersData = JSON.parse(fs.readFileSync(filepath, 'utf8'));  
+const UsersData = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 
 function SaveData() {
   fs.writeFileSync(filepath, JSON.stringify(UsersData));
@@ -15,19 +15,18 @@ function SaveData() {
 
 @Injectable()
 export class UsersService {
+  getAllUser(xml?: string) {
+    if (xml === 'true') {
+      const jsonformatted = { Users: UsersData };
+      const json = JSON.stringify(jsonformatted);
+      const options = { compact: true, ignoreComment: true, spaces: 4 };
+      const result = convert.json2xml(json, options);
 
-    getAllUser(xml?: string) {
-        if (xml ===  'true') {  
-            const jsonformatted = {Users: UsersData};
-            const json = JSON.stringify(jsonformatted);
-            const options = { compact: true, ignoreComment: true, spaces: 4 };
-            const result = convert.json2xml(json, options);
-
-            return result;
-        } else {
-            return UsersData;  
-        }
+      return result;
+    } else {
+      return UsersData;
     }
+  }
 
   createUser(Users: any) {
     const lastId = UsersData.length
