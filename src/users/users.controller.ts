@@ -5,9 +5,9 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    getAllUser(@Query() query) {
+    getAllUser(@Query('xml') xml?: string) {
         try {
-            return this.usersService.getAllUser();
+            return this.usersService.getAllUser(xml); 
         } catch (err) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
