@@ -14,8 +14,32 @@ function saveData() {
 
 @Injectable()
 export class InventariService {
-  getAllInventaris() {
-    return inventariData;
+  getAllInventaris(format:string) {
+    /*getAllInventariType(type: string) {
+    if (type === "xml") {
+      const convert = require('xml-js');
+      const jsonFormatted = {inventory_type: inventoryTypeData};
+      const json = JSON.stringify(jsonFormatted);
+      const options = { compact: true, ignoreComment: true, spaces: 4 };
+      const result = convert.json2xml(json, options);
+      return result;
+    } else if (type === "json") {
+      return inventoryTypeData;
+    }
+  }*/
+    if (format==='xml') {
+      const convert = require('xml-js');
+      const jsonFormatted = {inventory_type: inventariData};
+      const json = JSON.stringify(jsonFormatted);
+      const options = { compact: true, ignoreComment: true, spaces: 4 };
+      const result = convert.json2xml(json, options);
+      return result;
+    }
+    else {
+      return inventariData;
+    }
+    
+    
   }
 
   createInventari(task: any) {
@@ -33,8 +57,11 @@ export class InventariService {
       i++;
     }
     if (inventariData[i]) {
-      saveData();
-      return inventariData[i];
+      var convert = require('xml-js');
+      var json = inventariData[i];
+      var options = {compact: true, ignoreComment: true, spaces: 4};
+      var result = convert.js2xml(json, options);
+      return result;
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }

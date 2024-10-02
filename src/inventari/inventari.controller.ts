@@ -17,10 +17,10 @@ export class InventariController {
   constructor(inventariService: InventariService) {
     this.inventariService = inventariService;
   }
-  @Get()
-  getAllInventaris() {
+  @Get(':format?')
+  getAllInventaris(@Param('format') format:string) {
     try {
-      return this.inventariService.getAllInventaris();
+      return this.inventariService.getAllInventaris(format);
     } catch (err) {
       throw new HttpException(
         {
