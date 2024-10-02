@@ -17,10 +17,10 @@ export class InventariController {
   constructor(inventariService: InventariService) {
     this.inventariService = inventariService;
   }
-  @Get()
-  getAllInventaris() {
+  @Get(':format?')
+  getAllInventaris(@Param('format') format:string) {
     try {
-      return this.inventariService.getAllInventaris();
+      return this.inventariService.getAllInventaris(format);
     } catch (err) {
       throw new HttpException(
         {
@@ -34,9 +34,9 @@ export class InventariController {
       );
     }
   }
-  @Get(':id')
-  getInventari(@Param('id') id: string) {
-    return this.inventariService.getInventari(parseInt(id));
+  @Get(':id/:format?')
+  getInventari(@Param('id') id: string, @Param('format') format: string) {
+    return this.inventariService.getInventari(parseInt(id), format);
   }
   @Post()
   createInventari(@Body() Inventari) {
