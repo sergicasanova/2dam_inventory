@@ -1,16 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'node:fs';
-import * as path from 'path';
+import { default as statusData } from '../data/inventory_status';
 
-const filePath = path.join(
-  path.resolve(__dirname, '..'),
-  'data/inventory_status.json',
-);
-const statusData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-function saveData() {
-  fs.writeFileSync(filePath, JSON.stringify(statusData));
-}
 @Injectable()
 export class StatusService {
   getAllStatus() {
@@ -22,7 +12,6 @@ export class StatusService {
       id_status: statusData[statusData.length - 1].id_status + 1,
       ...Status,
     });
-    saveData();
     return { message: 'Estado creado satisfactoriamente' };
   }
 

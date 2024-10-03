@@ -1,16 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import * as fs from 'node:fs';
-import * as path from 'path';
+import { default as issuesData } from '../data/inventory_issues';
 
-const filePath = path.join(
-  path.resolve(__dirname, '..'),
-  'data/inventory_issues.json',
-);
-const issuesData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-function saveData() {
-  fs.writeFileSync(filePath, JSON.stringify(issuesData));
-}
 @Injectable()
 export class IssuesService {
   getAllIssues() {
@@ -22,7 +12,6 @@ export class IssuesService {
       id_issue: issuesData[issuesData.length - 1].id_issue + 1,
       ...Issue,
     });
-    saveData();
     return { message: 'Estado creado satisfactoriamente' };
   }
 
@@ -48,7 +37,6 @@ export class IssuesService {
     }
     if (issuesData[contadorIssues]) {
       issuesData[contadorIssues] = IssueUpdated;
-      saveData();
       return issuesData[contadorIssues];
     } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
@@ -62,7 +50,6 @@ export class IssuesService {
     }
     if (issuesData[contadorIssues]) {
       issuesData.splice(contadorIssues, 1);
-      saveData();
       return issuesData[contadorIssues];
     } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }

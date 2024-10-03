@@ -1,0 +1,21 @@
+export default [
+  {
+    id_status: 1,
+    description: 'Creada',
+  },
+
+  {
+    id_status: 2,
+    description: 'En revision',
+  },
+
+  {
+    id_status: 3,
+    description: 'Rechazada',
+  },
+
+  {
+    id_status: 4,
+    description: 'Completada',
+  },
+];

@@ -1,16 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'node:fs';
-import * as path from 'path';
 import * as convert from 'xml-js';
-const filePath = path.join(
-  path.resolve(__dirname, '..'),
-  'data/inventory.json',
-);
-const inventariData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-function saveData() {
-  fs.writeFileSync(filePath, JSON.stringify(inventariData));
-}
+import { default as inventariData } from '../data/inventory';
 
 @Injectable()
 export class InventariService {
@@ -31,7 +21,7 @@ export class InventariService {
       id_inventory: inventariData[inventariData.length - 1].id_inventory + 1,
       ...task,
     });
-    saveData();
+
     return { message: 'Inventario creado satisfactoriamente' };
   }
 
@@ -64,7 +54,6 @@ export class InventariService {
       i++;
     }
     if (inventariData[i]) {
-      saveData();
       inventariData[i] = taskUpdated;
       return inventariData[i];
     } else {
@@ -78,7 +67,6 @@ export class InventariService {
       i++;
     }
     if (inventariData[i]) {
-      saveData();
       return inventariData.splice(i, 1);
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
