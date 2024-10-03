@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { StatusService } from './status.service';
 
@@ -18,9 +19,9 @@ export class StatusController {
     this.StatusService = StatusService;
   }
   @Get()
-  getAllStatus() {
+  getAllStatus(@Query('xml') xml?: string) {
     try {
-      return this.StatusService.getAllStatus();
+      return this.StatusService.getAllStatus(xml);
     } catch (err) {
       throw new HttpException(
         {
@@ -35,8 +36,8 @@ export class StatusController {
     }
   }
   @Get(':id')
-  getStatus(@Param('id') id: string) {
-    return this.StatusService.getStatus(parseInt(id));
+  getStatus(@Param('id') id: string, @Query('xml') xml?: string) {
+    return this.StatusService.getStatus(parseInt(id), xml);
   }
   @Post()
   createStatus(@Body() Status) {
