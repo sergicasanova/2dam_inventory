@@ -33,12 +33,12 @@ export class UsersController {
     }
   }
   @Get(':id')
-  getUser(@Param('id') id: string) {
+  getUser(@Param('id') id: string, @Query('xml') xml?: string) {
     const userId = parseInt(id);
     if (isNaN(userId)) {
       throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
     }
-    return this.usersService.getUser(userId);
+    return this.usersService.getUser(userId, xml);
   }
 
   @Post()
