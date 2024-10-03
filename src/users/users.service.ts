@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as convert from 'xml-js';
-
 const UsersData = [];
 
 @Injectable()
