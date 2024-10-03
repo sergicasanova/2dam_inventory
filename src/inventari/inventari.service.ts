@@ -1,19 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as convert from 'xml-js';
 import { default as inventariData } from '../data/inventory';
-
+import { UtilsService } from 'src/utils/utils.service';
 @Injectable()
 export class InventariService {
+  constructor(private readonly UtilsService: UtilsService) {}
   getAllInventaris(xml: string) {
     if (xml === 'true') {
-      const jsonFormatted = { inventory_list: inventariData };
-      const json = JSON.stringify(jsonFormatted);
-      const options = { compact: true, ignoreComment: true, spaces: 4 };
-      const result = convert.json2xml(json, options);
-      return result;
-    } else {
-      return inventariData;
+      const jsonForXml = JSON.stringify({ inventory_list: inventariData });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
     }
+    return inventariData;
   }
 
   createInventari(task: any) {
@@ -31,15 +27,11 @@ export class InventariService {
       i++;
     }
     if (inventariData[i]) {
-      if (xml === 'xml') {
-        const jsonFormatted = { inventory_type: inventariData[i] };
-        const json = JSON.stringify(jsonFormatted);
-        const options = { compact: true, ignoreComment: true, spaces: 4 };
-        const result = convert.json2xml(json, options);
-        return result;
-      } else {
-        return inventariData;
+      if (xml === 'true') {
+        const jsonForXml = JSON.stringify({ inventory_list: inventariData });
+        return this.UtilsService.convertJSONtoXML(jsonForXml);
       }
+      return inventariData;
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
