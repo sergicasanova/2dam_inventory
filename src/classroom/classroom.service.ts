@@ -1,9 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { default as classroomData } from '../data/classroom';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class ClassroomService {
-  getAllClassrooms() {
+  constructor(private readonly UtilsService: UtilsService) {}
+  getAllClassroom(xml: string) {
+    if (xml === 'true') {
+      const jsonForXml = JSON.stringify({ classrom_list: classroomData });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
+    }
     return classroomData;
   }
 
@@ -16,13 +22,15 @@ export class ClassroomService {
     return { message: 'Aula creada satisfactoriamente' };
   }
 
-  getClassroom(id: number) {
+  getClassroom(id: number, xml: string) {
     let i = 0;
     while (i < classroomData.length && classroomData[i].id_classroom != id) {
       i++;
     }
-    if (classroomData[i]) return classroomData[i];
-    else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    if (xml === 'true') {
+      const jsonForXml = JSON.stringify({ classrom_list: classroomData });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
+    }
   }
 
   updateClassroom(ClassroomUpdated) {
