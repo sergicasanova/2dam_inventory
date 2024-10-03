@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
 
@@ -20,9 +21,9 @@ export class ClassroomController {
   }
 
   @Get()
-  getAllClassrooms() {
+  getAllClassrooms(@Query('xml') xml?: string) {
     try {
-      return this.ClassroomService.getAllClassrooms();
+      return this.ClassroomService.getAllClassroom(xml);
     } catch (err) {
       throw new HttpException(
         {
@@ -38,8 +39,8 @@ export class ClassroomController {
   }
 
   @Get(':id')
-  getClassroom(@Param('id') id: string) {
-    return this.ClassroomService.getClassroom(parseInt(id));
+  getClassroom(@Param('id') id: string, @Query('xml') xml?: string) {
+    return this.ClassroomService.getClassroom(parseInt(id), xml);
   }
 
   @Post()
