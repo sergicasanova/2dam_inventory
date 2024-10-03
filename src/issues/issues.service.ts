@@ -1,17 +1,14 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import * as convert from 'xml-js';
 import { default as issuesData } from '../data/inventory_issues';
-
-function convertJsonToXml(json) {
-  const options = { compact: true, ignoreComment: true, spaces: 4 };
-  return convert.json2xml(json, options);
-}
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class IssuesService {
+  constructor(private readonly UtilsService: UtilsService) {}
   getAllIssues(xml?: string) {
     if (xml === 'true') {
-      return convertJsonToXml(issuesData);
+      const jsonForXml = JSON.stringify({ status: issuesData });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
     } else {
       return issuesData;
     }
@@ -35,7 +32,10 @@ export class IssuesService {
     }
     if (issuesData[contadorIssues]) {
       if (xml === 'true') {
-        return convertJsonToXml(issuesData[contadorIssues]);
+        const jsonForXml = JSON.stringify({
+          status: issuesData[contadorIssues],
+        });
+        return this.UtilsService.convertJSONtoXML(jsonForXml);
       } else {
         return issuesData[contadorIssues];
       }
