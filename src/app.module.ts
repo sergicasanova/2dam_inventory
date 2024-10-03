@@ -7,6 +7,7 @@ import { ClassroomModule } from './classroom/classroom.module';
 import { InventariModule } from './inventari/inventari.module';
 import { InventariTypeModule } from './inventari_type/inventari_type.module';
 import { IssuesModule } from './issues/issues.module';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { IssuesModule } from './issues/issues.module';
     UsersModule,
     StatusModule,
     InventariModule,
+    UtilsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
