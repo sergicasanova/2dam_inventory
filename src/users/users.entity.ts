@@ -14,6 +14,6 @@ export class Users {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ default: 0 })
   role: number;
 }
