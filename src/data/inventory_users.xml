@@ -2,21 +2,21 @@
     <user>
         <id_user>1</id_user>
         <name>Federico</name>
-        <username>Gonzalez</username>
+        <surname>Gonzalez</surname>
         <email>federico@gmail.com</email>
         <role>0</role>
     </user>
     <user>
         <id_user>2</id_user>
         <name>Gonzalo</name>
-        <username>Martinez</username>
+        <surname>Martinez</surname>
         <email>gonzalo@gmail.com</email>
         <role>1</role>
     </user>
     <user>
         <id_user>3</id_user>
         <name>Gustavo</name>
-        <username>Messi</username>
+        <surname>Messi</surname>
         <email>gustavo@gmail.com</email>
         <role>1</role>
     </user>
