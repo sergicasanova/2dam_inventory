@@ -1,9 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { default as inventoryTypeData } from '../data/inventory_type';
-
+import { UtilsService } from 'src/utils/utils.service';
 @Injectable()
 export class InventariTypeService {
-  getAllInventariType() {
+  constructor(private readonly UtilsService: UtilsService) {}
+  getAllInventariType(xml: string) {
+    if (xml === 'true') {
+      const jsonForXml = JSON.stringify({ inventory_type: inventoryTypeData });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
+    }
     return inventoryTypeData;
   }
 
@@ -15,13 +20,20 @@ export class InventariTypeService {
     return { message: 'Estado creado satisfactoriamente' };
   }
 
-  getInventariType(id: number) {
+  getInventariType(id: number, xml: string) {
     let i = 0;
     while (i < inventoryTypeData.length && inventoryTypeData[i].id_type != id) {
       i++;
     }
-    if (inventoryTypeData[i]) return inventoryTypeData[i];
-    else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    if (i >= inventoryTypeData.length) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+    if (xml === 'true') {
+      const jsonForXml = JSON.stringify({ status: inventoryTypeData[i] });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
+    } else {
+      return inventoryTypeData[i];
+    }
   }
 
   updateInventariType(inventariTypeUpdated) {
