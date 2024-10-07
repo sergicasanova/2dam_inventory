@@ -1,17 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as convert from 'xml-js';
 import { default as UsersData } from '../data/inventory_users';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class UsersService {
+  constructor(private readonly utilsService: UtilsService) {}
   getAllUser(xml?: string) {
     if (xml === 'true') {
-      const jsonformatted = { Users: UsersData };
-      const json = JSON.stringify(jsonformatted);
-      const options = { compact: true, ignoreComment: true, spaces: 4 };
-      const result = convert.json2xml(json, options);
-
-      return result;
+      const jsonformatted = JSON.stringify({ Users: UsersData });
+      return this.utilsService.convertJSONtoXML(jsonformatted);
     } else {
       return UsersData;
     }
@@ -28,12 +25,17 @@ export class UsersService {
     return { message: 'Usuario creado satisfactoriamente' };
   }
 
-  getUser(id: number) {
+  getUser(id: number, xml?: string) {
     let i = 0;
     while (i < UsersData.length && UsersData[i].id_user != id) {
       i++;
     }
     if (i < UsersData.length) {
+      if (xml === 'true') {
+        const jsonformatted = JSON.stringify({ User: UsersData[i] });
+        return this.utilsService.convertJSONtoXML(jsonformatted);
+      }
+
       return UsersData[i];
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
