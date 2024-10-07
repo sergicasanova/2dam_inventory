@@ -1,9 +1,30 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Inventari } from './inventari.entity';
 import * as convert from 'xml-js';
 import { default as inventariData } from '../data/inventory';
 
 @Injectable()
 export class InventariService {
+
+  constructor(
+    @InjectRepository(Inventari)
+    private inventariRepository: Repository<Inventari>,
+  ) {}
+
+  findAll(): Promise<Inventari[]> {
+    return this.inventariRepository.find();
+  }
+
+  findOne(id_inventory: number): Promise<Inventari | null> {
+    return this.inventariRepository.findOneBy({ id_inventory });
+  }
+
+  async remove(id_inventory: number): Promise<void> {
+    await this.inventariRepository.delete(id_inventory);
+  }
+
   getAllInventaris(xml: string) {
     if (xml === 'true') {
       const jsonFormatted = { inventory_list: inventariData };
