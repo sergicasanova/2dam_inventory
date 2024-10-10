@@ -10,19 +10,33 @@ export class InventariService {
 
   constructor(
     @InjectRepository(Inventari)
-    private inventariRepository: Repository<Inventari>,
+    private InventariRepository: Repository<Inventari>,
   ) {}
 
+  // Obtener todos los inventarios
   findAll(): Promise<Inventari[]> {
-    return this.inventariRepository.find();
+    return this.InventariRepository.find();
   }
 
-  findOne(id_inventory: number): Promise<Inventari | null> {
-    return this.inventariRepository.findOneBy({ id_inventory });
+  // Obtener un inventario por ID
+  findOne(id: number): Promise<Inventari> {
+    return this.InventariRepository.findOneBy({ id_inventory: id });
   }
 
-  async remove(id_inventory: number): Promise<void> {
-    await this.inventariRepository.delete(id_inventory);
+  // Crear un nuevo inventario
+  create(Inventari: Inventari): Promise<Inventari> {
+    return this.InventariRepository.save(Inventari);
+  }
+
+  // Actualizar un inventario por ID
+  async update(id: number, inventari: Inventari): Promise<Inventari> {
+    await this.InventariRepository.update(id, inventari);
+    return this.InventariRepository.findOneBy({ id_inventory: id });
+  }
+
+  // Eliminar un inventario por ID
+  async remove(id: number): Promise<void> {
+    await this.InventariRepository.delete(id);
   }
 
   getAllInventaris(xml: string) {
