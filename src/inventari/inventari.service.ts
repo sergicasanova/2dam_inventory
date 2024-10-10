@@ -13,28 +13,26 @@ export class InventariService {
     private InventariRepository: Repository<Inventari>,
   ) {}
 
-  // Obtener todos los inventarios
+
   findAll(): Promise<Inventari[]> {
     return this.InventariRepository.find();
   }
 
-  // Obtener un inventario por ID
+
   findOne(id: number): Promise<Inventari> {
     return this.InventariRepository.findOneBy({ id_inventory: id });
   }
 
-  // Crear un nuevo inventario
+
   create(Inventari: Inventari): Promise<Inventari> {
     return this.InventariRepository.save(Inventari);
   }
 
-  // Actualizar un inventario por ID
   async update(id: number, inventari: Inventari): Promise<Inventari> {
     await this.InventariRepository.update(id, inventari);
     return this.InventariRepository.findOneBy({ id_inventory: id });
   }
 
-  // Eliminar un inventario por ID
   async remove(id: number): Promise<void> {
     await this.InventariRepository.delete(id);
   }
