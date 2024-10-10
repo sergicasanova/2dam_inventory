@@ -23,9 +23,10 @@ export class InventariService {
     return this.InventariRepository.findOneBy({ id_inventory: id });
   }
 
-
-  create(Inventari: Inventari): Promise<Inventari> {
-    return this.InventariRepository.save(Inventari);
+  async createInventari(Inventari: Partial<Inventari>): Promise<{ message: string }> {
+    const newInventari = this.InventariRepository.create(Inventari);
+    await this.InventariRepository.save(newInventari);
+    return { message: 'Inventario creado' };
   }
 
   async update(id: number, inventari: Inventari): Promise<Inventari> {
@@ -47,15 +48,6 @@ export class InventariService {
     } else {
       return inventariData;
     }
-  }
-
-  createInventari(task: any) {
-    inventariData.push({
-      id_inventory: inventariData[inventariData.length - 1].id_inventory + 1,
-      ...task,
-    });
-
-    return { message: 'Inventario creado satisfactoriamente' };
   }
 
   getInventari(id: number, xml: string) {
