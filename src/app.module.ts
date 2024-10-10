@@ -11,7 +11,7 @@ import { UtilsModule } from './utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { Users } from './users/users.entity';
+import { User } from './users/users.entity';
 
 @Module({
   imports: [
@@ -32,7 +32,7 @@ import { Users } from './users/users.entity';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [Users],
+        entities: [User],
         synchronize: true,
       }),
       inject: [ConfigService],
