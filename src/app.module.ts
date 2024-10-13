@@ -37,7 +37,7 @@ import { DataSource } from 'typeorm';
       }),
       inject: [ConfigService],
     }),
-    ],
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -3,98 +3,67 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Inventari } from './inventari.entity';
 import * as convert from 'xml-js';
-import { default as inventariData } from '../data/inventory';
 
 @Injectable()
 export class InventariService {
-
   constructor(
     @InjectRepository(Inventari)
-    private InventariRepository: Repository<Inventari>,
+    private readonly inventariRepository: Repository<Inventari>,
   ) {}
 
+  async getInventari(id?: number, xml?: string): Promise<any> {
+    const result = await this.inventariRepository.findOneBy({
+        id_inventory: id, 
+    });
 
-  findAll(): Promise<Inventari[]> {
-    return this.InventariRepository.find();
-  }
+    if (xml === 'true') {
+        const jsonFormatted = { inventory: result };
+        const json = JSON.stringify(jsonFormatted);
+        const options = { compact: true, ignoreComment: true, spaces: 4 };
+        return convert.json2xml(json, options);
+    }
+    return result;
+}
 
-
-  findOne(id: number): Promise<Inventari> {
-    return this.InventariRepository.findOneBy({ id_inventory: id });
-  }
-
-  async createInventari(Inventari: Partial<Inventari>): Promise<{ message: string }> {
-    const newInventari = this.InventariRepository.create(Inventari);
-    await this.InventariRepository.save(newInventari);
+  async getInventariAll(xml?: string): Promise<any> {
+   
+    const result = await this.inventariRepository.find();
+      
+      if (xml === 'true') {
+        const jsonFormatted = { inventory_list: result };
+        const json = JSON.stringify(jsonFormatted);
+        const options = { compact: true, ignoreComment: true, spaces: 4 };
+        return convert.json2xml(json, options);
+      }
+  
+      return result;
+    }
+  
+  async createInventari(
+    inventari: Partial<Inventari>,
+  ): Promise<{ message: string }> {
+    const newInventari = this.inventariRepository.create(inventari);
+    await this.inventariRepository.save(newInventari);
     return { message: 'Inventario creado' };
   }
 
-  async update(id: number, inventari: Inventari): Promise<Inventari> {
-    await this.InventariRepository.update(id, inventari);
-    return this.InventariRepository.findOneBy({ id_inventory: id });
+  async updateInventari(id: number, inventari: Inventari): Promise<Inventari> {
+    await this.inventariRepository.update(id, inventari);
+    const updatedInventari = await this.inventariRepository.findOneBy({
+      id_inventory: id,
+    });
+    if (!updatedInventari) {
+      throw new HttpException('Inventario no encontrado', HttpStatus.NOT_FOUND);
+    }
+    return updatedInventari;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.InventariRepository.delete(id);
+  async deleteInventari(id: number): Promise<{ message: string }> {
+    const result = await this.inventariRepository.delete(id);
+    if (result.affected === 0) {
+      throw new HttpException('Inventario no encontrado', HttpStatus.NOT_FOUND);
+    }
+    return { message: 'Inventario eliminado' };
   }
 
-  getAllInventaris(xml: string) {
-    if (xml === 'true') {
-      const jsonFormatted = { inventory_list: inventariData };
-      const json = JSON.stringify(jsonFormatted);
-      const options = { compact: true, ignoreComment: true, spaces: 4 };
-      const result = convert.json2xml(json, options);
-      return result;
-    } else {
-      return inventariData;
-    }
-  }
-
-  getInventari(id: number, xml: string) {
-    let i = 0;
-    while (i < inventariData.length && inventariData[i].id_inventory != id) {
-      i++;
-    }
-    if (inventariData[i]) {
-      if (xml === 'xml') {
-        const jsonFormatted = { inventory_type: inventariData[i] };
-        const json = JSON.stringify(jsonFormatted);
-        const options = { compact: true, ignoreComment: true, spaces: 4 };
-        const result = convert.json2xml(json, options);
-        return result;
-      } else {
-        return inventariData;
-      }
-    } else {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-  }
-
-  updateInventari(taskUpdated: any) {
-    let i = 0;
-    while (
-      i < inventariData.length &&
-      inventariData[i].id_inventory != taskUpdated.id_inventory
-    ) {
-      i++;
-    }
-    if (inventariData[i]) {
-      inventariData[i] = taskUpdated;
-      return inventariData[i];
-    } else {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-  }
-
-  deleteInventari(id: number) {
-    let i = 0;
-    while (i < inventariData.length && inventariData[i].id_inventory != id) {
-      i++;
-    }
-    if (inventariData[i]) {
-      return inventariData.splice(i, 1);
-    } else {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-  }
 }
