@@ -13,6 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { User } from './users/users.entity';
 import { Issue } from './issues/issues.entity';
+import { Classroom } from './classroom/classroom.entity';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { Issue } from './issues/issues.entity';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [Issue, User],
+        entities: [Issue, User, Classroom],
         synchronize: true,
       }),
       inject: [ConfigService],
