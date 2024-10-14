@@ -12,7 +12,7 @@ export class IssuesService {
   ) {}
 
   async getAllIssues(xml?: string): Promise<Issue[] | string> {
-    let allIssues = await this.issueRepository.find();
+    const allIssues = await this.issueRepository.find();
     if (xml == 'true') {
       const jsonForXml = JSON.stringify({
         Issues: allIssues,
@@ -44,7 +44,9 @@ export class IssuesService {
   }
 
   async updateIssue(id: number, Issue: Issue): Promise<Issue> {
-    const existingIssue = await this.issueRepository.findOneBy({ id_issue: id });
+    const existingIssue = await this.issueRepository.findOneBy({
+      id_issue: id,
+    });
     if (!existingIssue) {
       throw new HttpException('Issue not found', HttpStatus.NOT_FOUND);
     }
