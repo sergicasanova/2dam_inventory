@@ -1,73 +1,60 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { default as issuesData } from '../data/inventory_issues';
 import { UtilsService } from 'src/utils/utils.service';
+import { Issue } from './issues.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class IssuesService {
-  constructor(private readonly UtilsService: UtilsService) {}
-  getAllIssues(xml?: string) {
-    if (xml === 'true') {
-      const jsonForXml = JSON.stringify({ status: issuesData });
-      return this.UtilsService.convertJSONtoXML(jsonForXml);
+  constructor(
+    private readonly UtilsService: UtilsService,
+    @InjectRepository(Issue) private issueRepository: Repository<Issue>,
+  ) {}
+
+  async getAllIssues(xml?: string): Promise<Issue[] | string> {
+    const allIssues = await this.issueRepository.find();
+    if (xml == 'true') {
+      const jsonForXml = JSON.stringify({
+        Issues: allIssues,
+      });
+      const xmlResult = this.UtilsService.convertJSONtoXML(jsonForXml);
+      return xmlResult;
     } else {
-      return issuesData;
+      return allIssues;
     }
   }
 
-  createIssue(Issue: any) {
-    issuesData.push({
-      id_issue: issuesData[issuesData.length - 1].id_issue + 1,
-      ...Issue,
-    });
-    return { message: 'Estado creado satisfactoriamente' };
+  async createIssue(Issue: any): Promise<Issue[]> {
+    const newIssue = this.issueRepository.create(Issue);
+    return this.issueRepository.save(newIssue);
   }
 
-  getIssue(idIssue: number, xml: string) {
-    let contadorIssues = 0;
-    while (
-      contadorIssues < issuesData.length &&
-      issuesData[contadorIssues].id_issue != idIssue
-    ) {
-      contadorIssues++;
-    }
-    if (issuesData[contadorIssues]) {
+  async getIssue(id: number, xml?: string): Promise<Issue | string | null> {
+    const issue = await this.issueRepository.findOneBy({ id_issue: id });
+    if (issue != null) {
       if (xml === 'true') {
-        const jsonForXml = JSON.stringify({
-          status: issuesData[contadorIssues],
-        });
+        const jsonForXml = JSON.stringify(issue);
         return this.UtilsService.convertJSONtoXML(jsonForXml);
       } else {
-        return issuesData[contadorIssues];
+        return issue;
       }
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
-  updateIssue(IssueUpdated) {
-    let contadorIssues = 0;
-    while (
-      contadorIssues < issuesData.length &&
-      issuesData[contadorIssues].id_issue != IssueUpdated.id_issue
-    ) {
-      contadorIssues++;
+  async updateIssue(id: number, Issue: Issue): Promise<Issue> {
+    const existingIssue = await this.issueRepository.findOneBy({
+      id_issue: id,
+    });
+    if (!existingIssue) {
+      throw new HttpException('Issue not found', HttpStatus.NOT_FOUND);
     }
-    if (issuesData[contadorIssues]) {
-      issuesData[contadorIssues] = IssueUpdated;
-      return issuesData[contadorIssues];
-    } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    await this.issueRepository.update(id, Issue);
+    return await this.issueRepository.findOneBy({ id_issue: id });
   }
-  deleteIssue(id: number) {
-    let contadorIssues = 0;
-    while (
-      contadorIssues < issuesData.length &&
-      issuesData[contadorIssues].id_issue != id
-    ) {
-      contadorIssues++;
-    }
-    if (issuesData[contadorIssues]) {
-      issuesData.splice(contadorIssues, 1);
-      return issuesData[contadorIssues];
-    } else throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+
+  async deleteIssue(id: number): Promise<void> {
+    await this.issueRepository.delete(id);
   }
 }

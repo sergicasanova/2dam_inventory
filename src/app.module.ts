@@ -12,9 +12,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { User } from './users/users.entity';
+import { Issue } from './issues/issues.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ClassroomModule,
     InventariTypeModule,
     IssuesModule,
@@ -22,7 +24,6 @@ import { User } from './users/users.entity';
     StatusModule,
     InventariModule,
     UtilsModule,
-    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -32,7 +33,7 @@ import { User } from './users/users.entity';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [User],
+        entities: [Issue, User],
         synchronize: true,
       }),
       inject: [ConfigService],
