@@ -11,7 +11,8 @@ import { UtilsModule } from './utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { User } from './users/users.entity';
+import { Inventari_type } from './inventari_type/inventari_type.entity';
+
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { User } from './users/users.entity';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [User],
+        entities: [Inventari_type],
         synchronize: true,
       }),
       inject: [ConfigService],

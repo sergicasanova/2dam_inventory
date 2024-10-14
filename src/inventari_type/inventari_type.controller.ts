@@ -3,53 +3,63 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Put,
   Query,
+  Res,
 } from '@nestjs/common';
 import { InventariTypeService } from './inventari_type.service';
+import { Response } from 'express'; 
 
 @Controller('inventari_type')
 export class InventariTypeController {
-  private inventariTypeService: InventariTypeService;
-  constructor(inventariTypeService: InventariTypeService) {
-    this.inventariTypeService = inventariTypeService;
-  }
+  constructor(private readonly inventariTypeService: InventariTypeService) {}
+
   @Get()
-  getAllInventariType(@Query('xml') xml?: string) {
-    try {
-      return this.inventariTypeService.getAllInventariType(xml);
-    } catch (err) {
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: err,
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        {
-          cause: err,
-        },
-      );
+  async getAllInventariType(
+    @Query('format') format?: string, 
+    @Res() res?: Response
+  ) {
+    const data = await this.inventariTypeService.getAllInventariType(format);
+
+    if (format === 'xml' && res) {
+      res.set('Content-Type', 'application/xml');
+      return res.send(data);
     }
+
+    return res ? res.json(data) : data; 
   }
+
   @Get(':id')
-  getInventariType(@Param('id') id: string, @Query('xml') xml?: string) {
-    return this.inventariTypeService.getInventariType(parseInt(id), xml);
+  async getInventariType(
+    @Param('id') id: string, 
+    @Query('format') format?: string, 
+    @Res() res?: Response 
+  ) {
+    const data = await this.inventariTypeService.getInventariType(parseInt(id), format);
+
+    if (format === 'xml' && res) {
+      res.set('Content-Type', 'application/xml');
+      return res.send(data);
+    }
+
+    return res ? res.json(data) : data; 
   }
+
   @Post()
   createInventariType(@Body() inventari_type) {
     return this.inventariTypeService.createInventariType(inventari_type);
   }
+
   @Put(':id')
   updateInventariType(@Param('id') id: string, @Body() inventari_type) {
-    return this.inventariTypeService.updateInventariType({
-      ...inventari_type,
-      id_type: parseInt(id),
-    });
+    return this.inventariTypeService.updateInventariType(
+      parseInt(id),
+      inventari_type,
+    );
   }
+
   @Delete(':id')
   deleteInventariType(@Param('id') id: string) {
     return this.inventariTypeService.deleteInventariType(parseInt(id));
