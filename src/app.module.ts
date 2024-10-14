@@ -14,6 +14,7 @@ import { DataSource } from 'typeorm';
 import { Inventari_type } from './inventari_type/inventari_type.entity';
 import { User } from './users/users.entity';
 import { Issue } from './issues/issues.entity';
+import { Classroom } from './classroom/classroom.entity';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { Issue } from './issues/issues.entity';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [Issue, Inventari_type, User],
+        entities: [Classroom, Issue, Inventari_type, User],
         synchronize: true,
       }),
       inject: [ConfigService],
