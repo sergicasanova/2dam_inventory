@@ -16,7 +16,7 @@ import { User } from './users/users.entity';
 import { Issue } from './issues/issues.entity';
 import { Classroom } from './classroom/classroom.entity';
 import { Inventari } from './inventari/inventari.entity';
-
+import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -37,7 +37,7 @@ import { Inventari } from './inventari/inventari.entity';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [Classroom, Inventari, Inventari_type, Issue, User],
+        entities: [Classroom, Issue, Inventari_type, IssueConversationEntity, User],
         synchronize: true,
       }),
       inject: [ConfigService],
