@@ -15,6 +15,7 @@ import { Inventari_type } from './inventari_type/inventari_type.entity';
 import { User } from './users/users.entity';
 import { Issue } from './issues/issues.entity';
 import { Classroom } from './classroom/classroom.entity';
+import { Inventari } from './inventari/inventari.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { IssueConversationEntity } from './issues_conversation/issues_conversati
     StatusModule,
     InventariModule,
     UtilsModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -35,13 +37,7 @@ import { IssueConversationEntity } from './issues_conversation/issues_conversati
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [
-          Classroom,
-          Issue,
-          Inventari_type,
-          User,
-          IssueConversationEntity,
-        ],
+        entities: [Classroom, Issue, Inventari_type, IssueConversationEntity, User],
         synchronize: true,
       }),
       inject: [ConfigService],
