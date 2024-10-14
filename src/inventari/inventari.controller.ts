@@ -19,7 +19,7 @@ export class InventariController {
 
   @Get()
   getAllInventaris(@Query('xml') xml: string) {
-    return this.inventariService.getInventariAll (xml);
+    return this.inventariService.getInventariAll(xml);
   }
 
   @Get(':id')
