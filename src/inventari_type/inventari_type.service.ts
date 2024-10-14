@@ -9,38 +9,39 @@ export class InventariTypeService {
   constructor(
     @InjectRepository(Inventari_type)
     private readonly inventariTypeRepository: Repository<Inventari_type>,
-    private readonly utilsService: UtilsService,){}
+    private readonly utilsService: UtilsService,
+  ) {}
 
-async getAllInventariType(format?: string): Promise<any> {
-  const inventariTypes = await this.inventariTypeRepository.find();
+  async getAllInventariType(format?: string): Promise<any> {
+    const inventariTypes = await this.inventariTypeRepository.find();
 
-  if (format === 'xml') {
-    const jsonForXml = JSON.stringify({ Inventory_types: inventariTypes });
-    return this.utilsService.convertJSONtoXML(jsonForXml); 
+    if (format === 'xml') {
+      const jsonForXml = JSON.stringify({ Inventory_types: inventariTypes });
+      return this.utilsService.convertJSONtoXML(jsonForXml);
+    }
+
+    return inventariTypes;
   }
 
-  return inventariTypes;
-}
+  async getInventariType(id: number, format?: string): Promise<any> {
+    const inventariType = await this.inventariTypeRepository.findOne({
+      where: { id },
+    });
 
-async getInventariType(id: number, format?: string): Promise<any> {
-  const inventariType = await this.inventariTypeRepository.findOne({
-    where: { id },
-  });
+    if (!inventariType) {
+      throw new HttpException(
+        'Tipo de inventario no encontrado',
+        HttpStatus.NOT_FOUND,
+      );
+    }
 
-  if (!inventariType) {
-    throw new HttpException(
-      'Tipo de inventario no encontrado',
-      HttpStatus.NOT_FOUND,
-    );
+    if (format === 'xml') {
+      const jsonForXml = JSON.stringify({ Inventory_type: inventariType });
+      return this.utilsService.convertJSONtoXML(jsonForXml);
+    }
+
+    return inventariType;
   }
-
-  if (format === 'xml') {
-    const jsonForXml = JSON.stringify({ Inventory_type: inventariType });
-    return this.utilsService.convertJSONtoXML(jsonForXml); 
-  }
-
-  return inventariType;
-}
   async createInventariType(
     inventari_type: Partial<Inventari_type>,
   ): Promise<{ message: string }> {

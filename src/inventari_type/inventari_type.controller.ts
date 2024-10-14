@@ -10,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { InventariTypeService } from './inventari_type.service';
-import { Response } from 'express'; 
+import { Response } from 'express';
 
 @Controller('inventari_type')
 export class InventariTypeController {
@@ -18,8 +18,8 @@ export class InventariTypeController {
 
   @Get()
   async getAllInventariType(
-    @Query('format') format?: string, 
-    @Res() res?: Response
+    @Query('format') format?: string,
+    @Res() res?: Response,
   ) {
     const data = await this.inventariTypeService.getAllInventariType(format);
 
@@ -28,23 +28,26 @@ export class InventariTypeController {
       return res.send(data);
     }
 
-    return res ? res.json(data) : data; 
+    return res ? res.json(data) : data;
   }
 
   @Get(':id')
   async getInventariType(
-    @Param('id') id: string, 
-    @Query('format') format?: string, 
-    @Res() res?: Response 
+    @Param('id') id: string,
+    @Query('format') format?: string,
+    @Res() res?: Response,
   ) {
-    const data = await this.inventariTypeService.getInventariType(parseInt(id), format);
+    const data = await this.inventariTypeService.getInventariType(
+      parseInt(id),
+      format,
+    );
 
     if (format === 'xml' && res) {
       res.set('Content-Type', 'application/xml');
       return res.send(data);
     }
 
-    return res ? res.json(data) : data; 
+    return res ? res.json(data) : data;
   }
 
   @Post()
