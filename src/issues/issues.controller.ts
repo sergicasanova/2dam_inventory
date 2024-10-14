@@ -48,10 +48,7 @@ export class IssuesController {
 
   @Put(':id')
   updateIssue(@Param('id') id: string, @Body() Issue) {
-    return this.IssuesService.updateIssue({
-      ...Issue,
-      id_issue: parseInt(id),
-    });
+    return this.IssuesService.updateIssue(parseInt(id), Issue);
   }
 
   @Delete(':id')

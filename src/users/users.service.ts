@@ -1,71 +1,60 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as convert from 'xml-js';
-import { default as UsersData } from '../data/inventory_users';
+import { UtilsService } from 'src/utils/utils.service';
+import { User } from './users.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  getAllUser(xml?: string) {
+  constructor(
+    private readonly utilsService: UtilsService,
+    @InjectRepository(User) private usersRepository: Repository<User>,
+  ) {}
+
+  async getAllUser(xml?: string): Promise<User[] | string> {
     if (xml === 'true') {
-      const jsonformatted = { Users: UsersData };
-      const json = JSON.stringify(jsonformatted);
-      const options = { compact: true, ignoreComment: true, spaces: 4 };
-      const result = convert.json2xml(json, options);
-
-      return result;
+      const jsonformatted = JSON.stringify({
+        Users: this.usersRepository.find(),
+      });
+      const xmlResult = this.utilsService.convertJSONtoXML(jsonformatted);
+      return await xmlResult;
     } else {
-      return UsersData;
+      return this.usersRepository.find();
     }
   }
 
-  createUser(Users: any) {
-    const lastId = UsersData.length
-      ? UsersData[UsersData.length - 1].id_user
-      : 0;
-    UsersData.push({
-      id_user: lastId + 1,
-      ...Users,
-    });
-    return { message: 'Usuario creado satisfactoriamente' };
+  async createUser(Users: any): Promise<User[]> {
+    const newUser = this.usersRepository.create(Users);
+    return this.usersRepository.save(newUser);
   }
 
-  getUser(id: number) {
-    let i = 0;
-    while (i < UsersData.length && UsersData[i].id_user != id) {
-      i++;
-    }
-    if (i < UsersData.length) {
-      return UsersData[i];
+  async getUser(id_user: number, xml?: string): Promise<User | string | null> {
+    const user = this.usersRepository.findOneBy({ id_user });
+
+    if (user != null) {
+      if (xml === 'true') {
+        const jsonformatted = JSON.stringify(user);
+        return await this.utilsService.convertJSONtoXML(jsonformatted);
+      } else {
+        return user;
+      }
     } else {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
-  updateUser(UsersUpdated: any) {
-    let i = 0;
-    while (
-      i < UsersData.length &&
-      UsersData[i].id_user != UsersUpdated.id_user
-    ) {
-      i++;
-    }
-    if (i < UsersData.length) {
-      UsersData[i] = UsersUpdated;
+  async updateUser(UsersUpdated: any): Promise<User> {
+    const user = await this.usersRepository.findOne(UsersUpdated.id_user);
 
-      return { message: `Usuario actualizado satisfactoriamente` };
-    } else {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    if (!user) {
+      throw new Error('Usuario no encontrado');
     }
+
+    this.usersRepository.merge(user, UsersUpdated);
+    return this.usersRepository.save(user);
   }
-  deleteUser(id: number) {
-    let i = 0;
-    while (i < UsersData.length && UsersData[i].id_user != id) {
-      i++;
-    }
-    if (i < UsersData.length) {
-      const deletedUser = UsersData.splice(i, 1);
-      return deletedUser;
-    } else {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
+
+  async deleteUser(id_user: number): Promise<void> {
+    await this.usersRepository.delete(id_user);
   }
 }

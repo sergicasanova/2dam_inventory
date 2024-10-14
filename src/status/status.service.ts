@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as xmljs from 'xml-js';
 import { default as statusData } from '../data/inventory_status';
 import { UtilsService } from 'src/utils/utils.service';
 @Injectable()
@@ -30,11 +29,8 @@ export class StatusService {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     if (xml === 'true') {
-      const jsonForXml = { Status: statusData[i] };
-      const jsonString = JSON.stringify(jsonForXml);
-      const options = { compact: true, ignoreComment: true, spaces: 4 };
-      const result = xmljs.json2xml(jsonString, options);
-      return result;
+      const jsonForXml = JSON.stringify({ status: statusData[i] });
+      return this.UtilsService.convertJSONtoXML(jsonForXml);
     } else {
       return statusData[i];
     }

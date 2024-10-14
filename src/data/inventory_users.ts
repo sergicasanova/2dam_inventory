@@ -2,7 +2,7 @@ export default [
   {
     id_user: 1,
     name: 'Federico',
-    username: 'Gonzalez',
+    surname: 'Gonzalez',
     email: 'federico@gmail.com',
     role: 0,
   },
@@ -10,7 +10,7 @@ export default [
   {
     id_user: 2,
     name: 'Gonzalo',
-    username: 'Martinez',
+    surname: 'Martinez',
     email: 'gonzalo@gmail.com',
     role: 1,
   },
@@ -18,7 +18,7 @@ export default [
   {
     id_user: 3,
     name: 'Gustavo',
-    username: 'Messi',
+    surname: 'Messi',
     email: 'gustavo@gmail.com',
     role: 1,
   },

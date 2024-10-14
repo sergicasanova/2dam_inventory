@@ -9,12 +9,15 @@ import { InventariTypeModule } from './inventari_type/inventari_type.module';
 import { IssuesModule } from './issues/issues.module';
 import { UtilsModule } from './utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Inventari } from './inventari/inventari.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
+import { User } from './users/users.entity';
+import { Issue } from './issues/issues.entity';
+import { Inventari } from './inventari/inventari.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ClassroomModule,
     InventariTypeModule,
     IssuesModule,
@@ -32,7 +35,7 @@ import { DataSource } from 'typeorm';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [Inventari],
+        entities: [Issue, User, Inventari],
         synchronize: true,
       }),
       inject: [ConfigService],
