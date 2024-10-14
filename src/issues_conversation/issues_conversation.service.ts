@@ -13,11 +13,7 @@ export class IssueConversationService {
   ) {}
 
   async getConversationsByIssueId(issueId: number, xml: string) {
-    const conversations = await this.issueConversationRepository.find({
-      where: { id_issue: { id: issueId } },
-      relations: ['user'], //posiblemente no sea necesario
-      order: { create_at: 'ASC' },
-    });
+    const conversations = []; //await this.issueConversationRepository.findBy({ id_issue: issueId });
 
     if (conversations.length === 0) {
       throw new HttpException('No conversations found', HttpStatus.NOT_FOUND);
@@ -35,14 +31,14 @@ export class IssueConversationService {
   }
 
   async addIssueConversation(dto: CreateIssueConversationDto) {
-    const newConversation = this.issueConversationRepository.create({
+    /*const newConversation = this.issueConversationRepository.create({
       id_issue: { id: dto.id_issue },
       user: { id: dto.userId },
       notes: dto.notes,
       create_at: new Date(),
-    });
-
-    return this.issueConversationRepository.save(newConversation);
+    });*/
+    return [];
+    //return this.issueConversationRepository.save(newConversation);
   }
 
   async deleteIssueConversation(id: number) {

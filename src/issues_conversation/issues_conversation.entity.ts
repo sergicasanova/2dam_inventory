@@ -7,8 +7,8 @@ export class IssueConversationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Issue, (issue) => issue.issueConversations)
-  id_issue: Issue;
+  @ManyToOne(() => Issue, (issue) => issue.conversations)
+  issue: Issue;
 
   @ManyToOne(() => User)
   user: User;
