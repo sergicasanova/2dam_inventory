@@ -11,7 +11,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { IssueConversationService } from './issues_conversation.service';
-import { CreateIssueConversationDto } from './issues_conversation.dto';
 
 @Controller('issue_conversation')
 export class IssueConversationController {
@@ -39,12 +38,8 @@ export class IssueConversationController {
   }
 
   @Post()
-  createIssueConversation(
-    @Body() createIssueConversationDto: CreateIssueConversationDto,
-  ) {
-    return this.issueConversationService.addIssueConversation(
-      createIssueConversationDto,
-    );
+  createIssueConversation(@Body() body: any) {
+    return this.issueConversationService.addIssueConversation(body);
   }
 
   @Delete(':id')

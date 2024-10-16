@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
 
 @Entity()
@@ -22,5 +28,6 @@ export class User {
     () => IssueConversationEntity,
     (issueConversation) => issueConversation.user,
   )
+  @JoinColumn()
   issueConversations: IssueConversationEntity[];
 }

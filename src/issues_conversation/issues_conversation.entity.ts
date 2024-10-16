@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Issue } from '../issues/issues.entity';
 import { User } from '../users/users.entity';
 
@@ -7,10 +13,12 @@ export class IssueConversationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Issue, (issue) => issue.issueConversations)
-  id_issue: Issue;
+  @ManyToOne(() => Issue, (issue) => issue.conversations)
+  @JoinColumn({ name: 'id_issue' })
+  issue: Issue;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.issueConversations)
+  @JoinColumn({ name: 'id_user' })
   user: User;
 
   @Column()

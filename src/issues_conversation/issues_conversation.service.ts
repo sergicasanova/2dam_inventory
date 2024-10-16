@@ -2,7 +2,6 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IssueConversationEntity } from './issues_conversation.entity';
-import { CreateIssueConversationDto } from './issues_conversation.dto';
 import { UtilsService } from 'src/utils/utils.service';
 @Injectable()
 export class IssueConversationService {
@@ -12,11 +11,13 @@ export class IssueConversationService {
     private readonly issueConversationRepository: Repository<IssueConversationEntity>,
   ) {}
 
-  async getConversationsByIssueId(issueId: number, xml: string) {
+  async getConversationsByIssueId(id_issue: number, xml: string) {
     const conversations = await this.issueConversationRepository.find({
-      where: { id_issue: { id: issueId } },
-      relations: ['user'], //posiblemente no sea necesario
-      order: { create_at: 'ASC' },
+      where: {
+        issue: {
+          id_issue: id_issue,
+        },
+      },
     });
 
     if (conversations.length === 0) {
@@ -34,11 +35,13 @@ export class IssueConversationService {
     }
   }
 
-  async addIssueConversation(dto: CreateIssueConversationDto) {
+  async addIssueConversation(body: any) {
+    const { id_issue, id_user, notes } = body;
+
     const newConversation = this.issueConversationRepository.create({
-      id_issue: { id: dto.id_issue },
-      user: { id: dto.userId },
-      notes: dto.notes,
+      issue: id_issue,
+      user: id_user,
+      notes: notes,
       create_at: new Date(),
     });
 

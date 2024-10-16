@@ -4,7 +4,6 @@ import { IssueConversationService } from './issues_conversation.service';
 import { UtilsModule } from 'src/utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IssueConversationEntity } from './issues_conversation.entity';
-
 @Module({
   imports: [UtilsModule, TypeOrmModule.forFeature([IssueConversationEntity])],
   controllers: [IssueConversationController],

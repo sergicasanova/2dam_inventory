@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
+import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
 
 @Entity()
 export class Issue {
@@ -28,4 +35,11 @@ export class Issue {
 
   @Column('text')
   notes: string;
+
+  @OneToMany(
+    () => IssueConversationEntity,
+    (conversations) => conversations.issue,
+  )
+  @JoinColumn({ name: 'id_issue' })
+  conversations: IssueConversationEntity[];
 }
