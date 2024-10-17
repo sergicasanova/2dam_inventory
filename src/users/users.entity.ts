@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
+import { Issue } from 'src/issues/issues.entity';
 
 @Entity()
 export class User {
@@ -30,4 +31,9 @@ export class User {
   )
   @JoinColumn()
   issueConversations: IssueConversationEntity[];
+  @OneToMany(() => Issue, (issue) => issue.user)
+  issues: Issue[];
+
+  @OneToMany(() => Issue, (issue) => issue.technician)
+  assignedIssues: Issue[];
 }
