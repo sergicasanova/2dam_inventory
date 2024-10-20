@@ -8,24 +8,23 @@ import { Repository } from 'typeorm';
 export class UsersService {
   constructor(
     private readonly utilsService: UtilsService,
-    @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
   async getAllUser(xml?: string): Promise<User[] | string> {
-    if (xml == 'true') {
-      const jsonformatted = JSON.stringify({
-        Users: await this.usersRepository.find(),
+    const users = await this.usersRepository.find();
+    if (xml === 'true') {
+      const jsonformatted = await JSON.stringify({
+        users,
       });
-      const xmlResult = this.utilsService.convertJSONtoXML(jsonformatted);
-      return xmlResult;
+      return await this.utilsService.convertJSONtoXML(jsonformatted);
     } else {
-      return this.usersRepository.find();
+      return users;
     }
   }
 
-  async createUser(Users: any): Promise<User[]> {
-    const newUser = this.usersRepository.create(Users);
-    return this.usersRepository.save(newUser);
+  async createUser(user: any): Promise<User[]> {
+    return this.usersRepository.create(user);
   }
 
   async getUser(id_user: number, xml?: string): Promise<User | string | null> {
