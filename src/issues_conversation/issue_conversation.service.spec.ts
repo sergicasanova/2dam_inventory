@@ -1,86 +1,146 @@
-import { IssueConversationController } from './issues_conversation.controller';
+import { Test, TestingModule } from '@nestjs/testing';
 import { IssueConversationService } from './issues_conversation.service';
 import { IssueConversationEntity } from './issues_conversation.entity';
-import { Repository } from 'typeorm';
-import { UtilsService } from 'src/utils/utils.service';
+import { UtilsService } from '../utils/utils.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-describe('IssueConversationController', () => {
-  let issueConversationController: IssueConversationController;
-  let issueConversationService: IssueConversationService;
-  let issueConversationRepository: Repository<IssueConversationEntity>;
-  let utilsService: UtilsService;
+const conversationArray = [
+  {
+    id: 1,
+    id_issue: 1,
+    id_user: 1,
+    notes: 'test de prueba 1',
+    create_at: '',
+  },
+  {
+    id: 2,
+    id_issue: 1,
+    id_user: 1,
+    notes: 'test de prueba 2',
+    create_at: '',
+  },
 
-  beforeEach(() => {
-    issueConversationService = new IssueConversationService(
-      utilsService,
-      issueConversationRepository,
-    );
-    issueConversationController = new IssueConversationController(
-      issueConversationService,
+  {
+    id: 3,
+    id_issue: 1,
+    id_user: 1,
+    notes: 'test de prueba 3',
+    create_at: '',
+  },
+];
+
+const oneConversation = {
+  id: 4,
+  id_issue: 1,
+  id_user: 1,
+  notes: 'test de prueba 4',
+  create_at: '',
+};
+
+const updateConversation = {
+  id: 1,
+  notes: 'Update realizado',
+};
+
+const deleteConversation = {
+  id: 2,
+  id_issue: 1,
+  id_user: 1,
+  notes: 'test de prueba 2',
+  create_at: '',
+};
+
+describe('IssueConversationService', () => {
+  let conversationService: IssueConversationService;
+  const MockConversationRepository = {
+    find: jest.fn(() => conversationArray),
+    findOneBy: jest.fn(() => oneConversation),
+    create: jest.fn(() => oneConversation),
+    findOne: jest.fn(() => oneConversation),
+    delete: jest.fn(() => deleteConversation),
+    save: jest.fn(() => updateConversation),
+    merge: jest.fn(() => updateConversation),
+  };
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        IssueConversationService,
+        UtilsService,
+        {
+          provide: getRepositoryToken(IssueConversationEntity),
+          useValue: MockConversationRepository,
+        },
+      ],
+    }).compile();
+
+    conversationService = module.get<IssueConversationService>(
+      IssueConversationService,
     );
   });
 
+  it('should be defined', () => {
+    expect(conversationService).toBeDefined();
+  });
   describe('createIssueConversation', () => {
-    it('should create a new issue conversation', async () => {
-      const body = {
+    it('should create a new conversation', async () => {
+      const mockConversation = {
+        id: 4,
         id_issue: 1,
         id_user: 1,
-        notes: 'Prueba de conversación',
+        notes: 'test de prueba 4',
+        create_at: '',
       };
 
-      const result: IssueConversationEntity = {
+      const result =
+        await conversationService.createIssueConversation(mockConversation);
+
+      expect(result).toEqual(mockConversation);
+    });
+  });
+
+  describe('getIssueConversation', () => {
+    it('should return an array of cinversation when xml is not provided', async () => {
+      const result = await conversationService.getIssueConversation(1, 'false');
+      expect(typeof result).toBe('object');
+    });
+  });
+
+  describe('getIssueConversation', () => {
+    it('should return an XML string when xml is set to "true"', async () => {
+      const result = await conversationService.getIssueConversation(1, 'true');
+      expect(typeof result).toBe('string');
+    });
+  });
+
+  describe('updateIssueConversation', () => {
+    it('should update a conversation', async () => {
+      const mockConversation = {
         id: 1,
-        issue: { id_issue: 1 } as any, // mock Issue
-        user: { id_user: 1 } as any, // mock User
-        notes: body.notes,
-        create_at: new Date(),
+        notes: 'Update realizado',
       };
 
-      jest
-        .spyOn(issueConversationService, 'addIssueConversation')
-        .mockResolvedValue(result);
+      const result = await conversationService.updateIssueConversation(
+        mockConversation.id,
+        mockConversation.notes,
+      );
 
-      expect(
-        await issueConversationController.createIssueConversation(body),
-      ).toBe(result);
+      expect(result).toEqual(mockConversation);
     });
   });
 
   describe('deleteIssueConversation', () => {
-    it('should delete an issue conversation', async () => {
-      const id = '1';
-
+    it('should delete a conversation successfully', async () => {
+      const mockDeleteResponse = { message: 'Conversacion eliminada' };
       jest
-        .spyOn(issueConversationService, 'deleteIssueConversation')
-        .mockResolvedValue({ message: 'Conversación eliminada' });
+        .spyOn(conversationService, 'deleteIssueConversation')
+        .mockResolvedValue(mockDeleteResponse);
 
-      expect(
-        await issueConversationController.deleteIssueConversation(id),
-      ).toEqual({ message: 'Conversación eliminada' });
-    });
-  });
-
-  // Añadir la prueba para el método PUT
-  describe('updateIssueConversation', () => {
-    it('should update an issue conversation', async () => {
-      const id = '1';
-      const notes = 'Notas actualizadas';
-
-      const result: IssueConversationEntity = {
-        id: 1,
-        issue: { id_issue: 1 } as any,
-        user: { id_user: 1 } as any,
-        notes: notes,
-        create_at: new Date(),
-      };
-
-      jest
-        .spyOn(issueConversationService, 'updateIssueConversation')
-        .mockResolvedValue(result);
-
-      expect(
-        await issueConversationController.updateIssueConversation(id, notes),
-      ).toEqual(result);
+      const result = await conversationService.deleteIssueConversation(1);
+      expect(result).toEqual(mockDeleteResponse);
+      expect(conversationService.deleteIssueConversation).toHaveBeenCalledWith(
+        1,
+      );
     });
   });
 });

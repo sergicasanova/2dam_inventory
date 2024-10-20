@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IssueConversationEntity } from './issues_conversation.entity';
-import { UtilsService } from 'src/utils/utils.service';
+import { UtilsService } from '../utils/utils.service';
 @Injectable()
 export class IssueConversationService {
   constructor(
@@ -11,7 +11,7 @@ export class IssueConversationService {
     private readonly issueConversationRepository: Repository<IssueConversationEntity>,
   ) {}
 
-  async getConversationsByIssueId(id_issue: number, xml: string) {
+  async getIssueConversation(id_issue: number, xml?: string) {
     const conversations = await this.issueConversationRepository.find({
       where: {
         issue: {
@@ -26,7 +26,13 @@ export class IssueConversationService {
 
     if (xml === 'true') {
       const jsonformatted = JSON.stringify({
-        IssuesConversations: this.issueConversationRepository.find(),
+        IssuesConversations: this.issueConversationRepository.find({
+          where: {
+            issue: {
+              id_issue: id_issue,
+            },
+          },
+        }),
       });
       const xmlResult = this.utilsService.convertJSONtoXML(jsonformatted);
       return xmlResult;
@@ -35,7 +41,7 @@ export class IssueConversationService {
     }
   }
 
-  async addIssueConversation(body: any) {
+  async createIssueConversation(body: any) {
     const { id_issue, id_user, notes } = body;
 
     const newConversation = this.issueConversationRepository.create({
@@ -45,7 +51,7 @@ export class IssueConversationService {
       create_at: new Date(),
     });
 
-    return this.issueConversationRepository.save(newConversation);
+    return newConversation;
   }
 
   async deleteIssueConversation(id: number) {

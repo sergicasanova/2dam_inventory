@@ -29,7 +29,7 @@ export class IssueConversationController {
     }
 
     const conversations =
-      await this.issueConversationService.getConversationsByIssueId(
+      await this.issueConversationService.getIssueConversation(
         issueConversationId,
         xml,
       );
@@ -39,7 +39,7 @@ export class IssueConversationController {
 
   @Post()
   createIssueConversation(@Body() body: any) {
-    return this.issueConversationService.addIssueConversation(body);
+    return this.issueConversationService.createIssueConversation(body);
   }
 
   @Delete(':id')
