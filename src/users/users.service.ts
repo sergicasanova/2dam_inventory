@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UtilsService } from 'src/utils/utils.service';
+import { UtilsService } from '../utils/utils.service';
 import { User } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,33 +8,32 @@ import { Repository } from 'typeorm';
 export class UsersService {
   constructor(
     private readonly utilsService: UtilsService,
-    @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
   async getAllUser(xml?: string): Promise<User[] | string> {
+    const users = await this.usersRepository.find();
     if (xml === 'true') {
-      const jsonformatted = JSON.stringify({
-        Users: this.usersRepository.find(),
+      const jsonformatted = await JSON.stringify({
+        users,
       });
-      const xmlResult = this.utilsService.convertJSONtoXML(jsonformatted);
-      return await xmlResult;
+      return await this.utilsService.convertJSONtoXML(jsonformatted);
     } else {
-      return this.usersRepository.find();
+      return users;
     }
   }
 
-  async createUser(Users: any): Promise<User[]> {
-    const newUser = this.usersRepository.create(Users);
-    return this.usersRepository.save(newUser);
+  async createUser(user: any): Promise<User[]> {
+    return this.usersRepository.create(user);
   }
 
   async getUser(id_user: number, xml?: string): Promise<User | string | null> {
-    const user = this.usersRepository.findOneBy({ id_user });
+    const user = await this.usersRepository.findOneBy({ id_user });
 
     if (user != null) {
-      if (xml === 'true') {
+      if (xml == 'true') {
         const jsonformatted = JSON.stringify(user);
-        return await this.utilsService.convertJSONtoXML(jsonformatted);
+        return this.utilsService.convertJSONtoXML(jsonformatted);
       } else {
         return user;
       }
