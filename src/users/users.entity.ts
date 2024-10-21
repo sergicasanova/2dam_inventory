@@ -31,9 +31,9 @@ export class User {
   )
   @JoinColumn()
   issueConversations: IssueConversationEntity[];
-  @OneToMany(() => Issue, (issue) => issue.user)
+  @OneToMany(() => Issue, (issue) => issue.id_user)
   issues: Issue[];
 
-  @OneToMany(() => Issue, (issue) => issue.technician)
+  @OneToMany(() => Issue, (issue) => issue.id_tecnic)
   assignedIssues: Issue[];
 }
