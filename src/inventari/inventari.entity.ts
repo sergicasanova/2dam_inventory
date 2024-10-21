@@ -1,4 +1,4 @@
-import { Inventari_type } from 'src/inventari_type/inventari_type.entity';
+import { Inventari_type } from '../inventari_type/inventari_type.entity';
 import { Issue } from '../issues/issues.entity';
 import { Classroom } from '../classroom/classroom.entity';
 import {

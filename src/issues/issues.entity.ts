@@ -1,4 +1,4 @@
-import { IssueConversationEntity } from 'src/issues_conversation/issues_conversation.entity';
+import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
 import { User } from '../users/users.entity';
 import { Status } from '../status/status.entity';
 import { Inventari } from '../inventari/inventari.entity';
