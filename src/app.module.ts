@@ -44,6 +44,7 @@ import { Status } from './status/status.entity';
           Inventari_type,
           IssueConversationEntity,
           User,
+          Inventari,
           Status,
         ],
         synchronize: true,
