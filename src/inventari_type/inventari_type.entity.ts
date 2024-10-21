@@ -1,5 +1,11 @@
 import { Inventari } from 'src/inventari/inventari.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
 
 @Entity()
 export class Inventari_type {
@@ -9,7 +15,6 @@ export class Inventari_type {
   @Column()
   descripcion: string;
 
-  @OneToMany(() => Inventari, fk_inventari => fk_inventari.fk_inventary_type)
+  @OneToMany(() => Inventari, (fk_inventari) => fk_inventari.fk_inventary_type)
   fk_inventari: Inventari[];
-
 }

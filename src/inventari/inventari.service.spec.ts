@@ -18,72 +18,72 @@ describe('InventariService', () => {
 
   it('should create a new inventory item (POST)', async () => {
     const headersList: HeadersInit = {
-      "Accept": "*/*",
-      "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-      "Content-Type": "application/json",
+      Accept: '*/*',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      'Content-Type': 'application/json',
     };
 
     const bodyContent = JSON.stringify({
-      "id_inventory": 1,
-      "num_serie": "kg273965",
-      "id_type": 2,
-      "brand": "HP",
-      "model": "Pavilion",
-      "GVA_cod_article": 1,
-      "GVA_description_cod_articulo": "portatil para clase",
-      "status": "usando",
-      "id_classroom": 1,
+      id_inventory: 1,
+      num_serie: 'kg273965',
+      id_type: 2,
+      brand: 'HP',
+      model: 'Pavilion',
+      GVA_cod_article: 1,
+      GVA_description_cod_articulo: 'portatil para clase',
+      status: 'usando',
+      id_classroom: 1,
     });
 
-    const response = await fetch("http://localhost:8080/inventari/", {
-      method: "POST",
+    const response = await fetch('http://localhost:8080/inventari/', {
+      method: 'POST',
       body: bodyContent,
       headers: headersList,
     });
 
-    expect(response.status).toBe(201); 
+    expect(response.status).toBe(201);
     const data = await response.json();
-    expect(data).toHaveProperty('id_inventory'); 
+    expect(data).toHaveProperty('id_inventory');
   });
 });
 
 async function fetchInventory(): Promise<void> {
   const headersList: HeadersInit = {
-    "Accept": "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+    Accept: '*/*',
+    'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
   };
 
   try {
-    const response = await fetch("http://localhost:8080/inventari/3", { 
-      method: "GET",
-      headers: headersList
+    const response = await fetch('http://localhost:8080/inventari/3', {
+      method: 'GET',
+      headers: headersList,
     });
 
     if (response.ok) {
       const data = await response.json();
       console.log(data);
     } else {
-      console.error("HTTP Error:", response.status, response.statusText);
+      console.error('HTTP Error:', response.status, response.statusText);
     }
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error('Fetch error:', error);
   }
 }
 
 async function updateInventoryStatus(): Promise<void> {
   const headersList: HeadersInit = {
-    "Accept": "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-    "Content-Type": "application/json",
+    Accept: '*/*',
+    'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+    'Content-Type': 'application/json',
   };
 
   const bodyContent = JSON.stringify({
-    "status": "disponible",
+    status: 'disponible',
   });
 
   try {
-    const response = await fetch("http://localhost:8080/inventari/3", {
-      method: "PUT",
+    const response = await fetch('http://localhost:8080/inventari/3', {
+      method: 'PUT',
       body: bodyContent,
       headers: headersList,
     });
@@ -95,7 +95,7 @@ async function updateInventoryStatus(): Promise<void> {
     const data = await response.json();
     console.log(data);
   } catch (error) {
-    console.error("Error en la solicitud:", error);
+    console.error('Error en la solicitud:', error);
   }
 }
 fetchInventory();

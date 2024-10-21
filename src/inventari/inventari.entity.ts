@@ -1,7 +1,13 @@
 import { Inventari_type } from 'src/inventari_type/inventari_type.entity';
 import { Issue } from '../issues/issues.entity';
 import { Classroom } from '../classroom/classroom.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToOne,
+} from 'typeorm';
 
 @Entity()
 export class Inventari {
@@ -32,12 +38,15 @@ export class Inventari {
   @Column()
   id_classroom: number;
 
-  @ManyToOne(() => Inventari_type, fk_inventary_type => fk_inventary_type.fk_inventari)
+  @ManyToOne(
+    () => Inventari_type,
+    (fk_inventary_type) => fk_inventary_type.fk_inventari,
+  )
   fk_inventary_type: Inventari_type;
 
-  @OneToOne(() => Issue, fk_issue => fk_issue.fk_inventari)
-  fk_issue: Issue;
+  @OneToOne(() => Issue, (fk_issue) => fk_issue.fk_inventari)
+  fk_issue: Issue;
 
-  @ManyToOne(() => Classroom, fk_classroom => fk_classroom.fk_inventari)
+  @ManyToOne(() => Classroom, (fk_classroom) => fk_classroom.fk_inventari)
   fk_classroom: Classroom;
 }

@@ -1,6 +1,13 @@
 import { IssueConversationEntity } from 'src/issues_conversation/issues_conversation.entity';
 import { Inventari } from '../inventari/inventari.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Issue {
@@ -37,7 +44,7 @@ export class Issue {
   )
   conversations: IssueConversationEntity[];
 
-  @OneToOne(() => Inventari, fk_inventari => fk_inventari.fk_issue)
+  @OneToOne(() => Inventari, (fk_inventari) => fk_inventari.fk_issue)
   @JoinColumn({ name: 'id_inventory' })
   inventari: Inventari;
   fk_inventari: any;
