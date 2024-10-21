@@ -9,6 +9,6 @@ export class Status {
   @Column()
   description: string;
 
-  @OneToMany(() => Issue, (issue) => issue.id_status)
+  @OneToMany(() => Issue, (issue) => issue.id_issue)
   issues: Issue[];
 }
