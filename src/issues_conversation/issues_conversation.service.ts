@@ -2,8 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IssueConversationEntity } from './issues_conversation.entity';
-import { CreateIssueConversationDto } from './issues_conversation.dto';
-import { UtilsService } from 'src/utils/utils.service';
+import { UtilsService } from '../utils/utils.service';
 @Injectable()
 export class IssueConversationService {
   constructor(
@@ -21,7 +20,13 @@ export class IssueConversationService {
 
     if (xml === 'true') {
       const jsonformatted = JSON.stringify({
-        IssuesConversations: this.issueConversationRepository.find(),
+        IssuesConversations: this.issueConversationRepository.find({
+          where: {
+            issue: {
+              id_issue: id_issue,
+            },
+          },
+        }),
       });
       const xmlResult = this.utilsService.convertJSONtoXML(jsonformatted);
       return xmlResult;

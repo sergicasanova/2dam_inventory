@@ -11,6 +11,7 @@ import { UtilsModule } from './utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
+import { IssuesConversationModule } from './issues_conversation/issues_conversation.module';
 import { Inventari_type } from './inventari_type/inventari_type.entity';
 import { User } from './users/users.entity';
 import { Issue } from './issues/issues.entity';
@@ -27,6 +28,7 @@ import { IssueConversationEntity } from './issues_conversation/issues_conversati
     StatusModule,
     InventariModule,
     UtilsModule,
+    IssuesConversationModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -40,10 +42,10 @@ import { IssueConversationEntity } from './issues_conversation/issues_conversati
         entities: [
           Classroom,
           Issue,
+          Inventari,
           Inventari_type,
           IssueConversationEntity,
           User,
-          Inventari,
         ],
         synchronize: true,
       }),
