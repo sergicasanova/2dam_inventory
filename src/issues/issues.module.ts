@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { IssuesController } from './issues.controller';
 import { IssuesService } from './issues.service';
-import { UtilsModule } from 'src/utils/utils.module';
+import { UtilsModule } from '../utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Issue } from './issues.entity';
 
