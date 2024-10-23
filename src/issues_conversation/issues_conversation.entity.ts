@@ -11,7 +11,7 @@ import { User } from '../users/users.entity';
 @Entity('issue_conversation')
 export class IssueConversationEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id_conversation: number;
 
   @ManyToOne(() => Issue, (issue) => issue.conversations)
   @JoinColumn({ name: 'id_issue' })

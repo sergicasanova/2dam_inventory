@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
-import { Issue } from 'src/issues/issues.entity';
+import { Issue } from '../issues/issues.entity';
 
 @Entity()
 export class User {
