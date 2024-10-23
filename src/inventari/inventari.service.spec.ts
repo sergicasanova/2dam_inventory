@@ -4,7 +4,6 @@ import { Inventari } from './inventari.entity';
 import { UtilsService } from '../utils/utils.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-
 const oneInventari: Inventari = {
   id_inventory: 1,
   num_serie: 'ABC123',
@@ -16,16 +15,15 @@ const oneInventari: Inventari = {
   fk_inventary_type: {
     id: 1,
     descripcion: 'Tipo A',
-    fk_inventari: null, 
+    fk_inventari: null,
   },
   fk_classroom: {
     id_classroom: 1,
     description: 'Aula 101',
-    fk_inventari: null, 
+    fk_inventari: null,
   },
-  fk_issue: null, 
+  fk_issue: null,
 };
-
 
 const mockInventariUpdate: Inventari = {
   id_inventory: 1,
@@ -38,17 +36,15 @@ const mockInventariUpdate: Inventari = {
   fk_inventary_type: {
     id: 1,
     descripcion: 'Tipo A',
-    fk_inventari: null,  
-  },  
+    fk_inventari: null,
+  },
   fk_classroom: {
     id_classroom: 1,
     description: 'Aula 101',
-    fk_inventari: null,  
+    fk_inventari: null,
   },
   fk_issue: null,
 };
-
-
 
 describe('InventariService', () => {
   let inventariService: InventariService;
