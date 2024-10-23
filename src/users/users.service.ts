@@ -24,7 +24,8 @@ export class UsersService {
   }
 
   async createUser(user: any): Promise<User[]> {
-    return this.usersRepository.create(user);
+    const usuario = this.usersRepository.create(user);
+    return this.usersRepository.save(usuario);
   }
 
   async getUser(id_user: number, xml?: string): Promise<User | string | null> {
