@@ -10,11 +10,11 @@ const oneIssue: Issue = {
   description: 'Lorem ipsum dolor sit amet.',
   last_updated: '18/09/2024',
   notes: 'Lorem ipsum dolor sit amet.',
-  user: { id_user: 1 } as any, 
-  technician: { id_user: 3 } as any, 
-  status: { id_status: 1 } as any, 
-  fk_inventari: { id_inventory: 1 } as any, 
-  conversations: [], 
+  user: { id_user: 1 } as any,
+  technician: { id_user: 3 } as any,
+  status: { id_status: 1 } as any,
+  fk_inventari: { id_inventory: 1 } as any,
+  conversations: [],
 };
 
 const mockIssueUpdate = {
@@ -76,7 +76,7 @@ describe('IssuesService', () => {
   describe('createIssue', () => {
     it('should create a new issue item', async () => {
       const result = await issuesService.createIssue(oneIssue);
-      expect(result).toEqual(oneIssue);  // Elimina la expectativa del mensaje
+      expect(result).toEqual(oneIssue); // Elimina la expectativa del mensaje
       expect(MockIssueRepository.create).toHaveBeenCalledWith(oneIssue);
       expect(MockIssueRepository.save).toHaveBeenCalled();
     });
