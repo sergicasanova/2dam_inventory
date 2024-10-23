@@ -54,17 +54,19 @@ export class IssueConversationService {
     return newConversation;
   }
 
-  async deleteIssueConversation(id: number) {
-    const result = await this.issueConversationRepository.delete({ id });
+  async deleteIssueConversation(id_conversation: number) {
+    const result = await this.issueConversationRepository.delete({
+      id_conversation,
+    });
     if (result.affected === 0) {
       throw new HttpException('Conversation not found', HttpStatus.NOT_FOUND);
     }
     return { message: 'Conversacion eliminada' };
   }
 
-  async updateIssueConversation(id: number, notes: string) {
+  async updateIssueConversation(id_conversation: number, notes: string) {
     const conversation = await this.issueConversationRepository.findOneBy({
-      id,
+      id_conversation,
     });
 
     if (!conversation) {

@@ -6,14 +6,14 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 
 const conversationArray = [
   {
-    id: 1,
+    id_conversation: 1,
     id_issue: 1,
     id_user: 1,
     notes: 'test de prueba 1',
     create_at: '',
   },
   {
-    id: 2,
+    id_conversation: 2,
     id_issue: 1,
     id_user: 1,
     notes: 'test de prueba 2',
@@ -21,7 +21,7 @@ const conversationArray = [
   },
 
   {
-    id: 3,
+    id_conversation: 3,
     id_issue: 1,
     id_user: 1,
     notes: 'test de prueba 3',
@@ -30,7 +30,7 @@ const conversationArray = [
 ];
 
 const oneConversation = {
-  id: 4,
+  id_conversation: 4,
   id_issue: 1,
   id_user: 1,
   notes: 'test de prueba 4',
@@ -38,12 +38,12 @@ const oneConversation = {
 };
 
 const updateConversation = {
-  id: 1,
+  id_conversation: 1,
   notes: 'Update realizado',
 };
 
 const deleteConversation = {
-  id: 2,
+  id_conversation: 2,
   id_issue: 1,
   id_user: 1,
   notes: 'test de prueba 2',
@@ -85,7 +85,7 @@ describe('IssueConversationService', () => {
   describe('createIssueConversation', () => {
     it('should create a new conversation', async () => {
       const mockConversation = {
-        id: 4,
+        id_conversation: 4,
         id_issue: 1,
         id_user: 1,
         notes: 'test de prueba 4',
@@ -116,12 +116,12 @@ describe('IssueConversationService', () => {
   describe('updateIssueConversation', () => {
     it('should update a conversation', async () => {
       const mockConversation = {
-        id: 1,
+        id_conversation: 1,
         notes: 'Update realizado',
       };
 
       const result = await conversationService.updateIssueConversation(
-        mockConversation.id,
+        mockConversation.id_conversation,
         mockConversation.notes,
       );
 
