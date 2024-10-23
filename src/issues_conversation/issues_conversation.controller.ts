@@ -43,8 +43,8 @@ export class IssueConversationController {
   }
 
   @Delete(':id')
-  deleteIssueConversation(@Param('id') id: string) {
-    const conversationId = parseInt(id);
+  deleteIssueConversation(@Param('id') id_conversation: string) {
+    const conversationId = parseInt(id_conversation);
     if (isNaN(conversationId)) {
       throw new HttpException(
         'Invalid conversation ID',
@@ -58,10 +58,10 @@ export class IssueConversationController {
 
   @Put(':id')
   updateIssueConversation(
-    @Param('id') id: string,
+    @Param('id') id_conversation: string,
     @Body('notes') notes: string,
   ) {
-    const conversationId = parseInt(id);
+    const conversationId = parseInt(id_conversation);
     if (isNaN(conversationId)) {
       throw new HttpException(
         'Invalid conversation ID',
