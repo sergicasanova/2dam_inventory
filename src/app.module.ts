@@ -17,6 +17,8 @@ import { Classroom } from './classroom/classroom.entity';
 import { Inventari } from './inventari/inventari.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 import { Status } from './status/status.entity';
+import { SeederOptions } from 'typeorm-extension';
+import { UserSeed } from './users/users.seeder';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -31,7 +33,7 @@ import { Status } from './status/status.entity';
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService & SeederOptions) => ({
         type: 'mysql',
         host: 'database',
         port: +configService.get('PORT'),
@@ -48,6 +50,7 @@ import { Status } from './status/status.entity';
           Status,
         ],
         synchronize: true,
+        seeds: [UserSeed],
       }),
       inject: [ConfigService],
     }),
