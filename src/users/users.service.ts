@@ -3,7 +3,8 @@ import { UtilsService } from '../utils/utils.service';
 import { User } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import * as bcrypt from 'bcryptjs';
+import { UserDto } from './user.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -14,17 +15,19 @@ export class UsersService {
   async getAllUser(xml?: string): Promise<User[] | string> {
     const users = await this.usersRepository.find();
     if (xml === 'true') {
-      const jsonformatted = await JSON.stringify({
+      const jsonformatted = JSON.stringify({
         users,
       });
-      return await this.utilsService.convertJSONtoXML(jsonformatted);
+      return this.utilsService.convertJSONtoXML(jsonformatted);
     } else {
       return users;
     }
   }
 
-  async createUser(user: any): Promise<User[]> {
+  async createUser(user: UserDto): Promise<User> {
     const usuario = this.usersRepository.create(user);
+    const passwordHash = await bcrypt.hash(usuario.password, 10);
+    usuario.password = passwordHash;
     return this.usersRepository.save(usuario);
   }
 

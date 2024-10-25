@@ -66,7 +66,6 @@ export class IssueConversationService {
       issue: id_issue,
       user: id_user,
       notes: notes,
-      create_at: new Date(),
     });
 
     return this.issueConversationRepository.save(newConversation);
