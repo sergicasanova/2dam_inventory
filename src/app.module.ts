@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { StatusModule } from './status/status.module';
 import { ClassroomModule } from './classroom/classroom.module';
@@ -17,6 +17,8 @@ import { Classroom } from './classroom/classroom.entity';
 import { Inventari } from './inventari/inventari.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 import { Status } from './status/status.entity';
+import { logger } from './logger.middleware';
+import { AppController } from 'app.controller';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -52,9 +54,13 @@ import { Status } from './status/status.entity';
       inject: [ConfigService],
     }),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(logger).forRoutes('*');
+
+  }
 }

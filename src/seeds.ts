@@ -2,8 +2,7 @@ import "reflect-metadata";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { runSeeders, SeederOptions } from "typeorm-extension";
 import { Inventari } from './inventari/inventari.entity';
-import { InventariFactory } from "./db/seeding/factories/inventari.factory"; 
-import { InevntariSeeder } from "./db/seeding/seeds/inventariSeed"; 
+import { InventariSeeder } from "./db/seeding/seeds/inventariSeed"; 
 import { Inventari_type } from "./inventari_type/inventari_type.entity";
 import { Issue } from './issues/issues.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
@@ -20,8 +19,7 @@ const options: DataSourceOptions & SeederOptions = {
   database: process.env.MYSQL_DATABASE,
 
   entities: [Inventari, Inventari_type, Issue, IssueConversationEntity, User, Status, Classroom], 
-  factories: [InventariFactory], 
-  seeds: [InevntariSeeder], 
+  seeds: [InventariSeeder], 
 };
 
 const dataSource = new DataSource(options);
