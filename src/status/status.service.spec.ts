@@ -7,21 +7,21 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 const statusArray = [
   {
     description: 'Eliminada',
-    issues: [],
+    issues: { id_issue: 1 } as any,
   },
   {
     description: 'Creada',
-    issues: [],
+    issues: { id_issue: 1 } as any,
   },
   {
     description: 'Creada',
-    issues: [],
+    issues: { id_issue: 1 } as any,
   },
 ];
 
 const oneStatus = {
   description: 'Eliminada',
-  issues: [],
+  issues: { id_issue: 1 } as any,
 };
 
 describe('StatusService', () => {
@@ -98,7 +98,7 @@ describe('StatusService', () => {
       const updatedStatus = {
         id_status: 1,
         description: 'Actualizada',
-        issues: [],
+        issues:  { id_issue: 1 } as any,
       };
       await statusService.updateStatus(updatedStatus);
       expect(MockStatusRepository.update).toHaveBeenCalledWith(
@@ -114,7 +114,7 @@ describe('StatusService', () => {
       const updatedStatus = {
         id_status: 999,
         description: 'No existe',
-        issues: [],
+        issues: { id_issue: 1 } as any,
       };
       await expect(statusService.updateStatus(updatedStatus)).rejects.toThrow();
     });
