@@ -13,56 +13,57 @@ export class ClassroomService {
   ) {}
 
   async getAllClassroom(xml?: string): Promise<Classroom[] | string> {
+    const classrooms = await this.classroomRepository.find();
+
     if (xml === 'true') {
-      const jsonformatted = JSON.stringify({
-        Classrooms: await this.classroomRepository.find(),
-      });
-      const xmlResult = this.utilsService.convertJSONtoXML(jsonformatted);
-      return xmlResult;
-    } else {
-      return this.classroomRepository.find();
+      const jsonformatted = JSON.stringify({ Classrooms: classrooms });
+      return this.utilsService.convertJSONtoXML(jsonformatted);
     }
+
+    return classrooms;
   }
 
-  async createClassroom(Classroom: any): Promise<Classroom[]> {
-    const newClassroom = this.classroomRepository.create(Classroom);
-    return this.classroomRepository.save(newClassroom);
+  async createClassroom(classroomData: Classroom): Promise<{ message: string }> {
+    const classroom = this.classroomRepository.create(classroomData);
+    await this.classroomRepository.save(classroom);
+    return { message: 'Aula creada' };
   }
 
-  async getClassroom(
-    id: number,
-    xml?: string,
-  ): Promise<Classroom | string | null> {
+  async getClassroom(id: number, xml?: string): Promise<Classroom | string> {
+    const classroom = await this.classroomRepository.findOneBy({ id_classroom: id });
+
+    if (!classroom) {
+      throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (xml === 'true') {
+      const jsonformatted = JSON.stringify(classroom);
+      return this.utilsService.convertJSONtoXML(jsonformatted);
+    }
+
+    return classroom;
+  }
+
+  async updateClassroom(id: number, updateData: Partial<Classroom>): Promise<Classroom> {
     const classroom = await this.classroomRepository.findOneBy({
       id_classroom: id,
     });
 
-    if (classroom) {
-      if (xml === 'true') {
-        const jsonformatted = JSON.stringify(classroom);
-        return await this.utilsService.convertJSONtoXML(jsonformatted);
-      } else {
-        return classroom;
-      }
-    } else {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-  }
-
-  async updateClassroom(updatedClassroomData: any): Promise<Classroom> {
-    const classroom = await this.classroomRepository.findOne(
-      updatedClassroomData.id,
-    );
-
     if (!classroom) {
-      throw new Error('Classroom not found');
+      throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
     }
 
-    this.classroomRepository.merge(classroom, updatedClassroomData);
-    return this.classroomRepository.save(classroom);
-  }
+    // Cambia esto para asegurar que `merge` retorna un nuevo objeto
+    const updatedClassroom = this.classroomRepository.merge(classroom, updateData);
+    return this.classroomRepository.save(updatedClassroom);
+}
 
-  async deleteClassroom(id: number): Promise<void> {
-    await this.classroomRepository.delete(id);
+
+  async deleteClassroom(id: number): Promise<{ message: string }> {
+    const result = await this.classroomRepository.delete(id);
+    if (result.affected === 0) {
+      throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
+    }
+    return { message: 'Aula eliminada' };
   }
 }

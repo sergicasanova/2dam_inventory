@@ -50,7 +50,7 @@ export class ClassroomController {
 
   @Put(':id')
   updateClassroom(@Param('id') id: string, @Body() Classroom) {
-    return this.ClassroomService.updateClassroom({
+    return this.ClassroomService.updateClassroom(parseInt(id), {
       ...Classroom,
       id_classroom: parseInt(id),
     });
