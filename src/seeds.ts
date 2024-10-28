@@ -9,6 +9,8 @@ import { IssueConversationEntity } from './issues_conversation/issues_conversati
 import { User } from './users/users.entity';
 import { Status } from './status/status.entity';
 import { Classroom } from './classroom/classroom.entity';
+import { config } from "dotenv";
+config();
 
 const options: DataSourceOptions & SeederOptions = {
   type: "mariadb", 
