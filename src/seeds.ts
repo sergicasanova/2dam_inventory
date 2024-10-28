@@ -2,14 +2,13 @@ import "reflect-metadata";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { runSeeders, SeederOptions } from "typeorm-extension";
 import { Inventari } from './inventari/inventari.entity';
-import { InventariFactory } from "./db/seeding/factories/inventari.factory"; 
-import { InevntariSeeder } from "./db/seeding/seeds/inventariSeed"; 
 import { Inventari_type } from "./inventari_type/inventari_type.entity";
 import { Issue } from './issues/issues.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 import { User } from './users/users.entity';
 import { Status } from './status/status.entity';
 import { Classroom } from './classroom/classroom.entity';
+import { ClassroomSeeder } from "./db/seeding/seeds/classroomSeed";
 
 const options: DataSourceOptions & SeederOptions = {
   type: "mariadb", 
@@ -20,8 +19,7 @@ const options: DataSourceOptions & SeederOptions = {
   database: process.env.MYSQL_DATABASE,
 
   entities: [Inventari, Inventari_type, Issue, IssueConversationEntity, User, Status, Classroom], 
-  factories: [InventariFactory], 
-  seeds: [InevntariSeeder], 
+  seeds: [ClassroomSeeder], 
 };
 
 const dataSource = new DataSource(options);
