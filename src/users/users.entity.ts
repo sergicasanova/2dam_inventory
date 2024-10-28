@@ -31,7 +31,7 @@ export class User {
   )
   @JoinColumn()
   issueConversations: IssueConversationEntity[];
-  
+
   @OneToMany(() => Issue, (issue) => issue.id_issue)
   issues: Issue[];
 
