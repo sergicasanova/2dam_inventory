@@ -18,13 +18,13 @@ export class Issue {
   id_issue: number;
 
   @Column()
-  created_at: string;
+  created_at: Date;
 
   @Column()
   description: string;
 
   @Column()
-  last_updated: string;
+  last_updated: Date;
 
   @Column()
   notes: string;
