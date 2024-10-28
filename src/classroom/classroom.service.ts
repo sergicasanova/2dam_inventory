@@ -1,8 +1,12 @@
+// src/classroom/classroom.service.ts
+
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UtilsService } from '../utils/utils.service';
 import { Classroom } from './classroom.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateClassroomDto } from './dto/create-classroom.dto';
+import { UpdateClassroomDto } from './dto/update-classroom.dto';
 
 @Injectable()
 export class ClassroomService {
@@ -23,8 +27,8 @@ export class ClassroomService {
     return classrooms;
   }
 
-  async createClassroom(classroomData: Classroom): Promise<{ message: string }> {
-    const classroom = this.classroomRepository.create(classroomData);
+  async createClassroom(createClassroomDto: CreateClassroomDto): Promise<{ message: string }> {
+    const classroom = this.classroomRepository.create(createClassroomDto);
     await this.classroomRepository.save(classroom);
     return { message: 'Aula creada' };
   }
@@ -44,20 +48,16 @@ export class ClassroomService {
     return classroom;
   }
 
-  async updateClassroom(id: number, updateData: Partial<Classroom>): Promise<Classroom> {
-    const classroom = await this.classroomRepository.findOneBy({
-      id_classroom: id,
-    });
+  async updateClassroom(id: number, updateClassroomDto: UpdateClassroomDto): Promise<Classroom> {
+    const classroom = await this.classroomRepository.findOneBy({ id_classroom: id });
 
     if (!classroom) {
       throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
     }
 
-    // Cambia esto para asegurar que `merge` retorna un nuevo objeto
-    const updatedClassroom = this.classroomRepository.merge(classroom, updateData);
+    const updatedClassroom = this.classroomRepository.merge(classroom, updateClassroomDto);
     return this.classroomRepository.save(updatedClassroom);
-}
-
+  }
 
   async deleteClassroom(id: number): Promise<{ message: string }> {
     const result = await this.classroomRepository.delete(id);

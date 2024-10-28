@@ -1,3 +1,5 @@
+// src/classroom/classroom.controller.ts
+
 import {
   Body,
   Controller,
@@ -11,19 +13,21 @@ import {
   Query,
 } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
+import { CreateClassroomDto } from './dto/create-classroom.dto';
+import { UpdateClassroomDto } from './dto/update-classroom.dto';
 
 @Controller('Classroom')
 export class ClassroomController {
-  private ClassroomService: ClassroomService;
+  private classroomService: ClassroomService;
 
-  constructor(ClassroomService: ClassroomService) {
-    this.ClassroomService = ClassroomService;
+  constructor(classroomService: ClassroomService) {
+    this.classroomService = classroomService;
   }
 
   @Get()
   getAllClassrooms(@Query('xml') xml?: string) {
     try {
-      return this.ClassroomService.getAllClassroom(xml);
+      return this.classroomService.getAllClassroom(xml);
     } catch (err) {
       throw new HttpException(
         {
@@ -40,24 +44,21 @@ export class ClassroomController {
 
   @Get(':id')
   getClassroom(@Param('id') id: string, @Query('xml') xml?: string) {
-    return this.ClassroomService.getClassroom(parseInt(id), xml);
+    return this.classroomService.getClassroom(parseInt(id), xml);
   }
 
   @Post()
-  createClassroom(@Body() Classroom) {
-    return this.ClassroomService.createClassroom(Classroom);
+  createClassroom(@Body() createClassroomDto: CreateClassroomDto) {
+    return this.classroomService.createClassroom(createClassroomDto);
   }
 
   @Put(':id')
-  updateClassroom(@Param('id') id: string, @Body() Classroom) {
-    return this.ClassroomService.updateClassroom(parseInt(id), {
-      ...Classroom,
-      id_classroom: parseInt(id),
-    });
+  updateClassroom(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
+    return this.classroomService.updateClassroom(parseInt(id), updateClassroomDto);
   }
 
   @Delete(':id')
   deleteClassroom(@Param('id') id: string) {
-    return this.ClassroomService.deleteClassroom(parseInt(id));
+    return this.classroomService.deleteClassroom(parseInt(id));
   }
 }

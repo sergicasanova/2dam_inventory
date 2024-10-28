@@ -46,7 +46,7 @@ import { Status } from './status/status.entity';
           Inventari,
           Status,
         ],
-        synchronize: false,
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),

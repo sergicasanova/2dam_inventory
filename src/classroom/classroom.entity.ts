@@ -6,8 +6,8 @@ export class Classroom {
   @PrimaryGeneratedColumn()
   id_classroom: number;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description: string | null;
 
   @OneToMany(() => Inventari, (fk_inventari) => fk_inventari.fk_classroom)
   fk_inventari: Inventari[];
