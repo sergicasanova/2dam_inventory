@@ -10,6 +10,8 @@ import { User } from './users/users.entity';
 import { Status } from './status/status.entity';
 import { Classroom } from './classroom/classroom.entity';
 import { UserSeeder } from './db/seeding/seeds/users.seeder';
+import { config } from 'dotenv';
+config();
 
 const options: DataSourceOptions & SeederOptions = {
   type: 'mariadb',

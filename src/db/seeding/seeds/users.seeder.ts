@@ -19,6 +19,6 @@ export class UserSeeder implements Seeder {
 
     await userRepository.save(userEntries);
 
-    console.log('Inventari seeding completed!');
+    console.log('Users seeding completed!');
   }
 }
