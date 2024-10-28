@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { runSeeders, SeederOptions } from 'typeorm-extension';
 import { Inventari } from './inventari/inventari.entity';
-import { InevntariSeeder } from './db/seeding/seeds/inventariSeed';
+import { InventariSeeder } from './db/seeding/seeds/inventariSeed';
 import { Inventari_type } from './inventari_type/inventari_type.entity';
 import { Issue } from './issues/issues.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
@@ -31,7 +31,7 @@ const options: DataSourceOptions & SeederOptions = {
     Status,
     Classroom,
   ],
-  seeds: [InevntariSeeder, Inventary_typeSeeder, UserSeeder],
+  seeds: [InventariSeeder, Inventary_typeSeeder, UserSeeder],
 };
 
 const dataSource = new DataSource(options);
