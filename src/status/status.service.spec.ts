@@ -98,7 +98,7 @@ describe('StatusService', () => {
       const updatedStatus = {
         id_status: 1,
         description: 'Actualizada',
-        issues:  { id_issue: 1 } as any,
+        issues: { id_issue: 1 } as any,
       };
       await statusService.updateStatus(updatedStatus);
       expect(MockStatusRepository.update).toHaveBeenCalledWith(
