@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { StatusModule } from './status/status.module';
 import { ClassroomModule } from './classroom/classroom.module';
@@ -21,7 +16,7 @@ import { Classroom } from './classroom/classroom.entity';
 import { Inventari } from './inventari/inventari.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 import { Status } from './status/status.entity';
-import { logger } from './logger.middleware';
+import { DataSource } from 'typeorm';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -60,8 +55,6 @@ import { logger } from './logger.middleware';
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(logger).forRoutes({ path: '*', method: RequestMethod.ALL });
-  }
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
 }
