@@ -21,7 +21,7 @@ const mockIssueUpdate = {
   id_issue: 1,
   created_at: new Date('2024-09-18T00:00:00Z'),
   description: 'Lorem ipsum dolor sit amet.',
-  last_updated: new Date(), 
+  last_updated: new Date(),
   notes: 'Updated notes.',
   user: { id_user: 1 } as any,
   technician: { id_user: 3 } as any,
@@ -29,7 +29,6 @@ const mockIssueUpdate = {
   fk_inventari: { id_inventory: 1 } as any,
   conversations: [],
 };
-
 
 describe('IssuesService', () => {
   let issuesService: IssuesService;
