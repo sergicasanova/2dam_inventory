@@ -119,8 +119,11 @@ describe('InventariService', () => {
 
   describe('updateInventari', () => {
     it('should update an inventory item', async () => {
-      const result = await inventariService.updateInventari(1, mockInventariUpdate);
-  
+      const result = await inventariService.updateInventari(
+        1,
+        mockInventariUpdate,
+      );
+
       expect(MockInventariRepository.update).toHaveBeenCalledWith(1, {
         GVA_cod_article: 54321,
         GVA_description_cod_articulo: 'Descripción del artículo B',
@@ -132,8 +135,10 @@ describe('InventariService', () => {
         fk_inventary_type: { id_type: 2 }, // Debe ser un objeto
         fk_classroom: { id_classroom: 2 }, // Debe ser un objeto
       });
-  
-      expect(MockInventariRepository.findOneBy).toHaveBeenCalledWith({ id_inventory: 1 });
+
+      expect(MockInventariRepository.findOneBy).toHaveBeenCalledWith({
+        id_inventory: 1,
+      });
       expect(result).toEqual({
         ...oneInventari,
         ...mockInventariUpdate,
@@ -141,7 +146,7 @@ describe('InventariService', () => {
         fk_classroom: { id_classroom: 2 }, // Debe ser un objeto
       });
     });
-  }); 
+  });
 
   describe('getInventariAll', () => {
     it('should return an array of inventaris', async () => {
@@ -155,8 +160,16 @@ describe('InventariService', () => {
       const result = await inventariService.getInventari(1, 'false');
       expect(result).toEqual({
         ...oneInventari,
-        fk_inventary_type: { id_type: 1, description: 'Tipo A', fk_inventari: null },
-        fk_classroom: { id_classroom: 1, description: 'Aula 101', fk_inventari: null },
+        fk_inventary_type: {
+          id_type: 1,
+          description: 'Tipo A',
+          fk_inventari: null,
+        },
+        fk_classroom: {
+          id_classroom: 1,
+          description: 'Aula 101',
+          fk_inventari: null,
+        },
       });
       expect(MockInventariRepository.findOneBy).toHaveBeenCalledWith({
         id_inventory: 1,

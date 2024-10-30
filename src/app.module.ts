@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { StatusModule } from './status/status.module';
 import { ClassroomModule } from './classroom/classroom.module';
@@ -55,4 +55,3 @@ import { Status } from './status/status.entity';
   providers: [],
 })
 export class AppModule {}
-

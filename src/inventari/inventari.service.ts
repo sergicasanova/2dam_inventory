@@ -18,61 +18,28 @@ export class InventariService {
       id_inventory: id,
     });
 
-    if (!result) {
-      throw new HttpException('Inventario no encontrado', HttpStatus.NOT_FOUND);
-    }
-
-    // Si deseas incluir las relaciones al devolver el inventario
-    const inventariWithRelations = {
-      ...result,
-      fk_inventary_type: {
-        id_type: result.fk_inventary_type.id_type,
-        description: result.fk_inventary_type.description,
-        // Agrega otros campos necesarios si es necesario
-      },
-      fk_classroom: {
-        id_classroom: result.fk_classroom.id_classroom,
-        description: result.fk_classroom.description,
-        // Agrega otros campos necesarios si es necesario
-      },
-    };
-
     if (xml === 'true') {
       const jsonFormatted = JSON.stringify({
-        Inventari: inventariWithRelations,
+        Inventari: this.inventariRepository.find(),
       });
       const xmlResult = this.utilsService.convertJSONtoXML(jsonFormatted);
       return xmlResult;
     }
 
-    return inventariWithRelations;
+    return result;
   }
 
   async getInventariAll(xml?: string): Promise<any> {
     const result = await this.inventariRepository.find();
 
-    // Considera incluir relaciones aquí también, si es necesario
-    const inventarisWithRelations = result.map(inventari => ({
-      ...inventari,
-      fk_inventary_type: {
-        id_type: inventari.fk_inventary_type.id_type,
-        description: inventari.fk_inventary_type.description,
-      },
-      fk_classroom: {
-        id_classroom: inventari.fk_classroom.id_classroom,
-        description: inventari.fk_classroom.description,
-      },
-    }));
-
     if (xml === 'true') {
       const jsonFormatted = JSON.stringify({
-        Inventaris: inventarisWithRelations,
+        Inventari: this.inventariRepository.find(),
       });
       const xmlResult = this.utilsService.convertJSONtoXML(jsonFormatted);
       return xmlResult;
     }
-    
-    return inventarisWithRelations;
+    return result;
   }
 
   async createInventari(
@@ -84,37 +51,37 @@ export class InventariService {
       fk_classroom: { id_classroom: inventari.id_classroom },
       fk_issue: inventari.fk_issue ? { id_issue: inventari.fk_issue } : null,
     });
-  
+
     await this.inventariRepository.save(newInventari);
     return { message: 'Inventario creado' };
   }
-  
+
   async updateInventari(id: number, inventari: UpdateInventariDto) {
     const updatedData = {
       ...inventari,
       // Asegurarte de manejar correctamente las relaciones, como en la creación
-      fk_inventary_type: inventari.fk_inventary_type 
+      fk_inventary_type: inventari.fk_inventary_type
         ? { id_type: inventari.fk_inventary_type }
-        : undefined,  // Solo actualiza si se pasa un id
-      fk_classroom: inventari.fk_classroom 
+        : undefined, // Solo actualiza si se pasa un id
+      fk_classroom: inventari.fk_classroom
         ? { id_classroom: inventari.fk_classroom }
         : undefined,
-      fk_issue: inventari.fk_issue 
-        ? { id_issue: inventari.fk_issue }
-        : null,  // Si es null, permitir que sea null
+      fk_issue: inventari.fk_issue ? { id_issue: inventari.fk_issue } : null, // Si es null, permitir que sea null
     };
-  
+
     await this.inventariRepository.update(id, updatedData);
-  
-    const updatedInventari = await this.inventariRepository.findOneBy({ id_inventory: id });
-  
+
+    const updatedInventari = await this.inventariRepository.findOneBy({
+      id_inventory: id,
+    });
+
     if (!updatedInventari) {
       throw new HttpException('Inventario no encontrado', HttpStatus.NOT_FOUND);
     }
-  
+
     return updatedInventari;
   }
-  
+
   async deleteInventari(id: number): Promise<{ message: string }> {
     const result = await this.inventariRepository.delete(id);
     if (result.affected === 0) {

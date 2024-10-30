@@ -1,70 +1,68 @@
 import { IsString, IsInt, IsOptional } from 'class-validator';
 
 export class CreateInventariDto {
- 
-    @IsString()
-    num_serie: string;
- 
-    @IsString()
-    brand: string;
+  @IsString()
+  num_serie: string;
 
-    @IsString()
-    model: string;
+  @IsString()
+  brand: string;
 
-    @IsInt()
-    GVA_cod_article: number;
+  @IsString()
+  model: string;
 
-    @IsString()
-    GVA_description_cod_articulo: string;
+  @IsInt()
+  GVA_cod_article: number;
 
-    @IsString()
-    status: string;
+  @IsString()
+  GVA_description_cod_articulo: string;
 
-    @IsInt()
-    id_type: number;
+  @IsString()
+  status: string;
 
-    @IsInt()
-    fk_issue: number;
+  @IsInt()
+  id_type: number;
 
-    @IsInt()
-    id_classroom: number;
-  }
- 
-  export class UpdateInventariDto {
-    
-    @IsOptional()
-    @IsString()
-    num_serie?: string;
-    
-    @IsOptional()
-    @IsInt()
-    brand?: string;
+  @IsInt()
+  fk_issue: number;
 
-    @IsOptional()
-    @IsString()
-    model?: string;
+  @IsInt()
+  id_classroom: number;
+}
 
-    @IsOptional()
-    @IsInt()
-    GVA_cod_article?: number;
+export class UpdateInventariDto {
+  @IsOptional()
+  @IsString()
+  num_serie?: string;
 
-    @IsOptional()
-    @IsString()
-    GVA_description_cod_articulo?: string;
+  @IsOptional()
+  @IsInt()
+  brand?: string;
 
-    @IsOptional()
-    @IsString()
-    status?: string;
+  @IsOptional()
+  @IsString()
+  model?: string;
 
-    @IsOptional()
-    @IsInt()
-    fk_inventary_type?: number;
+  @IsOptional()
+  @IsInt()
+  GVA_cod_article?: number;
 
-    @IsOptional()
-    @IsInt()
-    fk_issue?: number;
+  @IsOptional()
+  @IsString()
+  GVA_description_cod_articulo?: string;
 
-    @IsOptional()
-    @IsInt()
-    fk_classroom?: number;
-  }
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsInt()
+  fk_inventary_type?: number;
+
+  @IsOptional()
+  @IsInt()
+  fk_issue?: number;
+
+  @IsOptional()
+  @IsInt()
+  fk_classroom?: number;
+}

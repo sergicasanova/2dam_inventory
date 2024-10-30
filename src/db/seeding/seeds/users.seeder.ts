@@ -11,6 +11,7 @@ export class UserSeeder implements Seeder {
       const userEntry = new User();
       userEntry.name = item.name;
       userEntry.surname = item.surname;
+      userEntry.password = item.password;
       userEntry.email = item.email;
       userEntry.role = item.role;
 
