@@ -11,6 +11,7 @@ import { Status } from './status/status.entity';
 import { Classroom } from './classroom/classroom.entity';
 import { UserSeeder } from './db/seeding/seeds/users.seeder';
 import { Inventary_typeSeeder } from './db/seeding/seeds/inventari_type.seeds';
+import { ClassroomSeeder } from './db/seeding/seeds/classroomSeed';
 import { config } from 'dotenv';
 config();
 
@@ -31,7 +32,7 @@ const options: DataSourceOptions & SeederOptions = {
     Status,
     Classroom,
   ],
-  seeds: [InventariSeeder, Inventary_typeSeeder, UserSeeder],
+  seeds: [InventariSeeder, ClassroomSeeder, Inventary_typeSeeder, UserSeeder],
 };
 
 const dataSource = new DataSource(options);
