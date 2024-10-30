@@ -11,9 +11,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthService } from 'src/Autentication/auth.service';
 @Controller('Users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   getAllUser(@Query('xml') xml?: string) {
@@ -66,4 +70,24 @@ export class UsersController {
     }
     return this.usersService.deleteUser(userId);
   }
+  @Post('login')
+  async login(@Body('name') name: string, @Body('password') password: string) {
+    if (!name || !password) {
+        throw new HttpException(
+            'El nombre de usuario y la contraseña son obligatorios',
+            HttpStatus.BAD_REQUEST,
+        );
+    }
+
+    const user = await this.usersService.validateUser(name, password);
+    if (!user) {
+        throw new HttpException(
+            'Credenciales inválidas',
+            HttpStatus.UNAUTHORIZED,
+        );
+    }
+
+    const token = await this.authService.generateToken(user.id_user);
+    return { token };
+}
 }
