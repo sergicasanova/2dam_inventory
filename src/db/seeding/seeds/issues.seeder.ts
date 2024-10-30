@@ -27,8 +27,6 @@ export class IssueSeeder implements Seeder {
         issueEntry.technician = await userRepository.findOneBy({
           id_user: item.id_tecnic,
         });
-        issueEntry.created_at = new Date(item.created_at);
-        issueEntry.last_updated = new Date(item.last_updated);
         issueEntry.description = item.description;
         issueEntry.notes = item.notes;
         return issueEntry;
