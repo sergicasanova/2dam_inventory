@@ -1,30 +1,23 @@
 export default [
   {
-    id_type: 1,
     description: 'PC',
   },
   {
-    id_type: 2,
-    description: 'portatil',
+    description: 'Portátil',
   },
   {
-    id_type: 3,
-    description: 'switch',
+    description: 'Switch',
   },
   {
-    id_type: 4,
-    description: 'pantalla',
+    description: 'Pantalla',
   },
   {
-    id_type: 5,
-    description: 'tablet',
+    description: 'Tablet',
   },
   {
-    id_type: 6,
-    description: 'proyector',
+    description: 'Proyector',
   },
   {
-    id_type: 7,
-    description: 'perifericos',
+    description: 'Periférico',
   },
 ];

@@ -9,6 +9,8 @@ import { IssueConversationEntity } from './issues_conversation/issues_conversati
 import { User } from './users/users.entity';
 import { Status } from './status/status.entity';
 import { Classroom } from './classroom/classroom.entity';
+import { UserSeeder } from './db/seeding/seeds/users.seeder';
+import { Inventary_typeSeeder } from './db/seeding/seeds/inventari_type.seeds';
 import { config } from 'dotenv';
 config();
 
@@ -29,7 +31,7 @@ const options: DataSourceOptions & SeederOptions = {
     Status,
     Classroom,
   ],
-  seeds: [InventariSeeder],
+  seeds: [InventariSeeder, Inventary_typeSeeder, UserSeeder],
 };
 
 const dataSource = new DataSource(options);

@@ -16,7 +16,6 @@ import { Classroom } from './classroom/classroom.entity';
 import { Inventari } from './inventari/inventari.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 import { Status } from './status/status.entity';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -55,7 +54,5 @@ import { Status } from './status/status.entity';
   controllers: [],
   providers: [],
 })
-export class AppModule{
-
-}
+export class AppModule {}
 
