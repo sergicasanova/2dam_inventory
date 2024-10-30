@@ -17,8 +17,8 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-        "seed": "ts-node src/seeds.ts",
-        "test:e2e": "jest --config ./test/jest-e2e.json"
+        "test:e2e": "jest --config ./test/jest-e2e.json",
+        "seed": "docker-compose exec web_server node_modules/.bin/ts-node src/seeds.ts"
     },
     "dependencies": {
         "@faker-js/faker": "^9.0.3",

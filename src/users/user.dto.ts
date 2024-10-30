@@ -8,10 +8,7 @@ import {
   Max,
   Length,
 } from 'class-validator';
-import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
-import { Issue } from '../issues/issues.entity';
-
-export class UserDto {
+export class CreateUserDto {
   @IsOptional()
   @IsInt()
   id_user?: number;
@@ -34,13 +31,34 @@ export class UserDto {
   @Min(0)
   @Max(1)
   role: number;
+}
 
+export class UpdateUserDto {
   @IsOptional()
-  issueConversations?: IssueConversationEntity[];
+  @IsInt()
+  id_user?: number;
 
+  @IsString()
   @IsOptional()
-  issues?: Issue[];
+  @Length(1, 50)
+  name: string;
 
+  @IsString()
   @IsOptional()
-  assignedIssues?: Issue[];
+  @Length(1, 50)
+  surname: string;
+
+  @IsString()
+  @IsOptional()
+  password: string;
+
+  @IsEmail()
+  @IsOptional()
+  email: string;
+
+  @IsInt()
+  @IsOptional()
+  @Min(0)
+  @Max(1)
+  role: number;
 }

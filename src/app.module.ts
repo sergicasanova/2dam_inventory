@@ -27,13 +27,12 @@ import { Status } from './status/status.entity';
     InventariModule,
     UtilsModule,
     IssuesConversationModule,
-    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: 'database',
-        port: +configService.get('PORT'),
+        port: +configService.get('MYSQL_PORT') || 3306,
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
