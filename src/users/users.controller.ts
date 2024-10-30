@@ -11,6 +11,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
+
 @Controller('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -42,18 +44,18 @@ export class UsersController {
   }
 
   @Post()
-  createUser(@Body() Users: any) {
-    return this.usersService.createUser(Users);
+  createUser(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
   }
 
   @Put(':id')
-  updateUser(@Param('id') id: string, @Body() Users: any) {
+  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const userId = parseInt(id);
     if (isNaN(userId)) {
       throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
     }
     return this.usersService.updateUser({
-      ...Users,
+      ...updateUserDto,
       id_user: userId,
     });
   }
