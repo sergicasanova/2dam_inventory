@@ -9,6 +9,7 @@ const usersArray = [
     id_user: 1,
     name: 'Federico',
     surname: 'Gonzalez',
+    password: '123456',
     email: 'federico@gmail.com',
     role: 0,
   },
@@ -16,6 +17,7 @@ const usersArray = [
     id_user: 2,
     name: 'Gonzalo',
     surname: 'Martinez',
+    password: '123456',
     email: 'gonzalo@gmail.com',
     role: 1,
   },
@@ -24,6 +26,7 @@ const usersArray = [
     id_user: 3,
     name: 'Gustavo',
     surname: 'Messi',
+    password: '123456',
     email: 'gustavo@gmail.com',
     role: 1,
   },
@@ -33,6 +36,7 @@ const oneUser = {
   id_user: 1,
   name: 'Federico',
   surname: 'Gonzalez',
+  password: '123456',
   email: 'federico@gmail.com',
   role: 0,
 };
@@ -40,6 +44,7 @@ const mergeUser = {
   id_user: 1,
   name: 'Manuel',
   surname: 'Fernandez',
+  password: '123456',
   email: 'federico@gmail.com',
   role: 1,
 };
@@ -79,6 +84,7 @@ describe('UsersService', () => {
       const mockUser = {
         name: 'Federico',
         surname: 'Gonzalez',
+        password: '123456',
         email: 'federico@gmail.com',
         role: 0,
       };
@@ -106,6 +112,7 @@ describe('UsersService', () => {
         id_user: 1,
         name: 'Federico',
         surname: 'Gonzalez',
+        password: '123456',
         email: 'federico@gmail.com',
         role: 0,
       };
@@ -125,6 +132,7 @@ describe('UsersService', () => {
         id_user: 1,
         name: 'Manuel',
         surname: 'Fernandez',
+        password: '123456',
         email: 'federico@gmail.com',
         role: 1,
       };
