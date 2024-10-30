@@ -1,5 +1,3 @@
-// src/classroom/classroom.controller.ts
-
 import {
   Body,
   Controller,
@@ -53,8 +51,14 @@ export class ClassroomController {
   }
 
   @Put(':id')
-  updateClassroom(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
-    return this.classroomService.updateClassroom(parseInt(id), updateClassroomDto);
+  updateClassroom(
+    @Param('id') id: string,
+    @Body() updateClassroomDto: UpdateClassroomDto,
+  ) {
+    return this.classroomService.updateClassroom(
+      parseInt(id),
+      updateClassroomDto,
+    );
   }
 
   @Delete(':id')

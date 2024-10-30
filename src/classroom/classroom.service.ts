@@ -1,5 +1,3 @@
-// src/classroom/classroom.service.ts
-
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UtilsService } from '../utils/utils.service';
 import { Classroom } from './classroom.entity';
@@ -27,14 +25,18 @@ export class ClassroomService {
     return classrooms;
   }
 
-  async createClassroom(createClassroomDto: CreateClassroomDto): Promise<{ message: string }> {
+  async createClassroom(
+    createClassroomDto: CreateClassroomDto,
+  ): Promise<{ message: string }> {
     const classroom = this.classroomRepository.create(createClassroomDto);
     await this.classroomRepository.save(classroom);
     return { message: 'Aula creada' };
   }
 
   async getClassroom(id: number, xml?: string): Promise<Classroom | string> {
-    const classroom = await this.classroomRepository.findOneBy({ id_classroom: id });
+    const classroom = await this.classroomRepository.findOneBy({
+      id_classroom: id,
+    });
 
     if (!classroom) {
       throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
@@ -48,14 +50,22 @@ export class ClassroomService {
     return classroom;
   }
 
-  async updateClassroom(id: number, updateClassroomDto: UpdateClassroomDto): Promise<Classroom> {
-    const classroom = await this.classroomRepository.findOneBy({ id_classroom: id });
+  async updateClassroom(
+    id: number,
+    updateClassroomDto: UpdateClassroomDto,
+  ): Promise<Classroom> {
+    const classroom = await this.classroomRepository.findOneBy({
+      id_classroom: id,
+    });
 
     if (!classroom) {
       throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
     }
 
-    const updatedClassroom = this.classroomRepository.merge(classroom, updateClassroomDto);
+    const updatedClassroom = this.classroomRepository.merge(
+      classroom,
+      updateClassroomDto,
+    );
     return this.classroomRepository.save(updatedClassroom);
   }
 

@@ -10,4 +10,3 @@ export class UpdateClassroomDto {
   @IsOptional()
   description?: string;
 }
-
