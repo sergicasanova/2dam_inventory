@@ -1,7 +1,7 @@
-import { DataSource } from "typeorm";
-import { Seeder, SeederFactoryManager } from "typeorm-extension";
+import { DataSource } from 'typeorm';
+import { Seeder } from 'typeorm-extension';
 import { Inventari } from '../../../inventari/inventari.entity';
-import inventoryData from '../../../data/inventory'; 
+import inventoryData from '../../../data/inventory';
 
 export class InventariSeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<void> {

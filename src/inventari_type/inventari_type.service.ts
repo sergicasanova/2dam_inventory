@@ -68,7 +68,9 @@ export class InventariTypeService {
 
     await this.inventariTypeRepository.update(id_type, inventariTypeUpdated);
 
-    return this.inventariTypeRepository.findOne({ where: { id_type: id_type } });
+    return this.inventariTypeRepository.findOne({
+      where: { id_type: id_type },
+    });
   }
 
   async deleteInventariType(id_type: number): Promise<{ message: string }> {
