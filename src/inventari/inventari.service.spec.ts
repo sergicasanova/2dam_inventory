@@ -78,7 +78,7 @@ describe('InventariService', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks(); // Resetea los mocks después de cada test
+    jest.clearAllMocks(); 
   });
 
   it('should be defined', () => {
@@ -99,19 +99,16 @@ describe('InventariService', () => {
         id_classroom: 1,
       };
 
-      // Llama al método de creación
       const result = await inventariService.createInventari(createInventariDto);
 
-      // Verifica que el resultado sea el esperado
       expect(result).toEqual({
         message: 'Inventario creado',
       });
 
-      // Verifica que los métodos del repositorio se llamen con los argumentos correctos
       expect(MockInventariRepository.create).toHaveBeenCalledWith({
         ...createInventariDto,
-        fk_inventary_type: { id_type: 1 }, // Debe incluir el objeto de fk_inventary_type
-        fk_classroom: { id_classroom: 1 }, // Debe incluir el objeto de fk_classroom
+        fk_inventary_type: { id_type: 1 }, 
+        fk_classroom: { id_classroom: 1 }, 
       });
       expect(MockInventariRepository.save).toHaveBeenCalled();
     });
@@ -132,8 +129,8 @@ describe('InventariService', () => {
         model: 'Modelo B',
         num_serie: 'DEF456',
         status: 'en reparación',
-        fk_inventary_type: { id_type: 2 }, // Debe ser un objeto
-        fk_classroom: { id_classroom: 2 }, // Debe ser un objeto
+        fk_inventary_type: { id_type: 2 }, 
+        fk_classroom: { id_classroom: 2 }, 
       });
 
       expect(MockInventariRepository.findOneBy).toHaveBeenCalledWith({
@@ -142,8 +139,8 @@ describe('InventariService', () => {
       expect(result).toEqual({
         ...oneInventari,
         ...mockInventariUpdate,
-        fk_inventary_type: { id_type: 2 }, // Debe ser un objeto
-        fk_classroom: { id_classroom: 2 }, // Debe ser un objeto
+        fk_inventary_type: { id_type: 2 }, 
+        fk_classroom: { id_classroom: 2 }, 
       });
     });
   });
