@@ -10,6 +10,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -17,13 +19,13 @@ export class Issue {
   @PrimaryGeneratedColumn()
   id_issue: number;
 
-  @Column()
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
   @Column()
   description: string;
 
-  @Column()
+  @UpdateDateColumn({ type: 'timestamp' })
   last_updated: Date;
 
   @Column()
