@@ -20,6 +20,9 @@ export class User {
   surname: string;
 
   @Column()
+  password: string;
+
+  @Column()
   email: string;
 
   @Column({ default: 0 })

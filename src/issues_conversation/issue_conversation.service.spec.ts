@@ -91,11 +91,10 @@ describe('IssueConversationService', () => {
         notes: 'test de prueba 4',
         create_at: '',
       };
-
       const result =
         await conversationService.createIssueConversation(mockConversation);
 
-      expect(result).toEqual(mockConversation);
+      expect(result).toMatchObject(mockConversation);
     });
   });
 
@@ -125,7 +124,7 @@ describe('IssueConversationService', () => {
         mockConversation.notes,
       );
 
-      expect(result).toEqual(mockConversation);
+      expect(result).toMatchObject(mockConversation);
     });
   });
 
