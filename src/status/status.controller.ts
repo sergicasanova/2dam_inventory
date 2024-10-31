@@ -11,17 +11,17 @@ import {
   Query,
 } from '@nestjs/common';
 import { StatusService } from './status.service';
+import { CreateStatusDto } from './dto/create-status.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Controller('Status')
 export class StatusController {
-  private StatusService: StatusService;
-  constructor(StatusService: StatusService) {
-    this.StatusService = StatusService;
-  }
+  constructor(private readonly statusService: StatusService) {}
+
   @Get()
   getAllStatus(@Query('xml') xml?: string) {
     try {
-      return this.StatusService.getAllStatus(xml);
+      return this.statusService.getAllStatus(xml);
     } catch (err) {
       throw new HttpException(
         {
@@ -29,29 +29,30 @@ export class StatusController {
           error: err,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
-        {
-          cause: err,
-        },
       );
     }
   }
+
   @Get(':id')
   getStatus(@Param('id') id: string, @Query('xml') xml?: string) {
-    return this.StatusService.getStatus(parseInt(id), xml);
+    return this.statusService.getStatus(parseInt(id), xml);
   }
+
   @Post()
-  createStatus(@Body() Status) {
-    return this.StatusService.createStatus(Status);
+  createStatus(@Body() createStatusDto: CreateStatusDto) {
+    return this.statusService.createStatus(createStatusDto);
   }
+
   @Put(':id')
-  UpdateStatus(@Param('id') id: string, @Body() Status) {
-    return this.StatusService.updateStatus({
-      ...Status,
-      id_status: parseInt(id),
-    });
+  updateStatus(
+    @Param('id') id: string,
+    @Body() updateStatusDto: UpdateStatusDto,
+  ) {
+    return this.statusService.updateStatus(parseInt(id), updateStatusDto);
   }
+
   @Delete(':id')
   deleteStatus(@Param('id') id: string) {
-    return this.StatusService.deleteStatus(parseInt(id));
+    return this.statusService.deleteStatus(parseInt(id));
   }
 }

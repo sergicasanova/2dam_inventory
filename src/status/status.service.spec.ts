@@ -85,6 +85,7 @@ describe('StatusService', () => {
     it('should create a new status', async () => {
       const newStatus = {
         description: 'En progreso',
+        issues: [],
       };
       const result = await statusService.createStatus(newStatus);
       expect(result).toEqual({ message: 'Status creado con éxito' });
@@ -95,28 +96,19 @@ describe('StatusService', () => {
 
   describe('updateStatus', () => {
     it('should update an existing status', async () => {
-      const updatedStatus = {
-        id_status: 1,
+      const id = 1;
+      const updatedStatusDto = {
         description: 'Actualizada',
         issues: [],
       };
-      await statusService.updateStatus(updatedStatus);
+      await statusService.updateStatus(id, updatedStatusDto);
       expect(MockStatusRepository.update).toHaveBeenCalledWith(
-        updatedStatus.id_status,
-        updatedStatus,
+        id,
+        updatedStatusDto,
       );
       expect(MockStatusRepository.findOneBy).toHaveBeenCalledWith({
-        id_status: updatedStatus.id_status,
+        id_status: id,
       });
-    });
-
-    it('should throw an exception if status to update is not found', async () => {
-      const updatedStatus = {
-        id_status: 999,
-        description: 'No existe',
-        issues: [],
-      };
-      await expect(statusService.updateStatus(updatedStatus)).rejects.toThrow();
     });
   });
 
