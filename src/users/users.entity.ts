@@ -22,12 +22,16 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column({ default: 0 })
   role: number;
+  @Column({ type: 'timestamp', nullable: true })
+  tokenExpiration: Date;
 
+  @Column({ nullable: true })
+  token: string;
   @OneToMany(
     () => IssueConversationEntity,
     (issueConversation) => issueConversation.user,
