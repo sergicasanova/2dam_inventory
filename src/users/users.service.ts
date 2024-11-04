@@ -25,8 +25,8 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const usuario = this.usersRepository.create(createUserDto);
-    const passwordHash = await bcrypt.hash(usuario.password, 10);
+    const usuario = await this.usersRepository.create(createUserDto);
+    const passwordHash = await bcrypt.hash(await usuario.password, 10);
     usuario.password = passwordHash;
     return this.usersRepository.save(usuario);
   }
@@ -61,5 +61,12 @@ export class UsersService {
 
   async deleteUser(id_user: number): Promise<void> {
     await this.usersRepository.delete(id_user);
+  }
+  async validateUser(email: string, password: string): Promise<User | null> {
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return user;
+    }
+    return null;
   }
 }
