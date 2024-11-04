@@ -14,11 +14,11 @@ export class CreateUserDto {
   id_user?: number;
 
   @IsString()
-  @Length(1, 50)
+  @Length(1, 500)
   name: string;
 
   @IsString()
-  @Length(1, 50)
+  @Length(1, 500)
   surname: string;
 
   @IsString()
@@ -29,7 +29,7 @@ export class CreateUserDto {
 
   @IsInt()
   @Min(0)
-  @Max(1)
+  @Max(2)
   role: number;
 }
 
@@ -41,24 +41,24 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   @Length(1, 50)
-  name: string;
+  name?: string;
 
   @IsString()
   @IsOptional()
   @Length(1, 50)
-  surname: string;
+  surname?: string;
 
   @IsString()
   @IsOptional()
-  password: string;
+  password?: string;
 
   @IsEmail()
   @IsOptional()
-  email: string;
+  email?: string;
 
   @IsInt()
   @IsOptional()
   @Min(0)
   @Max(1)
-  role: number;
+  role?: number;
 }
