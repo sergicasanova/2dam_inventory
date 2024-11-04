@@ -4,11 +4,10 @@ import { StatusService } from './status.service';
 import { UtilsModule } from '../utils/utils.module';
 import { Status } from './status.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UtilsService } from 'src/utils/utils.service';
 
 @Module({
   imports: [UtilsModule, TypeOrmModule.forFeature([Status])],
-  controllers: [StatusController, UtilsService],
+  controllers: [StatusController],
   providers: [StatusService],
   exports: [StatusService],
 })

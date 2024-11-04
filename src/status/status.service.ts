@@ -53,19 +53,16 @@ export class StatusService {
     id: number,
     updateStatusDto: UpdateStatusDto,
   ): Promise<Status> {
-    const existingStatus = await this.statusRepository.findOneBy({
-      id_status: id,
+    const status = await this.statusRepository.findOneBy({
+       id_status: id 
     });
 
-    if (!existingStatus) {
+    if (!status) {
       throw new HttpException('Status no encontrado', HttpStatus.NOT_FOUND);
     }
-
-    const updatedStatus = this.statusRepository.merge(
-      existingStatus,
-      updateStatusDto,
-    );
-    return this.statusRepository.save(updatedStatus);
+    await this.statusRepository.update(id, updateStatusDto);
+  
+    return this.statusRepository.findOneBy({ id_status: id });
   }
 
   async deleteStatus(id: number): Promise<{ message: string }> {
