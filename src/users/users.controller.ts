@@ -71,15 +71,15 @@ export class UsersController {
     return this.usersService.deleteUser(userId);
   }
   @Post('login')
-  async login(@Body('name') name: string, @Body('password') password: string) {
-    if (!name || !password) {
+  async login(@Body('id_user') id_user: number, @Body('password') password: string) {
+    if (!id_user || !password) {
         throw new HttpException(
             'El nombre de usuario y la contraseña son obligatorios',
             HttpStatus.BAD_REQUEST,
         );
     }
 
-    const user = await this.usersService.validateUser(name, password);
+    const user = await this.usersService.validateUser(id_user, password);
     if (!user) {
         throw new HttpException(
             'Credenciales inválidas',
