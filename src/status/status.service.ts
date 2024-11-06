@@ -41,11 +41,11 @@ export class StatusService {
   ): Promise<{ message: string }> {
     const status = this.statusRepository.create({
       description: createStatusDto.description,
-      issues: (createStatusDto.issues || []).map(
-        (issueId) => ({ id_issue: issueId }) as unknown as Issue,
-      ),
+      issues: [],
     });
+  
     await this.statusRepository.save(status);
+  
     return { message: 'Status creado con éxito' };
   }
 

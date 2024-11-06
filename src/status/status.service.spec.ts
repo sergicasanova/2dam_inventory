@@ -85,14 +85,20 @@ describe('StatusService', () => {
     it('should create a new status', async () => {
       const newStatus = {
         description: 'En progreso',
-        issues: [],
       };
+  
       const result = await statusService.createStatus(newStatus);
+  
       expect(result).toEqual({ message: 'Status creado con éxito' });
-      expect(MockStatusRepository.create).toHaveBeenCalledWith(newStatus);
-      expect(MockStatusRepository.save).toHaveBeenCalledWith(newStatus);
+      expect(MockStatusRepository.create).toHaveBeenCalledWith(
+        expect.objectContaining({ description: 'En progreso', issues: [] }),
+      );
+      expect(MockStatusRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({ description: 'En progreso', issues: [] }),
+      );
     });
   });
+  
 
   describe('updateStatus', () => {
     it('should update an existing status', async () => {
