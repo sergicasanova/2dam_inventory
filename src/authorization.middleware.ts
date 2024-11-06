@@ -16,7 +16,6 @@ export class AuthorizationMiddleware implements NestMiddleware {
 
     const tokenSplit = token!.split(' ')[1];
 
-    console.log(tokenSplit);
     const isValid = await this.authService.validateToken(tokenSplit);
     if (!isValid) {
       throw new UnauthorizedException('Token inválido o expirado');
