@@ -1,6 +1,10 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-import { StatusModule } from './status/status.module';
 import { ClassroomModule } from './classroom/classroom.module';
 import { InventariModule } from './inventari/inventari.module';
 import { InventariTypeModule } from './inventari_type/inventari_type.module';
@@ -16,7 +20,9 @@ import { Classroom } from './classroom/classroom.entity';
 import { Inventari } from './inventari/inventari.entity';
 import { IssueConversationEntity } from './issues_conversation/issues_conversation.entity';
 import { Status } from './status/status.entity';
-import { DataSource } from 'typeorm';
+import { AuthorizationMiddleware } from './authorization.middleware';
+import StatusModule from './status/status.module';
+import { AuthService } from './Autentication/auth.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -28,6 +34,7 @@ import { DataSource } from 'typeorm';
     InventariModule,
     UtilsModule,
     IssuesConversationModule,
+    TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -52,8 +59,13 @@ import { DataSource } from 'typeorm';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [AuthorizationMiddleware, AuthService],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthorizationMiddleware)
+      .exclude({ path: 'users/login', method: RequestMethod.POST })
+      .forRoutes('*');
+  }
 }
