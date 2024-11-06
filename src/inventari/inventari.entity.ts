@@ -36,7 +36,7 @@ export class Inventari {
   @ManyToOne(() => Inventari_type, (inventariType) => inventariType.fk_inventari, {
     nullable: false,
   })
-  @JoinColumn({ name: 'id_inventory_type' })
+  @JoinColumn({ name: 'id_type' })
   fk_inventary_type: Inventari_type;
 
   @ManyToOne(() => Classroom, (classroom) => classroom.fk_inventari, {

@@ -1,8 +1,6 @@
 import { IsString, IsInt, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class CreateInventariDto {
-    @IsInt()
-    id_inventory?: number;
 
     @IsString()
     num_serie: string;
@@ -32,9 +30,6 @@ export class CreateInventariDto {
   }
 
   export class UpdateInventariDto {
-    @IsOptional()
-    @IsInt()
-    id_inventory?: number;
 
     @IsOptional()
     @IsString()
