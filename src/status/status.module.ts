@@ -9,5 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [UtilsModule, TypeOrmModule.forFeature([Status])],
   controllers: [StatusController],
   providers: [StatusService],
+  exports: [StatusService],
 })
-export class StatusModule {}
+export default class StatusModule {}
