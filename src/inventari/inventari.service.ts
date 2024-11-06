@@ -30,31 +30,30 @@ export class InventariService {
   }
 
   async getInventariAll(xml?: string): Promise<any> {
-    const result = await this.inventariRepository.find();
-
+    const result = await this.inventariRepository.find({
+      relations: ['fk_inventary_type', 'fk_issue', 'fk_classroom'],
+    });
     if (xml === 'true') {
       const jsonFormatted = JSON.stringify({
-        Inventari: this.inventariRepository.find(),
+        Inventari: result,
       });
       const xmlResult = this.utilsService.convertJSONtoXML(jsonFormatted);
       return xmlResult;
     }
+
     return result;
   }
 
-  async createInventari(
-    inventari: CreateInventariDto,
-  ): Promise<{ message: string }> {
+  async createInventari(createInventariDto: CreateInventariDto): Promise<{ message: string }> {
     const newInventari = this.inventariRepository.create({
-      ...inventari,
-      fk_inventary_type: { id_type: inventari.id_type },
-      fk_classroom: { id_classroom: inventari.id_classroom },
-      fk_issue: inventari.fk_issue ? { id_issue: inventari.fk_issue } : null,
+      ...createInventariDto,
+      fk_inventary_type: { id_type: createInventariDto.id_type },  
+      fk_classroom: { id_classroom: createInventariDto.id_classroom }, 
     });
-
     await this.inventariRepository.save(newInventari);
     return { message: 'Inventario creado' };
   }
+  
 
   async updateInventari(id: number, inventari: UpdateInventariDto) {
     const updatedData = {
@@ -65,21 +64,18 @@ export class InventariService {
       fk_classroom: inventari.fk_classroom
         ? { id_classroom: inventari.fk_classroom }
         : undefined,
-      fk_issue: inventari.fk_issue ? { id_issue: inventari.fk_issue } : null,
     };
 
     await this.inventariRepository.update(id, updatedData);
-
     const updatedInventari = await this.inventariRepository.findOneBy({
       id_inventory: id,
     });
-
     if (!updatedInventari) {
       throw new HttpException('Inventario no encontrado', HttpStatus.NOT_FOUND);
     }
-
     return updatedInventari;
   }
+  
 
   async deleteInventari(id: number): Promise<{ message: string }> {
     const result = await this.inventariRepository.delete(id);
