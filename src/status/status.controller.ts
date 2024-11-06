@@ -11,8 +11,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { StatusService } from './status.service';
-import { CreateStatusDto } from './dto/create-status.dto';
-import { UpdateStatusDto } from './dto/update-status.dto';
+import { CreateStatusDto } from './status.dto';
+import { UpdateStatusDto } from './status.dto';
 
 @Controller('Status')
 export class StatusController {
