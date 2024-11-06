@@ -2,10 +2,8 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Status } from './status.entity';
-import { CreateStatusDto } from './dto/create-status.dto';
-import { UpdateStatusDto } from './dto/update-status.dto';
 import { UtilsService } from '../utils/utils.service';
-import { Issue } from 'src/issues/issues.entity';
+import { CreateStatusDto, UpdateStatusDto } from './status.dto';
 
 @Injectable()
 export class StatusService {
@@ -43,9 +41,9 @@ export class StatusService {
       description: createStatusDto.description,
       issues: [],
     });
-  
+
     await this.statusRepository.save(status);
-  
+
     return { message: 'Status creado con éxito' };
   }
 
@@ -54,14 +52,14 @@ export class StatusService {
     updateStatusDto: UpdateStatusDto,
   ): Promise<Status> {
     const status = await this.statusRepository.findOneBy({
-       id_status: id 
+      id_status: id,
     });
 
     if (!status) {
       throw new HttpException('Status no encontrado', HttpStatus.NOT_FOUND);
     }
     await this.statusRepository.update(id, updateStatusDto);
-  
+
     return this.statusRepository.findOneBy({ id_status: id });
   }
 

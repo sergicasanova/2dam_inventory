@@ -86,9 +86,9 @@ describe('StatusService', () => {
       const newStatus = {
         description: 'En progreso',
       };
-  
+
       const result = await statusService.createStatus(newStatus);
-  
+
       expect(result).toEqual({ message: 'Status creado con éxito' });
       expect(MockStatusRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({ description: 'En progreso', issues: [] }),
@@ -98,7 +98,6 @@ describe('StatusService', () => {
       );
     });
   });
-  
 
   describe('updateStatus', () => {
     it('should update an existing status', async () => {
