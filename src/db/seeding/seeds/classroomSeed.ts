@@ -9,6 +9,6 @@ export class ClassroomSeeder implements Seeder {
 
     await classroomRepository.save(classroomData);
 
-    console.log('Inventari seeding completed!');
+    console.log('Classroom seeding completed!');
   }
 }

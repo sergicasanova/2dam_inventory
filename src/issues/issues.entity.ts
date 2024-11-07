@@ -9,7 +9,6 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
-  OneToOne,
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
@@ -49,7 +48,7 @@ export class Issue {
   @JoinColumn({ name: 'id_status' })
   status: Status;
 
-  @OneToOne(() => Inventari, (fk_inventari) => fk_inventari.fk_issue)
+  @ManyToOne(() => Inventari, (inventari) => inventari.fk_issue)
   @JoinColumn({ name: 'id_inventory' })
   fk_inventari: Inventari;
 }
