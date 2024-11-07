@@ -25,7 +25,6 @@ const options: DataSourceOptions & SeederOptions = {
   database: process.env.MYSQL_DATABASE,
 
   entities: [
-   
     Inventari_type,
     Issue,
     IssueConversationEntity,

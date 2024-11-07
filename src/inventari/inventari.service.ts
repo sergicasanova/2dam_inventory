@@ -44,22 +44,23 @@ export class InventariService {
     return result;
   }
 
-  async createInventari(createInventariDto: CreateInventariDto): Promise<{ message: string }> {
+  async createInventari(
+    createInventariDto: CreateInventariDto,
+  ): Promise<{ message: string }> {
     const newInventari = this.inventariRepository.create({
       ...createInventariDto,
-      fk_inventary_type: { id_type: createInventariDto.id_type },  
-      fk_classroom: { id_classroom: createInventariDto.id_classroom }, 
+      fk_inventary_type: { id_type: createInventariDto.id_type },
+      fk_classroom: { id_classroom: createInventariDto.id_classroom },
     });
     await this.inventariRepository.save(newInventari);
     return { message: 'Inventario creado' };
   }
-  
 
   async updateInventari(id: number, inventari: UpdateInventariDto) {
     const updatedData = {
       ...inventari,
-      fk_inventary_type: { id_type: inventari.id_type },  
-      fk_classroom: { id_classroom: inventari.id_classroom }, 
+      fk_inventary_type: { id_type: inventari.id_type },
+      fk_classroom: { id_classroom: inventari.id_classroom },
     };
 
     await this.inventariRepository.update(id, updatedData);
@@ -71,7 +72,6 @@ export class InventariService {
     }
     return updatedInventari;
   }
-  
 
   async deleteInventari(id: number): Promise<{ message: string }> {
     const result = await this.inventariRepository.delete(id);

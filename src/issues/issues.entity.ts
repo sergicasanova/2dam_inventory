@@ -30,7 +30,10 @@ export class Issue {
   @Column()
   notes: string;
 
-  @OneToMany(() => IssueConversationEntity, (issueConversation) => issueConversation.issue)
+  @OneToMany(
+    () => IssueConversationEntity,
+    (issueConversation) => issueConversation.issue,
+  )
   conversations: IssueConversationEntity[];
 
   @ManyToOne(() => User, (user) => user.issues)

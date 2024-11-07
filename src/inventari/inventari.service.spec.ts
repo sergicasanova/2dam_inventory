@@ -16,7 +16,6 @@ const oneInventariDto: CreateInventariDto = {
   id_classroom: 1,
 };
 
-
 const mockInventariUpdate: UpdateInventariDto = {
   num_serie: 'ABC123',
   brand: 'Marca A',
@@ -26,8 +25,7 @@ const mockInventariUpdate: UpdateInventariDto = {
   status: 'disponible',
   id_type: 1,
   id_classroom: 1,
-  };
- 
+};
 
 describe('InventariService', () => {
   let inventariService: InventariService;
@@ -80,7 +78,8 @@ describe('InventariService', () => {
         ...oneInventariDto,
         fk_inventary_type: { id_type: oneInventariDto.id_type },
         fk_classroom: { id_classroom: oneInventariDto.id_classroom },
-      });      expect(MockInventariRepository.save).toHaveBeenCalled();
+      });
+      expect(MockInventariRepository.save).toHaveBeenCalled();
     });
   });
 
@@ -90,15 +89,15 @@ describe('InventariService', () => {
         1,
         mockInventariUpdate,
       );
-     
-        expect(MockInventariRepository.update).toHaveBeenCalledWith(
-          1,
-          expect.objectContaining({
-            ...mockInventariUpdate,
-            fk_inventary_type: { id_type: mockInventariUpdate.id_type },
-            fk_classroom: { id_classroom: mockInventariUpdate.id_classroom },
-          })
-        );
+
+      expect(MockInventariRepository.update).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({
+          ...mockInventariUpdate,
+          fk_inventary_type: { id_type: mockInventariUpdate.id_type },
+          fk_classroom: { id_classroom: mockInventariUpdate.id_classroom },
+        }),
+      );
       expect(MockInventariRepository.findOneBy).toHaveBeenCalledWith({
         id_inventory: 1,
       });

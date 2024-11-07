@@ -34,8 +34,14 @@ export class InventariController {
   }
 
   @Put(':id')
-  updateInventari(@Param('id') id: string, @Body() createInventariDto: CreateInventariDto) {
-    return this.inventariService.updateInventari(parseInt(id), createInventariDto);
+  updateInventari(
+    @Param('id') id: string,
+    @Body() createInventariDto: CreateInventariDto,
+  ) {
+    return this.inventariService.updateInventari(
+      parseInt(id),
+      createInventariDto,
+    );
   }
 
   @Delete(':id')
