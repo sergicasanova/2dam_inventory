@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { InventariService } from './inventari.service';
+import { CreateInventariDto } from './inventari.dto';
 
 @Controller('inventari')
 export class InventariController {
@@ -28,13 +29,13 @@ export class InventariController {
   }
 
   @Post()
-  createInventari(@Body() Inventari) {
-    return this.inventariService.createInventari(Inventari);
+  createInventari(@Body() createInventariDto: CreateInventariDto) {
+    return this.inventariService.createInventari(createInventariDto);
   }
 
   @Put(':id')
-  updateInventari(@Param('id') id: string, @Body() Inventari) {
-    return this.inventariService.updateInventari(parseInt(id), Inventari);
+  updateInventari(@Param('id') id: string, @Body() createInventariDto: CreateInventariDto) {
+    return this.inventariService.updateInventari(parseInt(id), createInventariDto);
   }
 
   @Delete(':id')

@@ -6,7 +6,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
 
@@ -33,17 +33,18 @@ export class Inventari {
   @Column()
   status: string;
 
-  @ManyToOne(
-    () => Inventari_type,
-    (fk_inventary_type) => fk_inventary_type.fk_inventari,
-  )
-  @JoinColumn({ name: 'id_inventory_type' })
+  @ManyToOne(() => Inventari_type, (inventariType) => inventariType.fk_inventari, {
+    nullable: false,
+  })
+  @JoinColumn({ name: 'id_type' })
   fk_inventary_type: Inventari_type;
 
-  @OneToOne(() => Issue, (fk_issue) => fk_issue.fk_inventari)
-  fk_issue: Issue;
-
-  @ManyToOne(() => Classroom, (fk_classroom) => fk_classroom.fk_inventari)
+  @ManyToOne(() => Classroom, (classroom) => classroom.fk_inventari, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'id_classroom' })
   fk_classroom: Classroom;
+
+  @OneToMany(() => Issue, (issue) => issue.fk_inventari)
+  fk_issue: Issue[];
 }

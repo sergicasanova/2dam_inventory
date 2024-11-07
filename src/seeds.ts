@@ -25,20 +25,21 @@ const options: DataSourceOptions & SeederOptions = {
   database: process.env.MYSQL_DATABASE,
 
   entities: [
-    Inventari,
+   
     Inventari_type,
     Issue,
     IssueConversationEntity,
     User,
+    Inventari,
     Status,
     Classroom,
   ],
   seeds: [
-    InventariSeeder,
     Inventary_typeSeeder,
     UserSeeder,
     ClassroomSeeder,
     IssueSeeder,
+    InventariSeeder,
   ],
 };
 

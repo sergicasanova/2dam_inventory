@@ -12,7 +12,9 @@ export class IssuesService {
   ) {}
 
   async getAllIssues(xml?: string): Promise<Issue[] | string> {
-    const allIssues = await this.issueRepository.find();
+    const allIssues = await this.issueRepository.find({
+      relations: ['user', 'technician', 'status', 'fk_inventari'],
+    });
     if (xml == 'true') {
       const jsonForXml = JSON.stringify({
         Issues: allIssues,
