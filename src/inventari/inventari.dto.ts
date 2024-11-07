@@ -57,9 +57,9 @@ export class CreateInventariDto {
   
     @IsOptional()
     @IsInt()
-    fk_inventary_type?: number;
+    id_type?: number;
   
     @IsOptional()
     @IsInt()
-    fk_classroom?: number;
+    id_classroom?: number;
   }

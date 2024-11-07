@@ -58,12 +58,8 @@ export class InventariService {
   async updateInventari(id: number, inventari: UpdateInventariDto) {
     const updatedData = {
       ...inventari,
-      fk_inventary_type: inventari.fk_inventary_type
-        ? { id_type: inventari.fk_inventary_type }
-        : undefined, 
-      fk_classroom: inventari.fk_classroom
-        ? { id_classroom: inventari.fk_classroom }
-        : undefined,
+      fk_inventary_type: { id_type: inventari.id_type },  
+      fk_classroom: { id_classroom: inventari.id_classroom }, 
     };
 
     await this.inventariRepository.update(id, updatedData);
