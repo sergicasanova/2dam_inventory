@@ -23,6 +23,7 @@ import { Status } from './status/status.entity';
 import { AuthorizationMiddleware } from './authorization.middleware';
 import StatusModule from './status/status.module';
 import { AuthService } from './Autentication/auth.service';
+import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -34,6 +35,10 @@ import { AuthService } from './Autentication/auth.service';
     InventariModule,
     UtilsModule,
     IssuesConversationModule,
+    MailModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

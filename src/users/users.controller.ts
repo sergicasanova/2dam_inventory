@@ -13,11 +13,13 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { AuthService } from 'src/Autentication/auth.service';
+import { MailService } from 'src/mail/mail.service';
 @Controller('Users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
+    private readonly mailService: MailService,
   ) {}
 
   @Get()
@@ -92,6 +94,8 @@ export class UsersController {
     }
 
     const token = await this.authService.generateToken(user.id_user);
+    this.mailService.sendUserConfirmation(user);
+
     return { token };
   }
 }
