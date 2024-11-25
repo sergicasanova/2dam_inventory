@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
+import { Inventari } from 'src/inventari/inventari.entity';
 
 @Injectable()
 export class ClassroomService {
@@ -12,8 +13,26 @@ export class ClassroomService {
     private readonly utilsService: UtilsService,
     @InjectRepository(Classroom)
     private classroomRepository: Repository<Classroom>,
+    @InjectRepository(Inventari)
+    private inventariRepository: Repository<Inventari>,  
   ) {}
 
+  async obtenerDispositivosPorClase(classroomId: number): Promise<any> {
+    const Conteo = await this.classroomRepository
+      .createQueryBuilder('classroom')
+      .leftJoinAndSelect('classroom.fk_inventari', 'inventari')
+      .leftJoinAndSelect('inventari.fk_inventary_type', 'type')
+      .select('type.description', 'deviceType')                                
+      .addSelect('COUNT(inventari.id_inventory)', 'ConteoDispositivos')     
+      .addSelect('classroom.id_classroom','Num_Aula')   
+      .where('classroom.id_classroom = :classroomId', { classroomId })  
+      .groupBy('type.description')                                             
+      .getRawMany();                                                   
+  
+    return Conteo;
+  }
+  
+  
   async getAllClassroom(xml?: string): Promise<Classroom[] | string> {
     const classrooms = await this.classroomRepository.find();
 
