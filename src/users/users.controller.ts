@@ -37,6 +37,16 @@ export class UsersController {
       );
     }
   }
+
+  @Get('statistics/:id')
+  getStatisticsUser(@Param('id') id: string) {
+    const userId = parseInt(id);
+    if (isNaN(userId)) {
+      throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
+    }
+    return this.usersService.getStatisticsUser(userId);
+  }
+  
   @Get(':id')
   getUser(@Param('id') id: string, @Query('xml') xml?: string) {
     const userId = parseInt(id);
