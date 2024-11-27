@@ -31,6 +31,63 @@ export class UsersService {
     return this.usersRepository.save(usuario);
   }
 
+  async getStatisticsUser(id_user: number): Promise<any> {
+    const user = await this.usersRepository.findOneBy({ id_user });
+    if (user != null) {
+      const statistics = await this.usersRepository
+        .createQueryBuilder('user')
+        .select('COUNT(issue.id_issue)', 'totalIssues')
+        .addSelect(
+          "COUNT(CASE WHEN status.description = 'Creada' THEN 1 END)",
+          'numIssuesCreadas',
+        )
+        .addSelect(
+          "COUNT(CASE WHEN status.description = 'En revisión' THEN 1 END)",
+          'numIssuesRevision',
+        )
+        .addSelect(
+          "COUNT(CASE WHEN status.description = 'Rechazada' THEN 1 END)",
+          'numIssuesRechazadas',
+        )
+        .addSelect(
+          "COUNT(CASE WHEN status.description = 'Completada' THEN 1 END)",
+          'numIssuesCompl',
+        )
+        .addSelect(
+          'AVG(DATEDIFF(issue.last_updated, issue.created_at))',
+          'difDiasCompletarIssues',
+        )
+        .innerJoin('issue', 'issue', 'user.id_user = issue.id_user')
+        .innerJoin('status', 'status', 'status.id_status = issue.id_status')
+        .where('user.id_user = :id', { id: id_user })
+        .getRawOne();
+      const statisticsAbiertas = await this.usersRepository
+        .createQueryBuilder('user')
+        .select('issue.id_issue', 'idIssuesAbierta')
+        .innerJoin('issue', 'issue', 'user.id_user = issue.id_user')
+        .innerJoin('status', 'status', 'status.id_status = issue.id_status')
+        .where(
+          "user.id_user = :id AND (status.description = 'Creada' OR status.description = 'En revisión')",
+          { id: id_user },
+        )
+        .getRawMany();
+      const result = {
+        totalIssues: parseInt(statistics.totalIssues),
+        numIssuesCreadas: parseInt(statistics.numIssuesCreadas),
+        numIssuesRevision: parseInt(statistics.numIssuesRevision),
+        numIssuesRechazadas: parseInt(statistics.numIssuesRechazadas),
+        numIssuesCompl: parseInt(statistics.numIssuesCompl),
+        idIssuesAbiertas: statisticsAbiertas.map(
+          (issue) => issue.idIssuesAbierta,
+        ),
+        difDiasCompletarIssues: parseFloat(statistics.difDiasCompletarIssues),
+      };
+      return result;
+    } else {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
   async getUser(id_user: number, xml?: string): Promise<User | string | null> {
     const user = await this.usersRepository.findOneBy({ id_user });
 
