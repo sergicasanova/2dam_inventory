@@ -18,18 +18,51 @@ export class ClassroomService {
   ) {}
 
   async obtenerDispositivosPorClase(classroomId: number): Promise<any> {
-    const Conteo = await this.classroomRepository
+    const inventarioCompleto = await this.classroomRepository
       .createQueryBuilder('classroom')
       .leftJoinAndSelect('classroom.fk_inventari', 'inventari')
       .leftJoinAndSelect('inventari.fk_inventary_type', 'type')
-      .select('type.description', 'deviceType')                                
-      .addSelect('COUNT(inventari.id_inventory)', 'ConteoDispositivos')     
-      .addSelect('classroom.id_classroom','Num_Aula')   
-      .where('classroom.id_classroom = :classroomId', { classroomId })  
-      .groupBy('type.description')                                             
-      .getRawMany();                                                   
+      .select([
+        'type.description AS deviceType',
+        'COUNT(inventari.id_inventory) AS ConteoDispositivos',
+        'inventari.id_inventory as id_inventory',
+        'inventari.num_serie as num_serie',
+        'inventari.brand as brand',
+        'inventari.model as model',
+        'inventari.GVA_cod_article as GVA_cod_article',
+        'inventari.GVA_description_cod_articulo as GVA_description_cod_articulo',
+        'inventari.status as status'
+      ])
+      .where('classroom.id_classroom = :classroomId', { classroomId })
+      .groupBy('type.description')
+      .addGroupBy('inventari.id_inventory')
+      .getRawMany();
   
-    return Conteo;
+    const dispositivosPorTipo = {};
+    let totalDispositivos = 0;
+  
+    inventarioCompleto.forEach((item) => {
+      const tipo = item.deviceType;
+      const dispositivo = {
+        idInventario: item.id_inventory,
+        numSerie: item.num_serie,
+        brand: item.brand,
+        model: item.model,
+        GVA_cod_article: item.GVA_cod_article,
+        GVA_description_cod_articulo: item.GVA_description_cod_articulo,
+        status: item.status
+      };
+  
+      dispositivosPorTipo[tipo].dispositivos.push(dispositivo);
+      dispositivosPorTipo[tipo].conteo += parseInt(item.ConteoDispositivos);
+      totalDispositivos += parseInt(item.ConteoDispositivos);
+    });
+      const result = {
+      dispositivosPorTipo,
+      conteoTotal: totalDispositivos
+    };
+  
+    return result;
   }
   
   
