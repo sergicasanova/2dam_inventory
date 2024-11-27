@@ -13,7 +13,6 @@ import {
 import { AuthService } from 'src/Autentication/auth.service';
 import { DataSource } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
-import { User } from './users.entity';
 import { UsersService } from './users.service';
 @Controller('Users')
 export class UsersController {
@@ -99,63 +98,8 @@ export class UsersController {
   }
   @Get('technician-stats/:id')
   async getTechnicianStats(@Param('id') id: string) {
-    const userId = parseInt(id);
-    if (isNaN(userId)) {
-      throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
-    }
-
-    const technician = await this.dataSource
-      .getRepository(User)
-      .findOne({ where: { id_user: userId, role: 2 } });
-
-    if (!technician) {
-      throw new HttpException('El usuario no es un técnico', HttpStatus.NOT_FOUND);
-    }
-
-    try {
-    const stats = await this.dataSource
-    .getRepository(User)
-    .createQueryBuilder('user')
-    .innerJoin('issue', 'issue', 'user.id_user = issue.id_tecnic')
-    .where('user.id_user = :userId', { userId: userId })
-    .andWhere('user.role = :role', { role: 2 })
-    .select('user.id_user AS id_user')
-    .addSelect('user.name AS name')
-    .addSelect('user.surname AS surname')
-    .addSelect('COUNT(issue.id_issue) AS total_issues')
-    .addSelect('SUM(issue.id_status = 4) AS Completadas')
-    .addSelect('SUM(issue.id_status = 3) AS Canceladas')
-    .addSelect('SUM(issue.id_status = 2) AS Abiertas')
-    .addSelect('SUM(issue.id_status = 1) AS Creaddas')
-    .addSelect(`
-      SEC_TO_TIME(
-          IFNULL(
-              AVG(
-                  IF(issue.id_status = 4, TIMESTAMPDIFF(SECOND, issue.created_at, issue.last_updated), NULL)
-              ),
-              0
-          )
-      ) AS Media_tiempo_resolucion
-  `)  
-    .groupBy('user.id_user')
-    .getRawOne();
-
-      if (!stats) {
-        throw new HttpException('No se encontraron estadísticas para este técnico', HttpStatus.NOT_FOUND);
-      }
-
-      return stats;
-    } catch (err) {
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: err.message || 'Error interno en el servidor',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        {
-          cause: err,
-        },
-      );
-    }
+    
+    const stat = await this.usersService.getStaticTechnician(id);
+    return stat;
   }
 }
