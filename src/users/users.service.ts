@@ -54,8 +54,8 @@ export class UsersService {
           'numIssuesCompl',
         )
         .addSelect(
-          'AVG(DATEDIFF(issue.last_updated, issue.created_at))',
-          'difDiasCompletarIssues',
+          "SEC_TO_TIME(AVG(CASE WHEN status.description = 'Completada' THEN TIMESTAMPDIFF(SECOND, issue.created_at, issue.last_updated) END))",
+          'difHorasCompletarIssues',
         )
         .innerJoin('issue', 'issue', 'user.id_user = issue.id_user')
         .innerJoin('status', 'status', 'status.id_status = issue.id_status')
@@ -80,7 +80,7 @@ export class UsersService {
         idIssuesAbiertas: statisticsAbiertas.map(
           (issue) => issue.idIssuesAbierta,
         ),
-        difDiasCompletarIssues: parseFloat(statistics.difDiasCompletarIssues),
+        difHorasCompletarIssues: statistics.difHorasCompletarIssues,
       };
       return result;
     } else {
