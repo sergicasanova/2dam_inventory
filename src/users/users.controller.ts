@@ -10,14 +10,16 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { AuthService } from 'src/Autentication/auth.service';
+import { DataSource } from 'typeorm';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { UsersService } from './users.service';
 @Controller('Users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
+    private readonly dataSource: DataSource,
   ) {}
 
   @Get()
@@ -103,5 +105,11 @@ export class UsersController {
 
     const token = await this.authService.generateToken(user.id_user);
     return { token };
+  }
+  @Get('technician-stats/:id')
+  async getTechnicianStats(@Param('id') id: string) {
+    
+    const stat = await this.usersService.getStaticTechnician(id);
+    return stat;
   }
 }
