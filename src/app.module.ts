@@ -24,6 +24,7 @@ import { AuthorizationMiddleware } from './authorization.middleware';
 import StatusModule from './status/status.module';
 import { AuthService } from './Autentication/auth.service';
 import { MailModule } from './mail/mail.module';
+import { LabelsModule } from './utils/labels.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -36,6 +37,7 @@ import { MailModule } from './mail/mail.module';
     UtilsModule,
     IssuesConversationModule,
     MailModule,
+    LabelsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -62,6 +64,7 @@ import { MailModule } from './mail/mail.module';
       }),
       inject: [ConfigService],
     }),
+    LabelsModule,
   ],
   controllers: [],
   providers: [AuthorizationMiddleware, AuthService],
