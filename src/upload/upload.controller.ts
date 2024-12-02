@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from '../multer.config';
 import { UploadService } from './upload.service';
@@ -18,8 +30,11 @@ export class UploadController {
   ) {
     if (!file) {
       throw new Error('File upload failed');
-    }  
-    const savedFile = await this.uploadService.saveFile(file, issueConversationId);
+    }
+    const savedFile = await this.uploadService.saveFile(
+      file,
+      issueConversationId,
+    );
     return {
       message: 'Archivo añadido con exito!',
       url: `http://localhost:8080/upload/${file.filename}`,
@@ -27,35 +42,34 @@ export class UploadController {
       path: savedFile.path,
     };
   }
-  
-    @Get()
-    getAlluploads() {
-      return this.uploadService.getAlluploads();
-    }
-  
-    
-    @Get(':id')
-    getUpload(@Param('id') id: string) {
-      return this.uploadService.getUpload(parseInt(id));
-    }
 
-    @Put(':id')
-    @UseInterceptors(
-      FileInterceptor('uploadedFile', multerConfig) 
-    )
-    async updateUpload(
-      @Param('id') id: number,
-      @UploadedFile() file: Express.Multer.File,
-    ): Promise<any> {
-      if (!file) {
-        throw new HttpException('No se ha enviado un archivo', HttpStatus.BAD_REQUEST);
-      }
-      return await this.uploadService.updateUpload(id, file);
+  @Get()
+  getAlluploads() {
+    return this.uploadService.getAlluploads();
+  }
+
+  @Get(':id')
+  getUpload(@Param('id') id: string) {
+    return this.uploadService.getUpload(parseInt(id));
+  }
+
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('uploadedFile', multerConfig))
+  async updateUpload(
+    @Param('id') id: number,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<any> {
+    if (!file) {
+      throw new HttpException(
+        'No se ha enviado un archivo',
+        HttpStatus.BAD_REQUEST,
+      );
     }
+    return await this.uploadService.updateUpload(id, file);
+  }
 
-
-    @Delete(':id')
-    deleteInventari(@Param('id') id: string) {
+  @Delete(':id')
+  deleteInventari(@Param('id') id: string) {
     return this.uploadService.deleteUpload(parseInt(id));
   }
 }

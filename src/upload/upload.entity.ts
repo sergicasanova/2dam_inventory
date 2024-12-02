@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BeforeInsert, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
 
 @Entity('upload')
@@ -12,10 +18,13 @@ export class UploadEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => IssueConversationEntity, (issueConversation) => issueConversation.upload, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => IssueConversationEntity,
+    (issueConversation) => issueConversation.upload,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'id_issueConversation' })
   issueConversation: IssueConversationEntity;
-
 }

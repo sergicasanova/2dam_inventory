@@ -35,7 +35,7 @@ const options: DataSourceOptions & SeederOptions = {
     Status,
     Classroom,
     Inventari,
-    UploadEntity
+    UploadEntity,
   ],
   seeds: [
     Inventary_typeSeeder,
@@ -44,7 +44,7 @@ const options: DataSourceOptions & SeederOptions = {
     StatusSeeder,
     InventariSeeder,
     IssueSeeder,
-    UploadSeeder
+    UploadSeeder,
   ],
 };
 

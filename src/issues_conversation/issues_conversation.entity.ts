@@ -29,7 +29,7 @@ export class IssueConversationEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @OneToMany(() => UploadEntity, (upload) => upload.issueConversation,{
+  @OneToMany(() => UploadEntity, (upload) => upload.issueConversation, {
     onDelete: 'CASCADE',
   })
   upload: UploadEntity[];

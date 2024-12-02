@@ -14,8 +14,8 @@ import { IssueConversationEntity } from '../issues_conversation/issues_conversat
       serveRoot: '/upload',
     }),
   ],
-  exports: [TypeOrmModule], 
+  exports: [TypeOrmModule],
   controllers: [UploadController],
-  providers: [UploadService], 
+  providers: [UploadService],
 })
 export class UploadModule {}

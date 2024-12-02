@@ -27,7 +27,7 @@ const config = {
     Issue,
     IssueConversationEntity,
     Status,
-    UploadEntity
+    UploadEntity,
   ],
   migrations: ['./src/migrations/*.ts'],
   synchronize: false,

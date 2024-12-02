@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UploadEntity } from './upload.entity'; 
+import { UploadEntity } from './upload.entity';
 import * as path from 'path';
 import { IssueConversationEntity } from '../issues_conversation/issues_conversation.entity';
 
@@ -18,24 +18,25 @@ export class UploadService {
     const issueConversation = await this.issueConversationRepository.findOne({
       where: { id_conversation: issueConversationId },
     });
-  
+
     if (!issueConversation) {
-      throw new Error(`IssueConversation con ID ${issueConversationId} no encontrado.`);
+      throw new Error(
+        `IssueConversation con ID ${issueConversationId} no encontrado.`,
+      );
     }
-      const filePath = path.join('/upload', file.filename);
-      const newUpload = this.uploadRepository.create({
+    const filePath = path.join('/upload', file.filename);
+    const newUpload = this.uploadRepository.create({
       path: filePath,
       name: file.originalname,
       issueConversation,
     });
     return await this.uploadRepository.save(newUpload);
   }
-  
 
   async getAlluploads(): Promise<any> {
     const result = await this.uploadRepository.find({
-      relations: ['issueConversation']
-  });
+      relations: ['issueConversation'],
+    });
     return result;
   }
 
@@ -51,17 +52,16 @@ export class UploadService {
       where: { id },
       relations: ['issueConversation'],
     });
-  
+
     if (!existingUpload) {
       throw new HttpException('Upload no encontrado', HttpStatus.NOT_FOUND);
     }
-  
+
     const updatedFilePath = path.join('/upload', file.filename);
-      existingUpload.name = file.originalname;
+    existingUpload.name = file.originalname;
     existingUpload.path = updatedFilePath;
-      return await this.uploadRepository.save(existingUpload);
+    return await this.uploadRepository.save(existingUpload);
   }
-  
 
   async deleteUpload(id: number): Promise<{ message: string }> {
     const result = await this.uploadRepository.delete(id);

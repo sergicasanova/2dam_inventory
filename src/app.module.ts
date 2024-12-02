@@ -56,7 +56,7 @@ import { UploadEntity } from './upload/upload.entity';
           User,
           Inventari,
           Status,
-          UploadEntity
+          UploadEntity,
         ],
         synchronize: true,
       }),
