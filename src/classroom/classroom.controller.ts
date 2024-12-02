@@ -67,8 +67,7 @@ export class ClassroomController {
   }
 
   @Get('/:id/devices')
-async obtenerDispositivosPorClase(@Param('id') id: number) {
-  return await this.classroomService.obtenerDispositivosPorClase(id);
-}
-
+  async obtenerDispositivosPorClase(@Param('id') id: number) {
+    return await this.classroomService.obtenerDispositivosPorClase(id);
+  }
 }

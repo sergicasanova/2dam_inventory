@@ -14,7 +14,7 @@ export class ClassroomService {
     @InjectRepository(Classroom)
     private classroomRepository: Repository<Classroom>,
     @InjectRepository(Inventari)
-    private inventariRepository: Repository<Inventari>,  
+    private inventariRepository: Repository<Inventari>,
   ) {}
 
   async obtenerDispositivosPorClase(classroomId: number): Promise<any> {
@@ -31,22 +31,22 @@ export class ClassroomService {
         'inventari.model as model',
         'inventari.GVA_cod_article as GVA_cod_article',
         'inventari.GVA_description_cod_articulo as GVA_description_cod_articulo',
-        'inventari.status as status'
+        'inventari.status as status',
       ])
       .where('classroom.id_classroom = :classroomId', { classroomId })
       .groupBy('type.description')
       .addGroupBy('inventari.id_inventory')
       .getRawMany();
-  
+
     const dispositivosPorTipo = {};
     let totalDispositivos = 0;
-  
+
     inventarioCompleto.forEach((item) => {
       const tipo = item.deviceType;
       if (!dispositivosPorTipo[tipo]) {
         dispositivosPorTipo[tipo] = {
-          dispositivos: [], 
-          conteo: 0          
+          dispositivos: [],
+          conteo: 0,
         };
       }
       const dispositivo = {
@@ -56,22 +56,21 @@ export class ClassroomService {
         model: item.model,
         GVA_cod_article: item.GVA_cod_article,
         GVA_description_cod_articulo: item.GVA_description_cod_articulo,
-        status: item.status
+        status: item.status,
       };
-  
+
       dispositivosPorTipo[tipo].dispositivos.push(dispositivo);
       dispositivosPorTipo[tipo].conteo += parseInt(item.ConteoDispositivos);
       totalDispositivos += parseInt(item.ConteoDispositivos);
     });
-      const result = {
+    const result = {
       dispositivosPorTipo,
-      conteoTotal: totalDispositivos
+      conteoTotal: totalDispositivos,
     };
-  
+
     return result;
   }
-  
-  
+
   async getAllClassroom(xml?: string): Promise<Classroom[] | string> {
     const classrooms = await this.classroomRepository.find();
 

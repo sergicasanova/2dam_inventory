@@ -9,7 +9,10 @@ import { Inventari } from 'src/inventari/inventari.entity';
 import { Inventari_type } from 'src/inventari_type/inventari_type.entity';
 
 @Module({
-  imports: [UtilsModule, TypeOrmModule.forFeature([Classroom,Inventari, Inventari_type])],
+  imports: [
+    UtilsModule,
+    TypeOrmModule.forFeature([Classroom, Inventari, Inventari_type]),
+  ],
   controllers: [ClassroomController],
   providers: [ClassroomService, UtilsService],
   exports: [ClassroomService],
