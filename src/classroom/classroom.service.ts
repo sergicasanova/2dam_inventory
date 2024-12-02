@@ -43,6 +43,12 @@ export class ClassroomService {
   
     inventarioCompleto.forEach((item) => {
       const tipo = item.deviceType;
+      if (!dispositivosPorTipo[tipo]) {
+        dispositivosPorTipo[tipo] = {
+          dispositivos: [], 
+          conteo: 0          
+        };
+      }
       const dispositivo = {
         idInventario: item.id_inventory,
         numSerie: item.num_serie,
