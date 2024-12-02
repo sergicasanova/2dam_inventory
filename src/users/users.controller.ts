@@ -108,7 +108,6 @@ export class UsersController {
   }
   @Get('technician-stats/:id')
   async getTechnicianStats(@Param('id') id: string) {
-    
     const stat = await this.usersService.getStaticTechnician(id);
     return stat;
   }

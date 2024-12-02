@@ -132,10 +132,15 @@ export class UsersService {
       throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
     }
 
-    const technician = await this.usersRepository.findOne({ where: { id_user: userId, role: 2 } });
+    const technician = await this.usersRepository.findOne({
+      where: { id_user: userId, role: 2 },
+    });
 
     if (!technician) {
-      throw new HttpException('El usuario no es un técnico', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'El usuario no es un técnico',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     try {
@@ -152,7 +157,8 @@ export class UsersService {
         .addSelect('SUM(issue.id_status = 3) AS Canceladas')
         .addSelect('SUM(issue.id_status = 2) AS Abiertas')
         .addSelect('SUM(issue.id_status = 1) AS Creaddas')
-        .addSelect(`
+        .addSelect(
+          `
           SEC_TO_TIME(
               IFNULL(
                   AVG(
@@ -161,12 +167,16 @@ export class UsersService {
                   0
               )
           ) AS Media_tiempo_resolucion
-        `)
+        `,
+        )
         .groupBy('user.id_user')
         .getRawOne();
 
       if (!stats) {
-        throw new HttpException('No se encontraron estadísticas para este técnico', HttpStatus.NOT_FOUND);
+        throw new HttpException(
+          'No se encontraron estadísticas para este técnico',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       return stats;
@@ -177,7 +187,7 @@ export class UsersService {
           error: err.message || 'Error interno en el servidor',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
- {
+        {
           cause: err,
         },
       );

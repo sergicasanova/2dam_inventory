@@ -63,7 +63,7 @@ describe('IssueConversationService', () => {
     create: jest.fn(() => oneConversation),
     findOne: jest.fn(() => oneConversation),
     delete: jest.fn(() => deleteConversation),
-    save: jest.fn((conversation) => conversation ),
+    save: jest.fn((conversation) => conversation),
     merge: jest.fn((existing, updates) => ({ existing, updates })),
   };
 
