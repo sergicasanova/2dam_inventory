@@ -23,6 +23,9 @@ import { Status } from './status/status.entity';
 import { AuthorizationMiddleware } from './authorization.middleware';
 import StatusModule from './status/status.module';
 import { AuthService } from './Autentication/auth.service';
+import { UploadModule } from './upload/upload.module';
+import { UploadEntity } from './upload/upload.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -34,6 +37,7 @@ import { AuthService } from './Autentication/auth.service';
     InventariModule,
     UtilsModule,
     IssuesConversationModule,
+    UploadModule,
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -52,6 +56,7 @@ import { AuthService } from './Autentication/auth.service';
           User,
           Inventari,
           Status,
+          UploadEntity
         ],
         synchronize: true,
       }),
