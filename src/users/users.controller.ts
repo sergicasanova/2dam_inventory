@@ -46,7 +46,7 @@ export class UsersController {
     }
     return this.usersService.getStatisticsUser(userId);
   }
-  
+
   @Get(':id')
   getUser(@Param('id') id: string, @Query('xml') xml?: string) {
     const userId = parseInt(id);
