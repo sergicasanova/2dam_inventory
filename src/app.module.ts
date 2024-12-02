@@ -23,6 +23,8 @@ import { Status } from './status/status.entity';
 import { AuthorizationMiddleware } from './authorization.middleware';
 import StatusModule from './status/status.module';
 import { AuthService } from './Autentication/auth.service';
+import { MailModule } from './mail/mail.module';
+import { LabelsModule } from './utils/labels.module';
 import { UploadModule } from './upload/upload.module';
 import { UploadEntity } from './upload/upload.entity';
 
@@ -37,6 +39,11 @@ import { UploadEntity } from './upload/upload.entity';
     InventariModule,
     UtilsModule,
     IssuesConversationModule,
+    MailModule,
+    LabelsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     UploadModule,
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRootAsync({
@@ -62,6 +69,7 @@ import { UploadEntity } from './upload/upload.entity';
       }),
       inject: [ConfigService],
     }),
+    LabelsModule,
   ],
   controllers: [],
   providers: [AuthorizationMiddleware, AuthService],

@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { AuthService } from 'src/Autentication/auth.service';
-import { DataSource } from 'typeorm';
+import { MailService } from 'src/mail/mail.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { UsersService } from './users.service';
 @Controller('Users')
@@ -19,7 +19,7 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
-    private readonly dataSource: DataSource,
+    private readonly mailService: MailService,
   ) {}
 
   @Get()
@@ -104,6 +104,7 @@ export class UsersController {
     }
 
     const token = await this.authService.generateToken(user.id_user);
+
     return { token };
   }
   @Get('technician-stats/:id')
