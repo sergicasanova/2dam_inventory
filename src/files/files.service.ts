@@ -17,7 +17,7 @@ export class FilesService {
 
   constructor(@InjectConnection() private readonly connection: Connection) {
     this.fileModel = new MongoGridFS(this.connection.db, 'fs');
-    const client = new MongoClient('mongodb://admin:password@mongodb:27017');
+    const client = new MongoClient(process.env.MONGODB_URI);
     client.connect().then(() => {
       const db = client.db('test');
       this.bucket = new GridFSBucket(db, { bucketName: 'fs' });
