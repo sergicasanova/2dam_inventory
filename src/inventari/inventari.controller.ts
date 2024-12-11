@@ -3,14 +3,19 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
   Query,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { InventariService } from './inventari.service';
 import { CreateInventariDto } from './inventari.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('inventari')
 export class InventariController {
@@ -53,5 +58,17 @@ export class InventariController {
   generate_qr(@Body() inventory_items: number[], @Res() res: any) {
     const inventoryIdItems = inventory_items;
     return this.inventariService.generate_qr(inventoryIdItems, res);
+  }
+
+  @Post('upload-csv')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadCsv(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new HttpException('No file provided', HttpStatus.BAD_REQUEST);
+    }
+    // if (file.mimetype !== 'file/svg') {
+    //   throw new HttpException('No file provided', HttpStatus.BAD_REQUEST);
+    // }
+    return this.inventariService.processCsvStream(file.buffer);
   }
 }
