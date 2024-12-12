@@ -82,4 +82,58 @@ export class FilesService {
         });
     });
   }
+
+  async getRamAndDiskInfo(fileId: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        const objectId = new ObjectId(fileId);
+        const stream = this.bucket.openDownloadStream(objectId);
+
+        let jsonString = '';
+        stream
+          .on('data', (chunk) => {
+            jsonString += chunk.toString();
+          })
+          .on('end', () => {
+            try {
+              const data = JSON.parse(jsonString);
+              const ramInfo = this.getRamInfo(data);
+              const diskInfo = this.getDiskInfo(data);
+              resolve({ ram: ramInfo, disk: diskInfo });
+            } catch (error) {
+              reject(`Error al procesar el JSON: ${error.message}`);
+            }
+          })
+          .on('error', (err) => {
+            reject(`Error al leer el archivo: ${err.message}`);
+          });
+      } catch (error) {
+        reject(`ID de archivo no válido: ${error.message}`);
+      }
+    });
+  }
+
+  private getRamInfo(data: any): any[] {
+    return data
+      .filter((item) => item.description === 'Memory Device')
+      .map((ram) => ({
+        size: ram.values.size,
+        type: ram.values.type,
+        speed: ram.values.speed,
+        manufacturer: ram.values.manufacturer,
+        serial_number: ram.values.serial_number,
+      }));
+  }
+
+  private getDiskInfo(data: any): any[] {
+    return data
+      .filter(
+        (item) => item.description && item.description.includes('Storage'),
+      )
+      .map((disk) => ({
+        model: disk.values?.model || 'Desconocido',
+        size: disk.values?.capacity || 'Desconocido',
+        type: disk.values?.type || 'Desconocido',
+      }));
+  }
 }

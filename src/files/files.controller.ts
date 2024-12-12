@@ -8,6 +8,7 @@ import {
   UploadedFiles,
   HttpException,
   HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
@@ -145,5 +146,22 @@ export class FilesController {
       this.inventariService.vincularArchivo(numSerie, file.id);
     });
     return response;
+  }
+
+  @Get('inventory/:id/device_specs')
+  async getDeviceInfoFromInventory(@Param('id') id: number): Promise<any> {
+    const inventoryItem = await this.inventariService.getInventari(id);
+    if (!inventoryItem) {
+      throw new NotFoundException(`Inventario con ID ${id} no encontrado.`);
+    }
+
+    const deviceInfoId = inventoryItem.id_device_info;
+    if (!deviceInfoId) {
+      throw new NotFoundException(
+        `El dispositivo con ID ${id} no tiene información de archivo asociada.`,
+      );
+    }
+    const specs = await this.filesService.getRamAndDiskInfo(deviceInfoId);
+    return specs;
   }
 }

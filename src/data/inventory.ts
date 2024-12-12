@@ -1,7 +1,7 @@
 export default [
   {
     id_inventory: 1,
-    num_serie: 'E66211H9J6Y6535',
+    num_serie: 'PF4L5973',
     id_type: 2,
     brand: 'HP',
     model: 'Pavilion',

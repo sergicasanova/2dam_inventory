@@ -54,6 +54,7 @@ export class InventariController {
   deleteInventari(@Param('id') id: string) {
     return this.inventariService.deleteInventari(parseInt(id));
   }
+
   @Post('pdf')
   generate_qr(@Body() inventory_items: number[], @Res() res: any) {
     const inventoryIdItems = inventory_items;
@@ -66,9 +67,6 @@ export class InventariController {
     if (!file) {
       throw new HttpException('No file provided', HttpStatus.BAD_REQUEST);
     }
-    // if (file.mimetype !== 'file/svg') {
-    //   throw new HttpException('No file provided', HttpStatus.BAD_REQUEST);
-    // }
     return this.inventariService.processCsvStream(file.buffer);
   }
 }
